@@ -8,31 +8,19 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.LinkedHashMap;
-
 public class MainActivity extends AppCompatActivity {
 
     TextView moves;
-    ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12;
-    LinkedHashMap<Integer, Object> imagesClicked = new LinkedHashMap<>();
-    ImageButton previousButton;
+    ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, previousButton;
     int counter = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        Toast.makeText(MainActivity.this, "Started", Toast.LENGTH_LONG);
-
-        //HashMap<String, Integer> pictures = new HashMap<String, Integer>()
-          //      pictures.put("pic1",R.drawable.pic1);
-                //pictures
-
         initializeButtons();
         randomize();
-
         moves  = (TextView) findViewById(R.id.currentMoves);
-
     }
 
     private void initializeButtons() {
@@ -94,131 +82,282 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             Drawable drawable;
-            int i = 0;
 
-//            imagesClicked.put(v.getId(), v.getTag());
-//            if(imagesClicked.size() == 2){
-//                Iterator it = imagesClicked.entrySet().iterator();
-//                while (it.hasNext()) {
-//                    Map.Entry pair = (Map.Entry) it.next();
-//                    if(i == 0){
-//                        String a = pair.getKey().toString();
-//                        int b = Integer.parseInt(a);
-//                        if(b == R.id.button1)
-//                            Toast.makeText(MainActivity.this, pair.getKey().toString(), Toast.LENGTH_LONG).show();
-//                        //ob1 = pair.getValue();
-//                    }else if (i == 1){
-//                        ob2 = pair.getValue();
-//                    }
-//                    i++;
-//                }
-//            }
             if (counter % 2 == 0)
                 switch (v.getId()) {
                     case R.id.button1:
                         previousButton = button1;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button2:
                         previousButton = button2;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button3:
                         previousButton = button3;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button4:
                         previousButton = button4;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button5:
                         previousButton = button5;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button6:
                         previousButton = button6;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button7:
                         previousButton = button7;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button8:
                         previousButton = button8;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button9:
                         previousButton = button9;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button10:
                         previousButton = button10;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button11:
                         previousButton = button11;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                     case R.id.button12:
                         previousButton = button12;
+                        moves.setText(String.valueOf(counter) + " move(s)");
+                        counter++;
                         break;
                 }
 
             else if(counter%2 == 1)
                 switch (v.getId()) {
                     case R.id.button1:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button1.getDrawable());
-                        button1.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button1)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button1.getDrawable());
+                            button1.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button2:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button2.getDrawable());
-                        button2.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button2)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button2.getDrawable());
+                            button2.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button3:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button3.getDrawable());
-                        button3.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button3)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button3.getDrawable());
+                            button3.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button4:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button4.getDrawable());
-                        button4.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button4)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button4.getDrawable());
+                            button4.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button5:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button5.getDrawable());
-                        button5.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button5)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button5.getDrawable());
+                            button5.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button6:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button6.getDrawable());
-                        button6.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button6)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button6.getDrawable());
+                            button6.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button7:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button7.getDrawable());
-                        button7.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button7)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button7.getDrawable());
+                            button7.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button8:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button8.getDrawable());
-                        button8.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button8)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button8.getDrawable());
+                            button8.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button9:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button9.getDrawable());
-                        button9.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button9)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button9.getDrawable());
+                            button9.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button10:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button10.getDrawable());
-                        button10.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button10)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button10.getDrawable());
+                            button10.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button11:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button11.getDrawable());
-                        button11.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button11)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button11.getDrawable());
+                            button11.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case R.id.button12:
-                        drawable = previousButton.getDrawable();
-                        previousButton.setImageDrawable(button12.getDrawable());
-                        button12.setImageDrawable(drawable);
+                        if (isAdjacent(previousButton, button12)){
+                            drawable = previousButton.getDrawable();
+                            previousButton.setImageDrawable(button12.getDrawable());
+                            button12.setImageDrawable(drawable);
+                            moves.setText(String.valueOf(counter) + " move(s)");
+                            counter++;
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
-
-            moves.setText(String.valueOf(counter)+" move(s)");
-            counter++;        }
+        }
     };
+
+    private Boolean isAdjacent(ImageButton b1, ImageButton b2){
+
+        switch (b1.getId()) {
+            case R.id.button1:
+                if (b2.getId() == R.id.button2 || b2.getId() == R.id.button4)
+                    return true;
+                break;
+            case R.id.button2:
+                if (b2.getId() == R.id.button1 || b2.getId() == R.id.button3 || b2.getId()
+                        == R.id.button5)
+                    return true;
+                break;
+            case R.id.button3:
+                if (b2.getId() == R.id.button2 || b2.getId() == R.id.button6)
+                    return true;
+                break;
+            case R.id.button4:
+                if (b2.getId() == R.id.button1 || b2.getId() == R.id.button5 || b2.getId()
+                        == R.id.button7)
+                    return true;
+                break;
+            case R.id.button5:
+                if (b2.getId() == R.id.button2 || b2.getId() == R.id.button4 || b2.getId()
+                        == R.id.button6 || b2.getId() == R.id.button8)
+                    return true;
+                break;
+            case R.id.button6:
+                if (b2.getId() == R.id.button3 || b2.getId() == R.id.button5 || b2.getId()
+                        == R.id.button9)
+                    return true;
+                break;
+            case R.id.button7:
+                if (b2.getId() == R.id.button4 || b2.getId() == R.id.button8 || b2.getId()
+                        == R.id.button10)
+                    return true;
+                break;
+            case R.id.button8:
+                if (b2.getId() == R.id.button5 || b2.getId() == R.id.button7 || b2.getId()
+                        == R.id.button9 || b2.getId() == R.id.button11)
+                    return true;
+                break;
+            case R.id.button9:
+                if (b2.getId() == R.id.button6 || b2.getId() == R.id.button8 || b2.getId()
+                        == R.id.button12)
+                    return true;
+                break;
+            case R.id.button10:
+                if (b2.getId() == R.id.button7 || b2.getId() == R.id.button11)
+                    return true;
+                break;
+            case R.id.button11:
+                if (b2.getId() == R.id.button8 || b2.getId() == R.id.button10 || b2.getId()
+                        == R.id.button12)
+                    return true;
+                break;
+            case R.id.button12:
+                if (b2.getId() == R.id.button9 || b2.getId() == R.id.button11)
+                    return true;
+                break;
+        }
+        return false;
+    }
 }
 
