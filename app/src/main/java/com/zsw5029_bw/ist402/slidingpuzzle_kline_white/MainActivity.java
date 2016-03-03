@@ -79,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
                     button1.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button2:
@@ -91,9 +88,6 @@ public class MainActivity extends AppCompatActivity {
                     button2.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button3:
@@ -103,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
                     button3.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button4:
@@ -115,9 +106,6 @@ public class MainActivity extends AppCompatActivity {
                     button4.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button5:
@@ -127,9 +115,6 @@ public class MainActivity extends AppCompatActivity {
                     button5.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button6:
@@ -139,9 +124,6 @@ public class MainActivity extends AppCompatActivity {
                     button6.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button7:
@@ -151,9 +133,6 @@ public class MainActivity extends AppCompatActivity {
                     button7.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button8:
@@ -163,9 +142,6 @@ public class MainActivity extends AppCompatActivity {
                     button8.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button9:
@@ -175,9 +151,6 @@ public class MainActivity extends AppCompatActivity {
                     button9.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button10:
@@ -187,9 +160,6 @@ public class MainActivity extends AppCompatActivity {
                     button10.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button11:
@@ -199,9 +169,6 @@ public class MainActivity extends AppCompatActivity {
                     button11.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
             case R.id.button12:
@@ -211,9 +178,6 @@ public class MainActivity extends AppCompatActivity {
                     button12.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
                     counter++;
-                } else {
-                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                    counter--;
                 }
                 break;
         }
@@ -320,6 +284,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 break;
         }
+        Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+        counter--;
+        moves.setText(String.valueOf(counter) + " move(s)");
         return false;
     }
 }
