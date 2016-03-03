@@ -18,284 +18,247 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        initializeButtons();
+        initializeReferences();
         randomize();
+    }
+
+    private void initializeReferences() {
+        button1 = (ImageButton) findViewById(R.id.button1);
+        button1.setOnClickListener(imagesListener);
+        button2 = (ImageButton) findViewById(R.id.button2);
+        button2.setOnClickListener(imagesListener);
+        button3 = (ImageButton) findViewById(R.id.button3);
+        button3.setOnClickListener(imagesListener);
+        button4 = (ImageButton) findViewById(R.id.button4);
+        button4.setOnClickListener(imagesListener);
+        button5 = (ImageButton) findViewById(R.id.button5);
+        button5.setOnClickListener(imagesListener);
+        button6 = (ImageButton) findViewById(R.id.button6);
+        button6.setOnClickListener(imagesListener);
+        button7 = (ImageButton) findViewById(R.id.button7);
+        button7.setOnClickListener(imagesListener);
+        button8 = (ImageButton) findViewById(R.id.button8);
+        button8.setOnClickListener(imagesListener);
+        button9 = (ImageButton) findViewById(R.id.button9);
+        button9.setOnClickListener(imagesListener);
+        button10 = (ImageButton) findViewById(R.id.button10);
+        button10.setOnClickListener(imagesListener);
+        button11 = (ImageButton) findViewById(R.id.button11);
+        button11.setOnClickListener(imagesListener);
+        button12 = (ImageButton) findViewById(R.id.button12);
+        button12.setOnClickListener(imagesListener);
         moves  = (TextView) findViewById(R.id.currentMoves);
     }
 
-    private void initializeButtons() {
-        button1 = (ImageButton) findViewById(R.id.button1);
-        button1.setOnClickListener(imagesListener);
-        button1.setTag(R.drawable.pic1);
-
-        button2 = (ImageButton) findViewById(R.id.button2);
-        button2.setOnClickListener(imagesListener);
-        button2.setTag(R.drawable.pic2);
-
-
-        button3 = (ImageButton) findViewById(R.id.button3);
-        button3.setOnClickListener(imagesListener);
-        button3.setTag(R.drawable.pic3);
-
-        button4 = (ImageButton) findViewById(R.id.button4);
-        button4.setOnClickListener(imagesListener);
-        button4.setTag(R.drawable.pic4);
-
-        button5 = (ImageButton) findViewById(R.id.button5);
-        button5.setOnClickListener(imagesListener);
-        button5.setTag(R.drawable.pic5);
-
-        button6 = (ImageButton) findViewById(R.id.button6);
-        button6.setOnClickListener(imagesListener);
-        button6.setTag(R.drawable.pic6);
-
-        button7 = (ImageButton) findViewById(R.id.button7);
-        button7.setOnClickListener(imagesListener);
-        button7.setTag(R.drawable.pic7);
-
-        button8 = (ImageButton) findViewById(R.id.button8);
-        button8.setOnClickListener(imagesListener);
-        button8.setTag(R.drawable.pic8);
-
-        button9 = (ImageButton) findViewById(R.id.button9);
-        button9.setOnClickListener(imagesListener);
-        button9.setTag(R.drawable.pic9);
-
-        button10 = (ImageButton) findViewById(R.id.button10);
-        button10.setOnClickListener(imagesListener);
-        button10.setTag(R.drawable.pic10);
-
-        button11 = (ImageButton) findViewById(R.id.button11);
-        button11.setOnClickListener(imagesListener);
-        button11.setTag(R.drawable.pic11);
-
-        button12 = (ImageButton) findViewById(R.id.button12);
-        button12.setOnClickListener(imagesListener);
-        button12.setTag(R.drawable.pic12);
-    }
-
     private void randomize() {
+        //TODO Shuffle Images
     }
 
     private View.OnClickListener imagesListener = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
-
-            Drawable drawable;
-
-            if (counter % 2 == 0)
-                switch (v.getId()) {
-                    case R.id.button1:
-                        previousButton = button1;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button2:
-                        previousButton = button2;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button3:
-                        previousButton = button3;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button4:
-                        previousButton = button4;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button5:
-                        previousButton = button5;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button6:
-                        previousButton = button6;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button7:
-                        previousButton = button7;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button8:
-                        previousButton = button8;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button9:
-                        previousButton = button9;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button10:
-                        previousButton = button10;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button11:
-                        previousButton = button11;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                    case R.id.button12:
-                        previousButton = button12;
-                        moves.setText(String.valueOf(counter) + " move(s)");
-                        counter++;
-                        break;
-                }
-
-            else if(counter%2 == 1)
-                switch (v.getId()) {
-                    case R.id.button1:
-                        if (isAdjacent(previousButton, button1)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button1.getDrawable());
-                            button1.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button2:
-                        if (isAdjacent(previousButton, button2)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button2.getDrawable());
-                            button2.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button3:
-                        if (isAdjacent(previousButton, button3)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button3.getDrawable());
-                            button3.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button4:
-                        if (isAdjacent(previousButton, button4)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button4.getDrawable());
-                            button4.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button5:
-                        if (isAdjacent(previousButton, button5)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button5.getDrawable());
-                            button5.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button6:
-                        if (isAdjacent(previousButton, button6)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button6.getDrawable());
-                            button6.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button7:
-                        if (isAdjacent(previousButton, button7)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button7.getDrawable());
-                            button7.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button8:
-                        if (isAdjacent(previousButton, button8)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button8.getDrawable());
-                            button8.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button9:
-                        if (isAdjacent(previousButton, button9)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button9.getDrawable());
-                            button9.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button10:
-                        if (isAdjacent(previousButton, button10)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button10.getDrawable());
-                            button10.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button11:
-                        if (isAdjacent(previousButton, button11)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button11.getDrawable());
-                            button11.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case R.id.button12:
-                        if (isAdjacent(previousButton, button12)){
-                            drawable = previousButton.getDrawable();
-                            previousButton.setImageDrawable(button12.getDrawable());
-                            button12.setImageDrawable(drawable);
-                            moves.setText(String.valueOf(counter) + " move(s)");
-                            counter++;
-                        }
-                        else{
-                            Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                }
+            if (counter % 2 == 0) {
+                setPrevious(v);
+                moves.setText(String.valueOf(counter) + " move(s)");
+                counter++;
+            }
+            else if(counter%2 == 1) {
+                swapTiles(v);
+            }
         }
     };
+
+    private void swapTiles(View v) {
+        Drawable drawable;
+        switch (v.getId()) {
+            case R.id.button1:
+                if (isAdjacent(previousButton, button1)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button1.getDrawable());
+                    button1.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button2:
+                if (isAdjacent(previousButton, button2)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button2.getDrawable());
+                    button2.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button3:
+                if (isAdjacent(previousButton, button3)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button3.getDrawable());
+                    button3.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button4:
+                if (isAdjacent(previousButton, button4)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button4.getDrawable());
+                    button4.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button5:
+                if (isAdjacent(previousButton, button5)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button5.getDrawable());
+                    button5.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button6:
+                if (isAdjacent(previousButton, button6)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button6.getDrawable());
+                    button6.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button7:
+                if (isAdjacent(previousButton, button7)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button7.getDrawable());
+                    button7.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button8:
+                if (isAdjacent(previousButton, button8)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button8.getDrawable());
+                    button8.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button9:
+                if (isAdjacent(previousButton, button9)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button9.getDrawable());
+                    button9.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button10:
+                if (isAdjacent(previousButton, button10)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button10.getDrawable());
+                    button10.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button11:
+                if (isAdjacent(previousButton, button11)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button11.getDrawable());
+                    button11.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+            case R.id.button12:
+                if (isAdjacent(previousButton, button12)) {
+                    drawable = previousButton.getDrawable();
+                    previousButton.setImageDrawable(button12.getDrawable());
+                    button12.setImageDrawable(drawable);
+                    moves.setText(String.valueOf(counter) + " move(s)");
+                    counter++;
+                } else {
+                    Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+                    counter--;
+                }
+                break;
+        }
+    }
+
+    private void setPrevious(View v) {
+        switch (v.getId()) {
+            case R.id.button1:
+                previousButton = button1;
+                break;
+            case R.id.button2:
+                previousButton = button2;
+                break;
+            case R.id.button3:
+                previousButton = button3;
+                break;
+            case R.id.button4:
+                previousButton = button4;
+                break;
+            case R.id.button5:
+                previousButton = button5;
+                break;
+            case R.id.button6:
+                previousButton = button6;
+                break;
+            case R.id.button7:
+                previousButton = button7;
+                break;
+            case R.id.button8:
+                previousButton = button8;
+                break;
+            case R.id.button9:
+                previousButton = button9;
+                break;
+            case R.id.button10:
+                previousButton = button10;
+                break;
+            case R.id.button11:
+                previousButton = button11;
+                break;
+            case R.id.button12:
+                previousButton = button12;
+                break;
+        }
+    }
 
     private Boolean isAdjacent(ImageButton b1, ImageButton b2){
 
