@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 moves.setText(String.valueOf(counter) + " move(s)");
                 counter++;
             }
-            else if(counter%2 == 1) {
+            else if(counter % 2 == 1) {
                 swapTiles(v);
             }
         }
