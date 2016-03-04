@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main);
         initializeReferences();
         randomize();
+        //TODO start timer...
     }
 
     private void initializeReferences() {
@@ -181,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
         }
+        //TODO check if solved...
     }
 
     private void setPrevious(View v) {
