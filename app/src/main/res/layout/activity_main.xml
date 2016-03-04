@@ -3,18 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:stretchColumns="*">
+
+    android:shrinkColumns="*">
 
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <TableRow>
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/currentMoves"
-            android:text="Number of Moves: 0"
+            android:text="0 move(s)"
             android:layout_gravity="center"
             android:layout_weight="1.5"
             />
@@ -28,9 +27,7 @@
             android:layout_weight="1.5"/>
     </TableRow>
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <TableRow>
 
         <ImageButton
             android:id="@+id/button1"
@@ -57,9 +54,7 @@
             android:src="@drawable/pic3" />
     </TableRow>
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <TableRow>
 
         <ImageButton
             android:id="@+id/button4"
@@ -87,9 +82,7 @@
 
     </TableRow>
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <TableRow>
 
         <ImageButton
             android:id="@+id/button7"
@@ -116,9 +109,7 @@
             android:src="@drawable/pic9" />
     </TableRow>
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <TableRow>
 
         <ImageButton
             android:id="@+id/button10"
@@ -145,9 +136,7 @@
             android:src="@drawable/pic12" />
     </TableRow>
 
-    <TableRow
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <TableRow>
         <Button
             android:id="@+id/restart"
             style="?android:attr/buttonStyleSmall"
@@ -155,6 +144,7 @@
             android:layout_height="wrap_content"
             android:text="Restart"
             android:layout_gravity="center"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:onClick="restart"/>
     </TableRow>
 </TableLayout>

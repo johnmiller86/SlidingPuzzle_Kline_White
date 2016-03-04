@@ -8,10 +8,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView moves;
     ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, previousButton;
+    List<ImageButton> buttons;
     int counter = 0;
 
     @Override
@@ -24,35 +29,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initializeReferences() {
+        moves  = (TextView) findViewById(R.id.currentMoves);
+        buttons = new ArrayList<>();
+
         button1 = (ImageButton) findViewById(R.id.button1);
         button1.setOnClickListener(imagesListener);
+        buttons.add(button1);
         button2 = (ImageButton) findViewById(R.id.button2);
         button2.setOnClickListener(imagesListener);
+        buttons.add(button2);
         button3 = (ImageButton) findViewById(R.id.button3);
         button3.setOnClickListener(imagesListener);
+        buttons.add(button3);
         button4 = (ImageButton) findViewById(R.id.button4);
         button4.setOnClickListener(imagesListener);
+        buttons.add(button4);
         button5 = (ImageButton) findViewById(R.id.button5);
         button5.setOnClickListener(imagesListener);
+        buttons.add(button5);
         button6 = (ImageButton) findViewById(R.id.button6);
         button6.setOnClickListener(imagesListener);
+        buttons.add(button6);
         button7 = (ImageButton) findViewById(R.id.button7);
         button7.setOnClickListener(imagesListener);
+        buttons.add(button7);
         button8 = (ImageButton) findViewById(R.id.button8);
         button8.setOnClickListener(imagesListener);
+        buttons.add(button8);
         button9 = (ImageButton) findViewById(R.id.button9);
         button9.setOnClickListener(imagesListener);
+        buttons.add(button9);
         button10 = (ImageButton) findViewById(R.id.button10);
         button10.setOnClickListener(imagesListener);
+        buttons.add(button10);
         button11 = (ImageButton) findViewById(R.id.button11);
         button11.setOnClickListener(imagesListener);
+        buttons.add(button11);
         button12 = (ImageButton) findViewById(R.id.button12);
         button12.setOnClickListener(imagesListener);
-        moves  = (TextView) findViewById(R.id.currentMoves);
+        buttons.add(button12);
     }
 
     private void randomize() {
-        //TODO Shuffle Images
+        List<Drawable> list = new ArrayList<>();
+        for (int i = 0; i < 12; i++){
+            list.add(buttons.get(i).getDrawable());
+        }
+        Collections.shuffle(list);
+        for (int i = 0; i < 12; i++){
+            buttons.get(i).setImageDrawable(list.get(i));
+        }
     }
 
     private View.OnClickListener imagesListener = new View.OnClickListener() {
@@ -69,6 +95,14 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void restart(View v){
+        randomize();
+        counter = 0;
+        moves.setText("0 move(s)");
+        //TODO Make a TextView for the time and set that to zero
+        //TODO ...use string resources!
+    }
 
     private void swapTiles(View v) {
         Drawable drawable;
