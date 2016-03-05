@@ -4,6 +4,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, previousButton;
     List<ImageButton> buttons;
     int counter = 0;
+    Animation currentAnimation, previousAnimation;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,8 +111,10 @@ public class MainActivity extends AppCompatActivity {
         Drawable drawable;
         switch (v.getId()) {
             case R.id.button1:
-                if (isAdjacent(previousButton, button1)) {
+                if (isAdjacent(button1)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button1.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button1.getDrawable());
                     button1.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -117,8 +122,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button2:
-                if (isAdjacent(previousButton, button2)) {
+                if (isAdjacent(button2)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button2.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button2.getDrawable());
                     button2.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -126,8 +133,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button3:
-                if (isAdjacent(previousButton, button3)) {
+                if (isAdjacent(button3)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button3.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button3.getDrawable());
                     button3.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -135,8 +144,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button4:
-                if (isAdjacent(previousButton, button4)) {
+                if (isAdjacent(button4)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button4.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button4.getDrawable());
                     button4.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -144,8 +155,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button5:
-                if (isAdjacent(previousButton, button5)) {
+                if (isAdjacent(button5)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button5.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button5.getDrawable());
                     button5.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -153,8 +166,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button6:
-                if (isAdjacent(previousButton, button6)) {
+                if (isAdjacent(button6)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button6.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button6.getDrawable());
                     button6.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -162,8 +177,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button7:
-                if (isAdjacent(previousButton, button7)) {
+                if (isAdjacent(button7)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button7.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button7.getDrawable());
                     button7.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -171,8 +188,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button8:
-                if (isAdjacent(previousButton, button8)) {
+                if (isAdjacent(button8)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button8.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button8.getDrawable());
                     button8.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -180,8 +199,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button9:
-                if (isAdjacent(previousButton, button9)) {
+                if (isAdjacent(button9)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button9.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button9.getDrawable());
                     button9.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -189,8 +210,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button10:
-                if (isAdjacent(previousButton, button10)) {
+                if (isAdjacent(button10)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button10.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button10.getDrawable());
                     button10.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -198,8 +221,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button11:
-                if (isAdjacent(previousButton, button11)) {
+                if (isAdjacent(button11)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button11.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button11.getDrawable());
                     button11.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -207,8 +232,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.button12:
-                if (isAdjacent(previousButton, button12)) {
+                if (isAdjacent(button12)) {
                     drawable = previousButton.getDrawable();
+                    previousButton.startAnimation(previousAnimation);
+                    button12.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button12.getDrawable());
                     button12.setImageDrawable(drawable);
                     moves.setText(String.valueOf(counter) + " move(s)");
@@ -260,65 +287,203 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private Boolean isAdjacent(ImageButton b1, ImageButton b2){
+    private Boolean isAdjacent(ImageButton button){
 
-        switch (b1.getId()) {
+        switch (previousButton.getId()) {
+
             case R.id.button1:
-                if (b2.getId() == R.id.button2 || b2.getId() == R.id.button4)
+                if (button.getId() == R.id.button2) {
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
                     return true;
+                }
+                else if (button.getId() == R.id.button4) {
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button2:
-                if (b2.getId() == R.id.button1 || b2.getId() == R.id.button3 || b2.getId()
-                        == R.id.button5)
+                if (button.getId() == R.id.button1){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
                     return true;
+                }
+                else if(button.getId() == R.id.button3){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
+                else if(button.getId() == R.id.button5){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button3:
-                if (b2.getId() == R.id.button2 || b2.getId() == R.id.button6)
+                if (button.getId() == R.id.button2){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
                     return true;
+                }
+                else if(button.getId() == R.id.button6){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button4:
-                if (b2.getId() == R.id.button1 || b2.getId() == R.id.button5 || b2.getId()
-                        == R.id.button7)
+                if (button.getId() == R.id.button1){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if(button.getId() == R.id.button5){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
+                else if(button.getId() == R.id.button7){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button5:
-                if (b2.getId() == R.id.button2 || b2.getId() == R.id.button4 || b2.getId()
-                        == R.id.button6 || b2.getId() == R.id.button8)
+                if (button.getId() == R.id.button2){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if (button.getId() == R.id.button4){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    return true;
+                }
+                else if (button.getId() == R.id.button6){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
+                else if (button.getId() == R.id.button8){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button6:
-                if (b2.getId() == R.id.button3 || b2.getId() == R.id.button5 || b2.getId()
-                        == R.id.button9)
+                if (button.getId() == R.id.button3){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if (button.getId() == R.id.button5){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    return true;
+                }
+                else if (button.getId() == R.id.button9){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button7:
-                if (b2.getId() == R.id.button4 || b2.getId() == R.id.button8 || b2.getId()
-                        == R.id.button10)
+                if (button.getId() == R.id.button4){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if (button.getId() == R.id.button8){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
+                else if (button.getId() == R.id.button10){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button8:
-                if (b2.getId() == R.id.button5 || b2.getId() == R.id.button7 || b2.getId()
-                        == R.id.button9 || b2.getId() == R.id.button11)
+                if (button.getId() == R.id.button5){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if (button.getId() == R.id.button7){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    return true;
+                }
+                else if(button.getId() == R.id.button9){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
+                else if (button.getId() == R.id.button11){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button9:
-                if (b2.getId() == R.id.button6 || b2.getId() == R.id.button8 || b2.getId()
-                        == R.id.button12)
+                if (button.getId() == R.id.button6){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if (button.getId() == R.id.button8){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    return true;
+                }
+                else if (button.getId() == R.id.button12){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    return true;
+                }
                 break;
             case R.id.button10:
-                if (b2.getId() == R.id.button7 || b2.getId() == R.id.button11)
+                if (button.getId() == R.id.button7){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if(button.getId() == R.id.button11){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
                 break;
             case R.id.button11:
-                if (b2.getId() == R.id.button8 || b2.getId() == R.id.button10 || b2.getId()
-                        == R.id.button12)
+                if (button.getId() == R.id.button8){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
+                }
+                else if (button.getId() == R.id.button10){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    return true;
+                }
+                else if (button.getId() == R.id.button12){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    return true;
+                }
                 break;
             case R.id.button12:
-                if (b2.getId() == R.id.button9 || b2.getId() == R.id.button11)
+                if (button.getId() == R.id.button9){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
                     return true;
-                break;
+                }
+                else if (button.getId() == R.id.button11){
+                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+                    return true;
+                }
         }
         Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
         counter--;

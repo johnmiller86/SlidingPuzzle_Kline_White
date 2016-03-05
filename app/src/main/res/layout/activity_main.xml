@@ -3,12 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fffff"
+    android:background="#000000"
     android:stretchColumns="*"
     android:shrinkColumns="*">
 
 
-    <TableRow>
+    <TableRow android:background="#ffffff">
 
         <EditText
             android:layout_width="wrap_content"
