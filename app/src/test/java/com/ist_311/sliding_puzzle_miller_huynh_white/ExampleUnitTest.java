@@ -1,4 +1,4 @@
-package com.zsw5029_bw.ist402.slidingpuzzle_kline_white;
+package com.ist_311.sliding_puzzle_miller_huynh_white;
 
 import org.junit.Test;
 

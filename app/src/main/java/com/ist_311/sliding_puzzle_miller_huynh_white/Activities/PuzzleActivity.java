@@ -1,4 +1,4 @@
-package com.zsw5029_bw.ist402.slidingpuzzle_kline_white;
+package com.ist_311.sliding_puzzle_miller_huynh_white.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -10,14 +10,28 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ist_311.sliding_puzzle_miller_huynh_white.R;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class PuzzleActivity extends AppCompatActivity {
 
-    TextView moves;
-    ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12, previousButton;
+    private TextView moves;
+    private ImageButton button1;
+    private ImageButton button2;
+    private ImageButton button3;
+    private ImageButton button4;
+    private ImageButton button5;
+    private ImageButton button6;
+    private ImageButton button7;
+    private ImageButton button8;
+    private ImageButton button9;
+    private ImageButton button10;
+    ImageButton button11;
+    ImageButton button12;
+    ImageButton previousButton;
     List<ImageButton> buttons;
     int counter = 0;
     Animation currentAnimation, previousAnimation;
@@ -25,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_puzzle);
         initializeReferences();
         randomize();
         //TODO start timer...
@@ -90,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View v) {
             if (counter % 2 == 0) {
                 setPrevious(v);
-                moves.setText(String.valueOf(counter) + " move(s)");
+                moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                 counter++;
             }
             else if(counter % 2 == 1) {
@@ -102,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     public void restart(View v){
         randomize();
         counter = 0;
-        moves.setText("0 move(s)");
+        moves.setText(R.string.default_moves);
         //TODO Make a TextView for the time and set that to zero
         //TODO ...use string resources!
     }
@@ -117,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     button1.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button1.getDrawable());
                     button1.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -128,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
                     button2.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button2.getDrawable());
                     button2.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -139,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                     button3.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button3.getDrawable());
                     button3.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -150,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
                     button4.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button4.getDrawable());
                     button4.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -161,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                     button5.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button5.getDrawable());
                     button5.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -172,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
                     button6.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button6.getDrawable());
                     button6.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -183,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
                     button7.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button7.getDrawable());
                     button7.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -194,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                     button8.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button8.getDrawable());
                     button8.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -205,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     button9.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button9.getDrawable());
                     button9.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -216,7 +230,7 @@ public class MainActivity extends AppCompatActivity {
                     button10.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button10.getDrawable());
                     button10.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -227,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                     button11.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button11.getDrawable());
                     button11.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -238,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
                     button12.startAnimation(currentAnimation);
                     previousButton.setImageDrawable(button12.getDrawable());
                     button12.setImageDrawable(drawable);
-                    moves.setText(String.valueOf(counter) + " move(s)");
+                    moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
                     counter++;
                 }
                 break;
@@ -485,9 +499,9 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
         }
-        Toast.makeText(MainActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(PuzzleActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
         counter--;
-        moves.setText(String.valueOf(counter) + " move(s)");
+        moves.setText(new StringBuilder().append(String.valueOf(counter)).append(" move(s)").toString());
         return false;
     }
 }

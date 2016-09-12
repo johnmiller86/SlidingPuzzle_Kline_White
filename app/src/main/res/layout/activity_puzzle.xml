@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -14,18 +15,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/currentMoves"
-            android:text="0 move(s)"
+            android:text="@string/default_moves"
             android:layout_gravity="center"
             android:layout_weight="1.5"
-            />
+            android:inputType="none"
+            tools:ignore="LabelFor" />
 
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/currentTime"
-            android:text="Current Time: 0m 0s"
+            android:text="@string/default_time"
             android:gravity="center"
-            android:layout_weight="1.5"/>
+            android:layout_weight="1.5"
+            android:inputType="none"
+            tools:ignore="LabelFor" />
     </TableRow>
 
     <TableRow>
@@ -139,11 +142,10 @@
 
     <TableRow>
         <Button
-            android:id="@+id/restart"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Restart"
+            android:text="@string/restart"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:onClick="restart"/>

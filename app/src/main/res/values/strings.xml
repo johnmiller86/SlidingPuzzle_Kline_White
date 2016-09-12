@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">Picture Puzzle</string>
+    <string name="app_name">Sliding Puzzle</string>
+
+    <string name="login_text">Login</string>
+    <string name="button_login">Login</string>
+    <string name="username_text">Username</string>
+    <string name="password_text">Password</string>
+    <string name="register_an_account">Register an Account</string>
+    <string name="register">Register</string>
+    <string name="choose_username">Choose Username</string>
+    <string name="choose_password">Choose Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="default_moves">0 move(s)</string>
+    <string name="default_time">Current Time: 0m 0s</string>
+    <string name="restart">Restart</string>
+    <string name="logout">Logout</string>
+    <string name="create_an_account">Create an Account</string>
+    <string name="play">Play</string>
+    <string name="settings">Settings</string>
+    <string name="high_scores">High Scores</string>
 </resources>
