@@ -1,8 +1,11 @@
 package com.ist_311.sliding_puzzle_miller_huynh_white.activities;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -18,7 +21,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PuzzleActivity extends AppCompatActivity {
+public class PuzzleMediumActivity extends AppCompatActivity {
 
     // UI components
     private TextView movesTextView, timerTextView;
@@ -37,7 +40,7 @@ public class PuzzleActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_puzzle);
+        setContentView(R.layout.activity_puzzle_medium);
         initializeReferences();
         randomize();
         startTimer();
@@ -104,7 +107,9 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void randomize() {
         List<Drawable> list = new ArrayList<>();
+        sliceErUp(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces), 4, 3);
         for (int i = 0; i < 12; i++){
+
             list.add(buttons.get(i).getDrawable());
             answerKey.add(buttons.get(i).getDrawable());
         }
@@ -123,7 +128,7 @@ public class PuzzleActivity extends AppCompatActivity {
         public void onClick(View view) {
             if (counter % 2 == 0) {
                 setPrevious(view);
-                //movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
+                movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
                 counter++;
             }
             else if(counter % 2 == 1) {
@@ -548,7 +553,7 @@ public class PuzzleActivity extends AppCompatActivity {
                     return true;
                 }
         }
-        Toast.makeText(PuzzleActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(PuzzleMediumActivity.this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
         counter--;
         movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
         return false;
@@ -593,8 +598,44 @@ public class PuzzleActivity extends AppCompatActivity {
                 &&buttons.get(9).getDrawable() == answerKey.get(9) && buttons.get(10).getDrawable() == answerKey.get(10) && buttons.get(11).getDrawable() == answerKey.get(11) && buttons.get(1).getDrawable() == answerKey.get(1))
         {
             timer.cancel();
-            Toast.makeText(PuzzleActivity.this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(PuzzleMediumActivity.this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * Creates the bitmaps for the ImageButtons.
+     * @param bitmap the source bitmap.
+     * @param rows the number of rows in the puzzle.
+     * @param columns the number of columns in the puzzle.
+     */
+    private void sliceErUp(Bitmap bitmap, int rows, int columns){
+
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        int bitmapWidth = bitmap.getWidth();
+        int bitmapHeight= bitmap.getHeight();
+
+        for (int h = 0; h < rows; h++){
+            for (int w = 0; w < columns; w++){
+                bitmaps.add(Bitmap.createBitmap(bitmap, (w * bitmapWidth) / columns, (h * bitmapHeight) / rows, bitmapWidth / columns, bitmapHeight / rows));
+            }
+        }
+        loadErUp(bitmaps, rows, columns);
+    }
+
+    /**
+     * Fills the image buttons with bitmaps.
+     * @param bitmaps the ArrayList of bitmaps.
+     */
+    private void loadErUp(ArrayList<Bitmap> bitmaps, int rows, int columns) {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        for (int i = 0; i < bitmaps.size(); i++){
+            buttons.get(i).setImageBitmap(Bitmap.createScaledBitmap(bitmaps.get(i), width / columns, height / rows, false));
         }
     }
 }
-

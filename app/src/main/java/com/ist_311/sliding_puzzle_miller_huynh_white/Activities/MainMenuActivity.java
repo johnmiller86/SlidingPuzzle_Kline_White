@@ -49,16 +49,18 @@ public class MainMenuActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-//    /**
-//     * Login button listener.
-//     * @param view the login button.
-//     */
-//    public void settings(View view) {
+    /**
+     * Login button listener.
+     * @param view the login button.
+     */
+    public void settings(View view) {
 //
 //        Intent intent = new Intent(this, SettingsActivity.class);
 //        startActivity(intent);
-//    }
-//
+        Intent intent = new Intent(this, PuzzleMediumActivity.class);
+        startActivity(intent);
+    }
+
 //    /**
 //     * Login button listener.
 //     * @param view the login button.
