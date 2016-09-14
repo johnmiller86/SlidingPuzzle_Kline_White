@@ -10,117 +10,34 @@
 
     <TableLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-    </TableRow>
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-    </TableRow>
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-    </TableRow>
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp" />
-
-        <ImageButton
-            android:id="@+id/button11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-
-        <ImageButton
-            android:id="@+id/button12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"/>
-    </TableRow>
-    </TableLayout>
+        android:layout_height="wrap_content"
+        android:id="@+id/table_layout">
 
     <!--<TableRow>-->
-        <!--<Button-->
-            <!--style="?android:attr/buttonStyleSmall"-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button1"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/restart"-->
-            <!--android:layout_gravity="center"-->
             <!--android:layout_weight="1"-->
-            <!--android:onClick="restart"/>-->
-    <!--</TableRow>-->
+            <!--android:padding="0dp"/>-->
 
+        <!--<ImageButton-->
+            <!--android:id="@+id/button2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:padding="0dp"/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/button3"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:padding="0dp"/>-->
+        <!--</TableRow>-->
+
+    </TableLayout>
 
     <RelativeLayout
         android:layout_width="fill_parent"
