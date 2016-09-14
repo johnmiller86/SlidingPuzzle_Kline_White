@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,23 +28,26 @@ public class PuzzleMediumActivity extends AppCompatActivity {
     private TextView movesTextView, timerTextView;
     private ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12;
     private ImageButton previousButton;
+    private Button pauseButton;
 
     // Lists
     private List<ImageButton> buttons;
     private List<Drawable> answerKey;
 
-    // Timer, animations and counters
+    // Timer, animations, counters, etc...
     private Timer timer;
     private Animation currentAnimation, previousAnimation;
     private int counter, movesCounter;
+    private boolean isPause;
+    final int[] time = {1};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle_medium);
         initializeReferences();
-        randomize();
-        startTimer();
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia), 4, 3);
+        startTimer(1);
     }
 
     /**
@@ -97,9 +101,14 @@ public class PuzzleMediumActivity extends AppCompatActivity {
         button12.setOnClickListener(imagesListener);
         buttons.add(button12);
 
+        // Initializing Pause Button
+        pauseButton = (Button) findViewById(R.id.button_pause);
+
         // Initializing Counters
         counter = 0;
         movesCounter = 0;
+
+        isPause = false;
     }
 
     /**
@@ -107,9 +116,7 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      */
     private void randomize() {
         List<Drawable> list = new ArrayList<>();
-        sliceErUp(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces), 4, 3);
         for (int i = 0; i < 12; i++){
-
             list.add(buttons.get(i).getDrawable());
             answerKey.add(buttons.get(i).getDrawable());
         }
@@ -142,13 +149,53 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      * @param view the restart button.
      */
     public void restart(View view){
-        randomize();
+
+        // Clearing
+        timer.cancel();
         counter = 0;
         movesCounter = 0;
+        answerKey.clear();
         movesTextView.setText(R.string.default_moves);
         timerTextView.setText(R.string.default_time);
-        timer.cancel();
-        startTimer();
+
+        // Restarting
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia), 4, 3);
+        enableButtons();
+        pauseButton.setEnabled(true);
+        startTimer(1);
+    }
+
+    /**
+     * Pauses the game.
+     * @param view the pause button.
+     */
+    public void pause(View view){
+        isPause = !isPause;
+        if (isPause) {
+            disableButtons();
+            timer.cancel();
+        } else {
+            enableButtons();
+            startTimer(time[0]);
+        }
+    }
+
+    /**
+     * Disables the ImageButtons.
+     */
+    private void disableButtons(){
+        for (ImageButton imageButton : buttons){
+            imageButton.setEnabled(false);
+        }
+    }
+
+    /**
+     * Enables the ImageButtons.
+     */
+    private void enableButtons(){
+        for (ImageButton imageButton : buttons){
+            imageButton.setEnabled(true);
+        }
     }
 
     /**
@@ -562,25 +609,24 @@ public class PuzzleMediumActivity extends AppCompatActivity {
     /**
      * Starts a new timer.
      */
-    private void startTimer() {
+    private void startTimer(final int seconds) {
         timer = new Timer();
-        final int[] count = {1};
+        time[0] = seconds;
 
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
 
-                count[0]++;
-
+                time[0]++;
                 runOnUiThread(new Runnable()
                 {
                     public void run() {
 
-                        if (count[0] > 60){
-                            timerTextView.setText(count[0] / 60 + "m " + count[0] % 60 + "s");
+                        if (time[0] > 60){
+                            timerTextView.setText(time[0] / 60 + "m " + time[0] % 60 + "s");
                         }
                         else{
-                            timerTextView.setText(count[0] + " seconds");
+                            timerTextView.setText(time[0] + " seconds");
                         }
                     }
                 });
@@ -598,6 +644,8 @@ public class PuzzleMediumActivity extends AppCompatActivity {
                 &&buttons.get(9).getDrawable() == answerKey.get(9) && buttons.get(10).getDrawable() == answerKey.get(10) && buttons.get(11).getDrawable() == answerKey.get(11) && buttons.get(1).getDrawable() == answerKey.get(1))
         {
             timer.cancel();
+            disableButtons();
+            pauseButton.setEnabled(false);
             Toast.makeText(PuzzleMediumActivity.this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
         }
     }
@@ -608,7 +656,7 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      * @param rows the number of rows in the puzzle.
      * @param columns the number of columns in the puzzle.
      */
-    private void sliceErUp(Bitmap bitmap, int rows, int columns){
+    private void createPuzzle(Bitmap bitmap, int rows, int columns){
 
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         int bitmapWidth = bitmap.getWidth();
@@ -619,14 +667,14 @@ public class PuzzleMediumActivity extends AppCompatActivity {
                 bitmaps.add(Bitmap.createBitmap(bitmap, (w * bitmapWidth) / columns, (h * bitmapHeight) / rows, bitmapWidth / columns, bitmapHeight / rows));
             }
         }
-        loadErUp(bitmaps, rows, columns);
+        drawPuzzle(bitmaps, rows, columns);
     }
 
     /**
      * Fills the image buttons with bitmaps.
      * @param bitmaps the ArrayList of bitmaps.
      */
-    private void loadErUp(ArrayList<Bitmap> bitmaps, int rows, int columns) {
+    private void drawPuzzle(ArrayList<Bitmap> bitmaps, int rows, int columns) {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -637,5 +685,6 @@ public class PuzzleMediumActivity extends AppCompatActivity {
         for (int i = 0; i < bitmaps.size(); i++){
             buttons.get(i).setImageBitmap(Bitmap.createScaledBitmap(bitmaps.get(i), width / columns, height / rows, false));
         }
+        randomize();
     }
 }

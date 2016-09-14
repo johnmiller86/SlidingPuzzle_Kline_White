@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,147 +8,166 @@
     android:stretchColumns="*"
     android:shrinkColumns="*">
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TableRow android:background="#ffffff">
+        <TableRow>
 
-        <EditText
+            <ImageButton
+                android:id="@+id/button1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/button4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/button7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+        </TableRow>
+
+        <TableRow>
+
+            <ImageButton
+                android:id="@+id/button10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp" />
+
+            <ImageButton
+                android:id="@+id/button11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+
+            <ImageButton
+                android:id="@+id/button12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="0dp"/>
+        </TableRow>
+    </TableLayout>
+
+    <!--<TableRow>-->
+    <!--<Button-->
+    <!--style="?android:attr/buttonStyleSmall"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/restart"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_weight="1"-->
+    <!--android:onClick="restart"/>-->
+    <!--</TableRow>-->
+
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical" >
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/currentMoves"
             android:text="@string/default_moves"
-            android:layout_gravity="center"
-            android:layout_weight="1.5"
-            android:inputType="none"
-            tools:ignore="LabelFor" />
+            android:layout_alignParentLeft="true"
+            android:textColor="#FFFFFF"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
-        <EditText
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/default_time"
-            android:gravity="center"
+            android:layout_alignParentRight="true"
             android:id="@+id/editTextTimer"
-            android:layout_weight="1.5"
-            android:inputType="none"
-            tools:ignore="LabelFor" />
-    </TableRow>
+            android:textColor="#FFFFFF"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+    </RelativeLayout>
 
-    <TableRow>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="vertical" >
 
-        <ImageButton
-            android:id="@+id/button1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic1" />
-
-        <ImageButton
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic2" />
-
-        <ImageButton
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic3" />
-    </TableRow>
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic4" />
-
-        <ImageButton
-            android:id="@+id/button5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic5" />
-
-        <ImageButton
-            android:id="@+id/button6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic6" />
-
-    </TableRow>
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic7" />
-
-        <ImageButton
-            android:id="@+id/button8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic8" />
-
-        <ImageButton
-            android:id="@+id/button9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic9" />
-    </TableRow>
-
-    <TableRow>
-
-        <ImageButton
-            android:id="@+id/button10"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic10" />
-
-        <ImageButton
-            android:id="@+id/button11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic11" />
-
-        <ImageButton
-            android:id="@+id/button12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="0dp"
-            android:src="@drawable/pic12" />
-    </TableRow>
-
-    <TableRow>
         <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/restart"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:id="@+id/button_pause"
+            android:layout_width="80sp"
+            android:layout_height="80sp"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/pause_button"
+            android:onClick="pause"/>
+
+        <Button
+            android:layout_width="80sp"
+            android:layout_height="80sp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/reset_button"
             android:onClick="restart"/>
-    </TableRow>
-</TableLayout>
+
+
+    </RelativeLayout>
+</FrameLayout>
