@@ -31,16 +31,16 @@ public class PuzzleMediumActivity extends AppCompatActivity {
     private TextView movesTextView, timerTextView;
     private ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12;
     private ImageButton previousButton;
-    private Button pauseButton;
+    private Button pauseButton, resetButton;
 
     // Lists
-    private List<ImageButton> buttons;
+    private List<ImageButton> imageButtons;
     private List<Drawable> answerKey;
 
-    // Timer, animations, counters, etc...
+    // Vars
     private Timer timer;
     private Animation currentAnimation, previousAnimation;
-    private int counter, movesCounter;
+    private int counter, movesCounter, rows, cols;
     private boolean isPause;
     final int[] time = {1};
 
@@ -49,7 +49,7 @@ public class PuzzleMediumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle_medium);
         initializeReferences();
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia), 4, 3);
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia));
         startTimer(1);
     }
 
@@ -66,16 +66,21 @@ public class PuzzleMediumActivity extends AppCompatActivity {
         timerTextView = (TextView) findViewById(R.id.editTextTimer);
 
         // Initializing Lists
-        buttons = new ArrayList<>();
+        imageButtons = new ArrayList<>();
         answerKey = new ArrayList<>();
 
-        // Initializing ImageButtons and adding to list
-        createBoard(4, 3);
+        // TODO GET DIFFICULTY
+        rows = 5;
+        cols = 5;
 
-        configureButtons(4, 3);
+        // Initializing ImageButtons and adding to list
+        createBoard();
+
+        configureButtons();
 
         // Initializing Pause Button
         pauseButton = (Button) findViewById(R.id.button_pause);
+        resetButton = (Button) findViewById(R.id.button_pause);
 
         // Initializing Counters
         counter = 0;
@@ -86,20 +91,18 @@ public class PuzzleMediumActivity extends AppCompatActivity {
 
     /**
      * Creates the TableRows and adds them to the TableLayout.
-     * @param rows
-     * @param columns
      */
-    private void createBoard(int rows, int columns){
+    private void createBoard(){
         for (int row = 0; row < rows; row++){
 
             // Creating TableRow
             TableRow tableRow = new TableRow(this);
 
-            for (int col = 0; col < columns; col++){
+            for (int col = 0; col < cols; col++){
 
                 // Creating ImageButton
                 ImageButton imageButton = new ImageButton(this);
-                buttons.add(imageButton);
+                imageButtons.add(imageButton);
                 tableRow.addView(imageButton);
             }
             tableLayout.addView(tableRow);
@@ -108,17 +111,15 @@ public class PuzzleMediumActivity extends AppCompatActivity {
 
     /**
      * Sizes the ImageButtons after being added to the TableLayout.
-     * @param rows the number of rows.
-     * @param columns the number of columns.
      */
-    private void configureButtons(int rows, int columns) {
+    private void configureButtons() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
-        for (ImageButton imageButton : buttons) {
+        for (ImageButton imageButton : imageButtons) {
 
             // Sizing Button
-            imageButton.getLayoutParams().width = displayMetrics.widthPixels / columns;
+            imageButton.getLayoutParams().width = displayMetrics.widthPixels / cols;
             imageButton.getLayoutParams().height = displayMetrics.heightPixels / rows;
             imageButton.requestLayout();
 
@@ -130,15 +131,15 @@ public class PuzzleMediumActivity extends AppCompatActivity {
     /**
      * Shuffles the tiles.
      */
-    private void randomize(int rows, int cols) {
+    private void randomize() {
         List<Drawable> list = new ArrayList<>();
         for (int i = 0; i < rows * cols; i++){
-            list.add(buttons.get(i).getDrawable());
-            answerKey.add(buttons.get(i).getDrawable());
+            list.add(imageButtons.get(i).getDrawable());
+            answerKey.add(imageButtons.get(i).getDrawable());
         }
         Collections.shuffle(list);
         for (int i = 0; i < rows * cols; i++){
-            buttons.get(i).setImageDrawable(list.get(i));
+            imageButtons.get(i).setImageDrawable(list.get(i));
         }
     }
 
@@ -175,7 +176,7 @@ public class PuzzleMediumActivity extends AppCompatActivity {
         timerTextView.setText(R.string.default_time);
 
         // Restarting
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia), 4, 3);
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia));
         enableButtons();
         pauseButton.setEnabled(true);
         startTimer(1);
@@ -200,7 +201,7 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      * Disables the ImageButtons.
      */
     private void disableButtons(){
-        for (ImageButton imageButton : buttons){
+        for (ImageButton imageButton : imageButtons){
             imageButton.setEnabled(false);
         }
     }
@@ -209,7 +210,7 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      * Enables the ImageButtons.
      */
     private void enableButtons(){
-        for (ImageButton imageButton : buttons){
+        for (ImageButton imageButton : imageButtons){
             imageButton.setEnabled(true);
         }
     }
@@ -373,6 +374,14 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      * @param view the ImageButton.
      */
     private void setPrevious(View view) {
+
+        for (ImageButton imageButton : imageButtons){
+
+            if (view.getId() == imageButton.getId()) {
+                previousButton = (ImageButton) view;
+            }
+        }
+
         switch (view.getId()) {
             case R.id.button1:
                 previousButton = button1;
@@ -655,9 +664,9 @@ public class PuzzleMediumActivity extends AppCompatActivity {
      */
     private void checkSolved()
     {
-        if (buttons.get(0).getDrawable() == answerKey.get(0) && buttons.get(2).getDrawable() == answerKey.get(2) && buttons.get(3).getDrawable() == answerKey.get(3) && buttons.get(4).getDrawable() == answerKey.get(4)
-                &&buttons.get(5).getDrawable() == answerKey.get(5) && buttons.get(6).getDrawable() == answerKey.get(6) && buttons.get(7).getDrawable() == answerKey.get(7) && buttons.get(8).getDrawable() == answerKey.get(8)
-                &&buttons.get(9).getDrawable() == answerKey.get(9) && buttons.get(10).getDrawable() == answerKey.get(10) && buttons.get(11).getDrawable() == answerKey.get(11) && buttons.get(1).getDrawable() == answerKey.get(1))
+        if (imageButtons.get(0).getDrawable() == answerKey.get(0) && imageButtons.get(2).getDrawable() == answerKey.get(2) && imageButtons.get(3).getDrawable() == answerKey.get(3) && imageButtons.get(4).getDrawable() == answerKey.get(4)
+                && imageButtons.get(5).getDrawable() == answerKey.get(5) && imageButtons.get(6).getDrawable() == answerKey.get(6) && imageButtons.get(7).getDrawable() == answerKey.get(7) && imageButtons.get(8).getDrawable() == answerKey.get(8)
+                && imageButtons.get(9).getDrawable() == answerKey.get(9) && imageButtons.get(10).getDrawable() == answerKey.get(10) && imageButtons.get(11).getDrawable() == answerKey.get(11) && imageButtons.get(1).getDrawable() == answerKey.get(1))
         {
             timer.cancel();
             disableButtons();
@@ -669,28 +678,26 @@ public class PuzzleMediumActivity extends AppCompatActivity {
     /**
      * Creates the bitmaps for the ImageButtons.
      * @param bitmap the source bitmap.
-     * @param rows the number of rows in the puzzle.
-     * @param columns the number of columns in the puzzle.
      */
-    private void createPuzzle(Bitmap bitmap, int rows, int columns){
+    private void createPuzzle(Bitmap bitmap){
 
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
         int bitmapWidth = bitmap.getWidth();
         int bitmapHeight= bitmap.getHeight();
 
         for (int h = 0; h < rows; h++){
-            for (int w = 0; w < columns; w++){
-                bitmaps.add(Bitmap.createBitmap(bitmap, (w * bitmapWidth) / columns, (h * bitmapHeight) / rows, bitmapWidth / columns, bitmapHeight / rows));
+            for (int w = 0; w < cols; w++){
+                bitmaps.add(Bitmap.createBitmap(bitmap, (w * bitmapWidth) / cols, (h * bitmapHeight) / rows, bitmapWidth / cols, bitmapHeight / rows));
             }
         }
-        drawPuzzle(bitmaps, rows, columns);
+        drawPuzzle(bitmaps);
     }
 
     /**
-     * Fills the image buttons with bitmaps.
+     * Fills the image imageButtons with bitmaps.
      * @param bitmaps the ArrayList of bitmaps.
      */
-    private void drawPuzzle(ArrayList<Bitmap> bitmaps, int rows, int columns) {
+    private void drawPuzzle(ArrayList<Bitmap> bitmaps) {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -699,8 +706,8 @@ public class PuzzleMediumActivity extends AppCompatActivity {
         int height = displayMetrics.heightPixels;
 
         for (int i = 0; i < bitmaps.size(); i++){
-            buttons.get(i).setImageBitmap(Bitmap.createScaledBitmap(bitmaps.get(i), width / columns, height / rows, false));
+            imageButtons.get(i).setImageBitmap(Bitmap.createScaledBitmap(bitmaps.get(i), width / cols, height / rows, false));
         }
-        randomize(rows, columns);
+        randomize();
     }
 }
