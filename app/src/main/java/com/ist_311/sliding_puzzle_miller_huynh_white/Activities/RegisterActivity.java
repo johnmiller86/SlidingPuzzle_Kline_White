@@ -32,7 +32,8 @@ public class RegisterActivity extends AppCompatActivity {
      * Registers a new account.
      * @param view the search button.
      */
-    public void registerAccount(View view){
+    @SuppressWarnings("unused")
+    public void registerAccount(@SuppressWarnings("UnusedParameters") View view){
 
         // Validating input
         if (usernameEditText.getText().toString().equals("")){

@@ -43,7 +43,8 @@ public class MainMenuActivity extends AppCompatActivity {
      * Login button listener.
      * @param view the login button.
      */
-    public void play(View view) {
+    @SuppressWarnings("unused")
+    public void play(@SuppressWarnings("UnusedParameters") View view) {
 
         Intent intent = new Intent(this, PuzzleActivity.class);
         startActivity(intent);
@@ -53,7 +54,8 @@ public class MainMenuActivity extends AppCompatActivity {
      * Login button listener.
      * @param view the login button.
      */
-    public void settings(View view) {
+    @SuppressWarnings("unused")
+    public void settings(@SuppressWarnings("UnusedParameters") View view) {
 //
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);

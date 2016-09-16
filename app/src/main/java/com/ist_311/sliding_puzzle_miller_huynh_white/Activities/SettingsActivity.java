@@ -16,10 +16,7 @@ import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SessionManager;
 public class SettingsActivity extends AppCompatActivity {
 
     // Session
-    SessionManager sessionManager;
-    // UI components
-    NumberPicker numberPickerRows, numberPickerCols;
-    ImageView imageView;
+    private SessionManager sessionManager;
 
     // Constants
     private final int REQUEST_CAMERA = 0;
@@ -35,8 +32,9 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initialize() {
         sessionManager = new SessionManager(getApplicationContext());
-        numberPickerRows = (NumberPicker) findViewById(R.id.numberPickerRows);
-        numberPickerCols = (NumberPicker) findViewById(R.id.numberPickerCols);
+        NumberPicker numberPickerRows = (NumberPicker) findViewById(R.id.numberPickerRows);
+        NumberPicker numberPickerCols = (NumberPicker) findViewById(R.id.numberPickerCols);
+        ImageView imageView = (ImageView) findViewById(R.id.imageView);
 
         numberPickerCols.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -59,10 +57,10 @@ public class SettingsActivity extends AppCompatActivity {
         numberPickerCols.setMinValue(2);
         numberPickerCols.setValue(sessionManager.getCols());
 
-        imageView = (ImageView) findViewById(R.id.imageView);
     }
 
-    public void chooseImage(View view) {
+    @SuppressWarnings("unused")
+    public void chooseImage(@SuppressWarnings("UnusedParameters") View view) {
         final CharSequence[] charSequences = { "Take Photo", "Choose from Library",
                 "Cancel" };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

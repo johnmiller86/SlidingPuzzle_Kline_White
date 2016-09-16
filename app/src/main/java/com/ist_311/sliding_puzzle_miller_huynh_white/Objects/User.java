@@ -2,7 +2,6 @@ package com.ist_311.sliding_puzzle_miller_huynh_white.objects;
 
 public class User {
 
-    public static final String TAG = User.class.getSimpleName();
     public static final String TABLE = "users";
     public static final String USER_ID = "user_id";
     public static final String USERNAME = "username";

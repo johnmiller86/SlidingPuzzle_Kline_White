@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Rows"
+        android:text="@string/rows"
         android:id="@+id/textViewRows"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Columns"
+        android:text="@string/columns"
         android:id="@+id/textViewColumns"
         android:layout_alignTop="@+id/textViewRows"
         android:layout_alignParentEnd="true" />
@@ -51,13 +51,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignEnd="@+id/numberPickerCols"
         android:layout_below="@+id/buttonPickPuzzle"
-        android:src="@drawable/puzzle_pieces"/>
+        android:src="@drawable/puzzle_pieces"
+        android:contentDescription="@string/default_image"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Current Puzzle"
+        android:text="@string/current_puzzle"
         android:id="@+id/textViewCurrentPuzzle"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
@@ -65,9 +66,9 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Pick Puzzle"
+        android:text="@string/pick_puzzle"
         android:id="@+id/buttonPickPuzzle"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:background="@drawable/button"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"

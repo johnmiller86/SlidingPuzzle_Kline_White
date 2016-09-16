@@ -90,7 +90,7 @@ class PuzzleFunctions {
      * @param bitmap the Bitmap to convert.
      * @return a byte array representation of the Bitmap.
      */
-    public static byte[] getBlob(Bitmap bitmap) {
+    private static byte[] getBlob(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();

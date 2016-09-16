@@ -51,7 +51,8 @@ public class LoginActivity extends AppCompatActivity{
      * Login button listener.
      * @param view the login button.
      */
-    public void Login(View view) {
+    @SuppressWarnings("unused")
+    public void Login(@SuppressWarnings("UnusedParameters") View view) {
 
         User user = new User();
         UserFunctions userFunctions = new UserFunctions();
@@ -89,7 +90,8 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    public void Register(View view){
+    @SuppressWarnings("unused")
+    public void Register(@SuppressWarnings("UnusedParameters") View view){
 
         // Create Intent for RegisterActivity
         Intent intent = new Intent(this, RegisterActivity.class);
