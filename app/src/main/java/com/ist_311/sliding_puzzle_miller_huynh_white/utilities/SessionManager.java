@@ -49,6 +49,7 @@ public class SessionManager {
     public void  setRows(int rows){
 
         editor.putInt(ROWS, rows);
+        editor.commit();
     }
 
     public boolean isLoggedIn(){

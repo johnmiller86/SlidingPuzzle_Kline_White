@@ -1,7 +1,12 @@
 package com.ist_311.sliding_puzzle_miller_huynh_white.activities;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 
@@ -16,6 +21,10 @@ public class SettingsActivity extends AppCompatActivity {
     NumberPicker numberPickerRows, numberPickerCols;
     ImageView imageView;
 
+    // Constants
+    private final int REQUEST_CAMERA = 0;
+    private final int SELECT_IMAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,11 +37,6 @@ public class SettingsActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         numberPickerRows = (NumberPicker) findViewById(R.id.numberPickerRows);
         numberPickerCols = (NumberPicker) findViewById(R.id.numberPickerCols);
-
-        numberPickerRows.setMaxValue(8);
-        numberPickerRows.setMinValue(2);
-        numberPickerCols.setMaxValue(8);
-        numberPickerCols.setMinValue(2);
 
         numberPickerCols.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -48,11 +52,39 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        numberPickerRows.setMaxValue(8);
+        numberPickerRows.setMinValue(2);
+        numberPickerRows.setValue(sessionManager.getRows());
+        numberPickerCols.setMaxValue(8);
+        numberPickerCols.setMinValue(2);
+        numberPickerCols.setValue(sessionManager.getCols());
 
         imageView = (ImageView) findViewById(R.id.imageView);
     }
 
-    public void choosePuzzle(){
-        // TODO Open Gallery, Set ImageView and Store Picture
+    public void chooseImage(View view) {
+        final CharSequence[] charSequences = { "Take Photo", "Choose from Library",
+                "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a Photo");
+        builder.setItems(charSequences, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (charSequences[item].equals("Take Photo")) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, REQUEST_CAMERA);
+                }
+                else if (charSequences[item].equals("Choose from Library")) {
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select a Photo"),SELECT_IMAGE);
+                }
+                else if (charSequences[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 }
