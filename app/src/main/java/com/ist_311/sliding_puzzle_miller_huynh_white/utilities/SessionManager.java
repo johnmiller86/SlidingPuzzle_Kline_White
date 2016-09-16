@@ -3,7 +3,6 @@ package com.ist_311.sliding_puzzle_miller_huynh_white.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.util.Log;
 
 public class SessionManager {
     // LogCat tag
@@ -17,8 +16,10 @@ public class SessionManager {
     // Shared preferences file name
     private static final String PREF_NAME = "SlidingPuzzle";
 
-    private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
-    private static final String KEY_USERNAME = "username";
+    private static final String IS_LOGGED_IN = "isLoggedIn";
+    private static final String USERNAME = "username";
+    private static final String ROWS = "rows";
+    private static final String COLS = "cols";
 
     public SessionManager(Context context) {
         int PRIVATE_MODE = 0;
@@ -29,25 +30,31 @@ public class SessionManager {
 
     public void setLoggedIn(boolean isLoggedIn) {
 
-        editor.putBoolean(KEY_IS_LOGGED_IN, isLoggedIn);
-
-        // commit changes
+        editor.putBoolean(IS_LOGGED_IN, isLoggedIn);
         editor.commit();
-
-        Log.d(TAG, "User login session modified!");
     }
 
     public void setUsername(String username){
 
-        editor.putString(KEY_USERNAME, username);
-
+        editor.putString(USERNAME, username);
         editor.commit();
+    }
 
-        Log.d(TAG, "Username retrieved!");
+    public void setCols (int cols){
+
+        editor.putInt(COLS, cols);
+        editor.commit();
+    }
+
+    public void  setRows(int rows){
+
+        editor.putInt(ROWS, rows);
     }
 
     public boolean isLoggedIn(){
-        return pref.getBoolean(KEY_IS_LOGGED_IN, false);
+        return pref.getBoolean(IS_LOGGED_IN, false);
     }
-    public String getUsername() { return pref.getString(KEY_USERNAME, ""); }
+    public String getUsername() { return pref.getString(USERNAME, ""); }
+    public int getCols(){return pref.getInt(COLS, 3);}
+    public int getRows(){return pref.getInt(ROWS, 3);}
 }

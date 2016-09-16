@@ -55,8 +55,8 @@ public class MainMenuActivity extends AppCompatActivity {
      */
     public void settings(View view) {
 //
-//        Intent intent = new Intent(this, SettingsActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 
 //    /**

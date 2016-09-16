@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ist_311.sliding_puzzle_miller_huynh_white.R;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SessionManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,6 +26,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class PuzzleActivity extends AppCompatActivity {
+
+    // Session
+    private SessionManager sessionManager;
 
     // UI components
     private TableLayout tableLayout;
@@ -57,6 +61,9 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void initializeReferences() {
 
+        // Initializing Session
+        sessionManager = new SessionManager(getApplicationContext());
+
         // Initializing Layout
         tableLayout = (TableLayout) findViewById(R.id.table_layout);
 
@@ -69,8 +76,8 @@ public class PuzzleActivity extends AppCompatActivity {
         answerKey = new ArrayList<>();
 
         // TODO GET DIFFICULTY
-        rows = 3;
-        cols = 3;
+        rows = sessionManager.getRows();
+        cols = sessionManager.getCols();
 
         // Initializing ImageButtons and adding to list
         createBoard();
@@ -318,13 +325,13 @@ public class PuzzleActivity extends AppCompatActivity {
         }
 
         // Up
-        if (currentIndex - rows == previousIndex){
+        if (currentIndex - cols == previousIndex){
             currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
             return true;
         }
         // Down
-        if (currentIndex + rows == previousIndex){
+        if (currentIndex + cols == previousIndex){
             currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
             previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             return true;
