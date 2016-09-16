@@ -57,8 +57,6 @@ public class MainMenuActivity extends AppCompatActivity {
 //
 //        Intent intent = new Intent(this, SettingsActivity.class);
 //        startActivity(intent);
-        Intent intent = new Intent(this, PuzzleMediumActivity.class);
-        startActivity(intent);
     }
 
 //    /**

@@ -20,8 +20,6 @@
             android:name=".activities.PuzzleActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity android:name=".activities.MainMenuActivity" />
-        <activity android:name=".activities.PuzzleMediumActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
     </application>
 
 </manifest>

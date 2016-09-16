@@ -11,6 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,28 +27,28 @@ import java.util.TimerTask;
 public class PuzzleActivity extends AppCompatActivity {
 
     // UI components
+    private TableLayout tableLayout;
     private TextView movesTextView, timerTextView;
-    private ImageButton button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, button11, button12;
     private ImageButton previousButton;
-    private Button pauseButton;
+    private Button pauseButton, resetButton;
 
     // Lists
-    private List<ImageButton> buttons;
+    private List<ImageButton> imageButtons;
     private List<Drawable> answerKey;
 
-    // Timer, animations, counters, etc...
+    // Vars
     private Timer timer;
     private Animation currentAnimation, previousAnimation;
-    private int counter, movesCounter;
+    private int counter, movesCounter, rows, cols;
     private boolean isPause;
-    final int[] time = {1};
+    private final int[] time = {1};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         initializeReferences();
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia), 4, 3);
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia));
         startTimer(1);
     }
 
@@ -55,60 +57,109 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void initializeReferences() {
 
+        // Initializing Layout
+        tableLayout = (TableLayout) findViewById(R.id.table_layout);
+
         // Initializing TextViews
         movesTextView = (TextView) findViewById(R.id.currentMoves);
         timerTextView = (TextView) findViewById(R.id.editTextTimer);
 
         // Initializing Lists
-        buttons = new ArrayList<>();
+        imageButtons = new ArrayList<>();
         answerKey = new ArrayList<>();
 
-        // Initializing ImageButtons and adding to list
-        button1 = (ImageButton) findViewById(R.id.button1);
-        button1.setOnClickListener(imagesListener);
-        buttons.add(button1);
-        button2 = (ImageButton) findViewById(R.id.button2);
-        button2.setOnClickListener(imagesListener);
-        buttons.add(button2);
-        button3 = (ImageButton) findViewById(R.id.button3);
-        button3.setOnClickListener(imagesListener);
-        buttons.add(button3);
-        button4 = (ImageButton) findViewById(R.id.button4);
-        button4.setOnClickListener(imagesListener);
-        buttons.add(button4);
-        button5 = (ImageButton) findViewById(R.id.button5);
-        button5.setOnClickListener(imagesListener);
-        buttons.add(button5);
-        button6 = (ImageButton) findViewById(R.id.button6);
-        button6.setOnClickListener(imagesListener);
-        buttons.add(button6);
-        button7 = (ImageButton) findViewById(R.id.button7);
-        button7.setOnClickListener(imagesListener);
-        buttons.add(button7);
-        button8 = (ImageButton) findViewById(R.id.button8);
-        button8.setOnClickListener(imagesListener);
-        buttons.add(button8);
-        button9 = (ImageButton) findViewById(R.id.button9);
-        button9.setOnClickListener(imagesListener);
-        buttons.add(button9);
-        button10 = (ImageButton) findViewById(R.id.button10);
-        button10.setOnClickListener(imagesListener);
-        buttons.add(button10);
-        button11 = (ImageButton) findViewById(R.id.button11);
-        button11.setOnClickListener(imagesListener);
-        buttons.add(button11);
-        button12 = (ImageButton) findViewById(R.id.button12);
-        button12.setOnClickListener(imagesListener);
-        buttons.add(button12);
+        // TODO GET DIFFICULTY
+        rows = 3;
+        cols = 3;
 
-        // Initializing Pause Button
+        // Initializing ImageButtons and adding to list
+        createBoard();
+
+        configureButtons();
+
+        // Initializing pause and reset buttons
         pauseButton = (Button) findViewById(R.id.button_pause);
+        resetButton = (Button) findViewById(R.id.button_reset);
 
         // Initializing Counters
         counter = 0;
         movesCounter = 0;
-
         isPause = false;
+    }
+
+    /**
+     * Creates the TableRows and adds them to the TableLayout.
+     */
+    private void createBoard(){
+        for (int row = 0; row < rows; row++){
+
+            // Creating TableRow
+            TableRow tableRow = new TableRow(this);
+
+            for (int col = 0; col < cols; col++){
+
+                // Creating ImageButton
+                ImageButton imageButton = new ImageButton(this);
+                imageButtons.add(imageButton);
+                tableRow.addView(imageButton);
+            }
+            tableLayout.addView(tableRow);
+        }
+    }
+
+    /**
+     * Sizes the ImageButtons after being added to the TableLayout.
+     */
+    private void configureButtons() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        for (ImageButton imageButton : imageButtons) {
+
+            // Sizing Button
+            imageButton.getLayoutParams().width = displayMetrics.widthPixels / cols;
+            imageButton.getLayoutParams().height = displayMetrics.heightPixels / rows;
+            imageButton.requestLayout();
+
+            // Adding Listener
+            imageButton.setOnClickListener(imagesListener);
+        }
+    }
+
+    /**
+     * Creates the bitmaps for the ImageButtons.
+     * @param bitmap the source bitmap.
+     */
+    private void createPuzzle(Bitmap bitmap){
+
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        int bitmapWidth = bitmap.getWidth();
+        int bitmapHeight= bitmap.getHeight();
+
+        for (int h = 0; h < rows; h++){
+            for (int w = 0; w < cols; w++){
+                bitmaps.add(Bitmap.createBitmap(bitmap, (w * bitmapWidth) / cols, (h * bitmapHeight) / rows, bitmapWidth / cols, bitmapHeight / rows));
+            }
+        }
+        drawPuzzle(bitmaps);
+    }
+
+    /**
+     * Fills the image imageButtons with bitmaps.
+     * @param bitmaps the ArrayList of bitmaps.
+     */
+    private void drawPuzzle(ArrayList<Bitmap> bitmaps) {
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        for (int i = 0; i < bitmaps.size(); i++){
+            imageButtons.get(i).setImageBitmap(Bitmap.createScaledBitmap(bitmaps.get(i), width / cols, height / rows, false));
+        }
+        randomize();
     }
 
     /**
@@ -116,20 +167,20 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void randomize() {
         List<Drawable> list = new ArrayList<>();
-        for (int i = 0; i < 12; i++){
-            list.add(buttons.get(i).getDrawable());
-            answerKey.add(buttons.get(i).getDrawable());
+        for (int i = 0; i < rows * cols; i++){
+            list.add(imageButtons.get(i).getDrawable());
+            answerKey.add(imageButtons.get(i).getDrawable());
         }
         Collections.shuffle(list);
-        for (int i = 0; i < 12; i++){
-            buttons.get(i).setImageDrawable(list.get(i));
+        for (int i = 0; i < rows * cols; i++){
+            imageButtons.get(i).setImageDrawable(list.get(i));
         }
     }
 
     /**
      * Click listener for ImageButtons.
      */
-    private View.OnClickListener imagesListener = new View.OnClickListener() {
+    private final View.OnClickListener imagesListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View view) {
@@ -159,9 +210,10 @@ public class PuzzleActivity extends AppCompatActivity {
         timerTextView.setText(R.string.default_time);
 
         // Restarting
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia), 4, 3);
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia));
         enableButtons();
         pauseButton.setEnabled(true);
+        isPause = false;
         startTimer(1);
     }
 
@@ -173,9 +225,11 @@ public class PuzzleActivity extends AppCompatActivity {
         isPause = !isPause;
         if (isPause) {
             disableButtons();
+            resetButton.setEnabled(false);
             timer.cancel();
         } else {
             enableButtons();
+            resetButton.setEnabled(true);
             startTimer(time[0]);
         }
     }
@@ -184,7 +238,7 @@ public class PuzzleActivity extends AppCompatActivity {
      * Disables the ImageButtons.
      */
     private void disableButtons(){
-        for (ImageButton imageButton : buttons){
+        for (ImageButton imageButton : imageButtons){
             imageButton.setEnabled(false);
         }
     }
@@ -193,7 +247,7 @@ public class PuzzleActivity extends AppCompatActivity {
      * Enables the ImageButtons.
      */
     private void enableButtons(){
-        for (ImageButton imageButton : buttons){
+        for (ImageButton imageButton : imageButtons){
             imageButton.setEnabled(true);
         }
     }
@@ -204,152 +258,30 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void swapTiles(View view) {
         Drawable drawable;
-        switch (view.getId()) {
-            case R.id.button1:
-                if (isAdjacent(button1)) {
+
+
+
+        for (ImageButton imageButton : imageButtons){
+
+            if (view == imageButton) {
+                if (isAdjacent(imageButton)){
                     drawable = previousButton.getDrawable();
                     previousButton.startAnimation(previousAnimation);
-                    button1.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button1.getDrawable());
-                    button1.setImageDrawable(drawable);
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                    counter++;
-                }
-                break;
-            case R.id.button2:
-                if (isAdjacent(button2)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button2.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button2.getDrawable());
-                    button2.setImageDrawable(drawable);
+                    imageButton.startAnimation(currentAnimation);
+                    previousButton.setImageDrawable(imageButton.getDrawable());
+                    imageButton.setImageDrawable(drawable);
                     counter++;
                     movesCounter++;
                     movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
                 }
-                break;
-            case R.id.button3:
-                if (isAdjacent(button3)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button3.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button3.getDrawable());
-                    button3.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button4:
-                if (isAdjacent(button4)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button4.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button4.getDrawable());
-                    button4.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button5:
-                if (isAdjacent(button5)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button5.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button5.getDrawable());
-                    button5.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button6:
-                if (isAdjacent(button6)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button6.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button6.getDrawable());
-                    button6.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button7:
-                if (isAdjacent(button7)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button7.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button7.getDrawable());
-                    button7.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button8:
-                if (isAdjacent(button8)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button8.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button8.getDrawable());
-                    button8.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button9:
-                if (isAdjacent(button9)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button9.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button9.getDrawable());
-                    button9.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button10:
-                if (isAdjacent(button10)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button10.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button10.getDrawable());
-                    button10.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button11:
-                if (isAdjacent(button11)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button11.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button11.getDrawable());
-                    button11.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
-            case R.id.button12:
-                if (isAdjacent(button12)) {
-                    drawable = previousButton.getDrawable();
-                    previousButton.startAnimation(previousAnimation);
-                    button12.startAnimation(currentAnimation);
-                    previousButton.setImageDrawable(button12.getDrawable());
-                    button12.setImageDrawable(drawable);
-                    counter++;
-                    movesCounter++;
-                    movesTextView.setText(new StringBuilder().append(String.valueOf(movesCounter)).append(" move(s)").toString());
-                }
-                break;
+            }
         }
-        checkSolved();
+        if(isSolved()){
+            timer.cancel();
+            disableButtons();
+            pauseButton.setEnabled(false);
+            Toast.makeText(this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
@@ -357,43 +289,12 @@ public class PuzzleActivity extends AppCompatActivity {
      * @param view the ImageButton.
      */
     private void setPrevious(View view) {
-        switch (view.getId()) {
-            case R.id.button1:
-                previousButton = button1;
-                break;
-            case R.id.button2:
-                previousButton = button2;
-                break;
-            case R.id.button3:
-                previousButton = button3;
-                break;
-            case R.id.button4:
-                previousButton = button4;
-                break;
-            case R.id.button5:
-                previousButton = button5;
-                break;
-            case R.id.button6:
-                previousButton = button6;
-                break;
-            case R.id.button7:
-                previousButton = button7;
-                break;
-            case R.id.button8:
-                previousButton = button8;
-                break;
-            case R.id.button9:
-                previousButton = button9;
-                break;
-            case R.id.button10:
-                previousButton = button10;
-                break;
-            case R.id.button11:
-                previousButton = button11;
-                break;
-            case R.id.button12:
-                previousButton = button12;
-                break;
+
+        for (ImageButton imageButton : imageButtons){
+
+            if (view.getId() == imageButton.getId()) {
+                previousButton = (ImageButton) view;
+            }
         }
     }
 
@@ -404,201 +305,41 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private Boolean isAdjacent(ImageButton button){
 
-        switch (previousButton.getId()) {
+        // Getting indicies
+        int previousIndex = 0;
+        int currentIndex = 0;
+        for (int i = 0; i < imageButtons.size(); i++){
+            if (previousButton == imageButtons.get(i)) {
+                previousIndex = i;
+            }
+            else if (button == imageButtons.get(i)){
+                currentIndex = i;
+            }
+        }
 
-            case R.id.button1:
-                if (button.getId() == R.id.button2) {
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                else if (button.getId() == R.id.button4) {
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button2:
-                if (button.getId() == R.id.button1){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if(button.getId() == R.id.button3){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                else if(button.getId() == R.id.button5){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button3:
-                if (button.getId() == R.id.button2){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if(button.getId() == R.id.button6){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button4:
-                if (button.getId() == R.id.button1){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if(button.getId() == R.id.button5){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                else if(button.getId() == R.id.button7){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button5:
-                if (button.getId() == R.id.button2){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button4){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if (button.getId() == R.id.button6){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                else if (button.getId() == R.id.button8){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button6:
-                if (button.getId() == R.id.button3){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button5){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if (button.getId() == R.id.button9){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button7:
-                if (button.getId() == R.id.button4){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button8){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                else if (button.getId() == R.id.button10){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button8:
-                if (button.getId() == R.id.button5){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button7){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if(button.getId() == R.id.button9){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                else if (button.getId() == R.id.button11){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button9:
-                if (button.getId() == R.id.button6){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button8){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if (button.getId() == R.id.button12){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    return true;
-                }
-                break;
-            case R.id.button10:
-                if (button.getId() == R.id.button7){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if(button.getId() == R.id.button11){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                break;
-            case R.id.button11:
-                if (button.getId() == R.id.button8){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button10){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
-                else if (button.getId() == R.id.button12){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    return true;
-                }
-                break;
-            case R.id.button12:
-                if (button.getId() == R.id.button9){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-                    return true;
-                }
-                else if (button.getId() == R.id.button11){
-                    previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-                    currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-                    return true;
-                }
+        // Up
+        if (currentIndex - rows == previousIndex){
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            return true;
+        }
+        // Down
+        if (currentIndex + rows == previousIndex){
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            return true;
+        }
+        // Left
+        else if(currentIndex - 1 == previousIndex){
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+            return true;
+        }
+        // Right
+        else if (currentIndex + 1 == previousIndex){
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+            return true;
         }
         Toast.makeText(this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
         counter--;
@@ -637,55 +378,14 @@ public class PuzzleActivity extends AppCompatActivity {
     /**
      * Checks if the puzzle has been solved.
      */
-    private void checkSolved()
+    private boolean isSolved()
     {
-        if (buttons.get(0).getDrawable() == answerKey.get(0) && buttons.get(2).getDrawable() == answerKey.get(2) && buttons.get(3).getDrawable() == answerKey.get(3) && buttons.get(4).getDrawable() == answerKey.get(4)
-                &&buttons.get(5).getDrawable() == answerKey.get(5) && buttons.get(6).getDrawable() == answerKey.get(6) && buttons.get(7).getDrawable() == answerKey.get(7) && buttons.get(8).getDrawable() == answerKey.get(8)
-                &&buttons.get(9).getDrawable() == answerKey.get(9) && buttons.get(10).getDrawable() == answerKey.get(10) && buttons.get(11).getDrawable() == answerKey.get(11) && buttons.get(1).getDrawable() == answerKey.get(1))
-        {
-            timer.cancel();
-            disableButtons();
-            pauseButton.setEnabled(false);
-            Toast.makeText(this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * Creates the bitmaps for the ImageButtons.
-     * @param bitmap the source bitmap.
-     * @param rows the number of rows in the puzzle.
-     * @param columns the number of columns in the puzzle.
-     */
-    private void createPuzzle(Bitmap bitmap, int rows, int columns){
-
-        ArrayList<Bitmap> bitmaps = new ArrayList<>();
-        int bitmapWidth = bitmap.getWidth();
-        int bitmapHeight= bitmap.getHeight();
-
-        for (int h = 0; h < rows; h++){
-            for (int w = 0; w < columns; w++){
-                bitmaps.add(Bitmap.createBitmap(bitmap, (w * bitmapWidth) / columns, (h * bitmapHeight) / rows, bitmapWidth / columns, bitmapHeight / rows));
+        for (int i = 0; i < imageButtons.size(); i ++) {
+            if (imageButtons.get(i).getDrawable() != answerKey.get(i)) {
+                return false;
             }
         }
-        drawPuzzle(bitmaps, rows, columns);
+        return true;
     }
 
-    /**
-     * Fills the image buttons with bitmaps.
-     * @param bitmaps the ArrayList of bitmaps.
-     */
-    private void drawPuzzle(ArrayList<Bitmap> bitmaps, int rows, int columns) {
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-
-        int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels;
-
-        for (int i = 0; i < bitmaps.size(); i++){
-            buttons.get(i).setImageBitmap(Bitmap.createScaledBitmap(bitmaps.get(i), width / columns, height / rows, false));
-        }
-        randomize();
-    }
 }
-
