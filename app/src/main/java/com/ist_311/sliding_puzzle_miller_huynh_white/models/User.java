@@ -1,4 +1,4 @@
-package com.ist_311.sliding_puzzle_miller_huynh_white.objects;
+package com.ist_311.sliding_puzzle_miller_huynh_white.models;
 
 public class User {
 

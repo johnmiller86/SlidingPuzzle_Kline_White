@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.ist_311.sliding_puzzle_miller_huynh_white.objects.Puzzle;
-import com.ist_311.sliding_puzzle_miller_huynh_white.objects.User;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.Puzzle;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;

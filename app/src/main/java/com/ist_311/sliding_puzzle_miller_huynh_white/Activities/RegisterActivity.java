@@ -7,7 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ist_311.sliding_puzzle_miller_huynh_white.R;
-import com.ist_311.sliding_puzzle_miller_huynh_white.objects.User;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
 import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.UserFunctions;
 
 public class RegisterActivity extends AppCompatActivity {

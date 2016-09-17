@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.ist_311.sliding_puzzle_miller_huynh_white.objects.User;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
 
 public class UserFunctions {
 
