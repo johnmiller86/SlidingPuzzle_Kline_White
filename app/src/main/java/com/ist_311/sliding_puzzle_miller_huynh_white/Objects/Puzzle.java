@@ -16,24 +16,24 @@ public class Puzzle{
     private Bitmap puzzle;
 
     /**
-     *
-     * @return
+     * Gets the puzzle's id.
+     * @return the id.
      */
     public int getPuzzleId() {
         return puzzleId;
     }
 
     /**
-     *
-     * @param puzzleId
+     * Sets the puzzle's id.
+     * @param puzzleId the id.
      */
     public void setPuzzleId(int puzzleId) {
         this.puzzleId = puzzleId;
     }
 
     /**
-     *
-     * @return
+     * The puzzle bitmap.
+     * @return the bitmap.
      */
     public Bitmap getPuzzle() {
         return puzzle;

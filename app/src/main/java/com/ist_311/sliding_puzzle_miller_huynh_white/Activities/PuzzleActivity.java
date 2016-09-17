@@ -49,7 +49,7 @@ public class PuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         initializeReferences();
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia));
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
         startTimer(0);
     }
 
@@ -188,12 +188,18 @@ public class PuzzleActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
+
+            ImageButton imageButton = (ImageButton) view;
+
             if (counter % 2 == 0) {
                 setPrevious(view);
+//                imageButton.setColorFilter(Color.argb(255, 255, 255, 255));
+                imageButton.setAlpha(0.6f);
                 movesTextView.setText(getResources().getQuantityString(R.plurals.moves, movesCounter, movesCounter));
                 counter++;
             }
             else if(counter % 2 == 1) {
+                previousButton.setAlpha(1.0f);
                 swapTiles(view);
             }
         }
@@ -203,6 +209,7 @@ public class PuzzleActivity extends AppCompatActivity {
      * Restarts the puzzle.
      * @param view the restart button.
      */
+    @SuppressWarnings("unused")
     public void restart(@SuppressWarnings("UnusedParameters") View view){
 
         // Clearing
@@ -214,7 +221,7 @@ public class PuzzleActivity extends AppCompatActivity {
         timerTextView.setText(R.string.default_time);
 
         // Restarting
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.emilia));
+        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
         enableButtons();
         pauseButton.setEnabled(true);
         isPause = false;
@@ -225,6 +232,7 @@ public class PuzzleActivity extends AppCompatActivity {
      * Pauses the game.
      * @param view the pause button.
      */
+    @SuppressWarnings("unused")
     public void pause(@SuppressWarnings("UnusedParameters") View view){
         isPause = !isPause;
         if (isPause) {
@@ -262,8 +270,6 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void swapTiles(View view) {
         Drawable drawable;
-
-
 
         for (ImageButton imageButton : imageButtons){
 

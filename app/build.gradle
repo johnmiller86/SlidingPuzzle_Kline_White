@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.zsw5029_bw.ist402.slidingpuzzle_kline_white"
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
