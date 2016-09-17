@@ -193,7 +193,6 @@ public class PuzzleActivity extends AppCompatActivity {
 
             if (counter % 2 == 0) {
                 setPrevious(view);
-//                imageButton.setColorFilter(Color.argb(255, 255, 255, 255));
                 imageButton.setAlpha(0.6f);
                 movesTextView.setText(getResources().getQuantityString(R.plurals.moves, movesCounter, movesCounter));
                 counter++;
