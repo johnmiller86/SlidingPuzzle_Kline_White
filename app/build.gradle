@@ -8,8 +8,8 @@ android {
         applicationId "com.zsw5029_bw.ist402.slidingpuzzle_kline_white"
         minSdkVersion 18
         targetSdkVersion 24
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
     }
     buildTypes {
         release {

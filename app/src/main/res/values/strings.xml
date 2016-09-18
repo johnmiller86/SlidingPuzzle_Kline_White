@@ -39,6 +39,7 @@
     <string name="nav_item_signout">Sign Out</string>
     <string name="launcher_logo">laucher_logo</string>
     <string name="user_logo">user_logo</string>
+    <string name="change_free_play_puzzle">Change Free Play Puzzle</string>
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_main_menu</item>
         <item>@string/nav_item_campaign</item>

@@ -62,12 +62,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Change Free Play Puzzle"
+        android:text="@string/change_free_play_puzzle"
         android:id="@+id/buttonPickPuzzle"
         android:background="@drawable/button"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
         android:onClick="chooseImage"
-        android:layout_toEndOf="@+id/textViewCurrentPuzzle"
         android:layout_alignParentStart="true" />
 </RelativeLayout>
