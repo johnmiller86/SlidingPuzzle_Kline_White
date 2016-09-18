@@ -11,7 +11,16 @@ public class User {
      * @return the id.
      */
     public int getUserId() {
+
         return userId;
+    }
+
+    /**
+     * Sets the user's id.
+     * @param userId
+     */
+    public void setUserId(int userId){
+        this.userId = userId;
     }
 
     /**
@@ -19,6 +28,7 @@ public class User {
      * @return the username.
      */
     public String getUsername() {
+
         return username;
     }
 
@@ -27,6 +37,7 @@ public class User {
      * @param username the email.
      */
     public void setUsername(String username) {
+
         this.username = username;
     }
 
@@ -35,6 +46,7 @@ public class User {
      * @return the password.
      */
     public String getPassword() {
+
         return password;
     }
 
@@ -43,6 +55,7 @@ public class User {
      * @param password the password.
      */
     public void setPassword(String password) {
+
         this.password = password;
     }
 }

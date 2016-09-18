@@ -20,44 +20,43 @@ import java.util.ArrayList;
  */
 class PuzzleFunctions {
 
-    // Constants
-    public static final String TAG = Puzzle.class.getSimpleName();
-    public static final String TABLE = "puzzles";
+    // Table name
+    public static final String PUZZLES_TABLE = "puzzles";
+
+    // Column names
     public static final String PUZZLE_ID = "puzzle_id";
-    public static final String USER_ID = "user_id";
-    public static final String PUZZLE = "puzzle";
+    private static final String USER_ID = "user_id";
+    private static final String PUZZLE = "puzzle";
 
 
-    // Method to create puzzle table
+    /**
+     * Builds the puzzles table create statement.
+     * @return the SQL statement.
+     */
     public static String createTable(){
-        return "CREATE TABLE " + Puzzle.TABLE  + "("
-                + Puzzle.PUZZLE_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + Puzzle.USER_ID + " INTEGER,"
-                + Puzzle.PUZZLE + " BLOB, "
-                + "FOREIGN KEY(" + Puzzle.USER_ID + ") REFERENCES " + User.TABLE + "(" + User.USER_ID + "))";
+        return "CREATE TABLE " + PUZZLES_TABLE  + "("
+                + PUZZLE_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + USER_ID + " INTEGER,"
+                + PUZZLE + " BLOB, "
+                + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + UserFunctions.USERS_TABLE + "(" + USER_ID + "))";
     }
 
     /**
-     * Inserts a puzzle into the DB.
+     * Inserts a puzzle into the database.
      * @param user the user.
      * @param puzzle the puzzle.
      */
     public void insert(User user, Puzzle puzzle) {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         ContentValues values = new ContentValues();
-        values.put(Puzzle.USER_ID, user.getUserId());
-        values.put(Puzzle.PUZZLE, getBlob(puzzle.getPuzzle()));
+        values.put(USER_ID, user.getUserId());
+        values.put(PUZZLE, getBlob(puzzle.getPuzzle()));
 
         // Inserting Row
-        db.insert(Puzzle.TABLE, null, values);
+        db.insert(PUZZLES_TABLE, null, values);
         DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
-    public void delete() {
-        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        db.delete(Puzzle.TABLE,null,null);
-        DatabaseManager.getDatabaseManager().closeDatabase();
-    }
 
     /**
      * Gets the puzzles that have been added to the DB.
@@ -67,16 +66,16 @@ class PuzzleFunctions {
 
         ArrayList<Puzzle> puzzleList = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + Puzzle.TABLE + " WHERE " + Puzzle.USER_ID + "=?", new String[]{String.valueOf(userId)});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + PUZZLES_TABLE + " WHERE " + USER_ID + "=?", new String[]{String.valueOf(userId)});
 
         while (cursor.moveToNext()){
             Puzzle puzzle = new Puzzle();
 
             // Setting ID
-            puzzle.setPuzzleId(cursor.getInt(cursor.getColumnIndex(Puzzle.PUZZLE_ID)));
+            puzzle.setPuzzleId(cursor.getInt(cursor.getColumnIndex(PUZZLE_ID)));
 
             // Getting Blob
-            byte[] bytes = cursor.getBlob(cursor.getColumnIndex(Puzzle.PUZZLE));
+            byte[] bytes = cursor.getBlob(cursor.getColumnIndex(PUZZLE));
 
             // Adding Bitmap
             puzzle.setPuzzle(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));

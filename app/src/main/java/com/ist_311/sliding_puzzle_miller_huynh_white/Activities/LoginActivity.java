@@ -77,8 +77,6 @@ public class LoginActivity extends AppCompatActivity{
         // Logging in
         else{
 
-            // TODO MAKE MAIN START SCREEN WITH DIFFICULTIES BEST TIMES ETC...
-
             // Configuring user
             sessionManager.setLoggedIn(true);
             sessionManager.setUsername(user.getUsername());

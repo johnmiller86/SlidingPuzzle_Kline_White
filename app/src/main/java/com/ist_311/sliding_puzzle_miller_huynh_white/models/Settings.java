@@ -2,56 +2,75 @@ package com.ist_311.sliding_puzzle_miller_huynh_white.models;
 
 public class Settings {
 
-    // Table name
-    public static final String TABLE = "settings";
-
-    // Column names
-    public static final String SETTING_ID = "setting_id";
-    public static final String USER_ID = "user_id";
-    public static final String EMAIL = "email";
-    public static final String PASSWORD = "password";
-
     // Instance vars
-    private int userId;
-    private String email, password;
+    private int settingId, columns, rows, currentPuzzleId;
 
     /**
-     * Gets the user's id.
+     * Gets the setting id.
      * @return the id.
      */
-    public int getUserId() {
-        return userId;
+    public int getSettingId() {
+        return settingId;
     }
 
     /**
-     * Gets the user's email.
-     * @return the email.
+     * Sets the setting id.
+     * @param settingId the id.
      */
-    public String getEmail() {
-        return email;
+    public void setSettingId(int settingId) {
+        this.settingId = settingId;
     }
 
     /**
-     * Sets the user's email.
-     * @param email the email.
+     * Gets the column settings.
+     * @return the number of columns.
      */
-    public void setEmail(String email) {
-        this.email = email;
+    public int getColumns() {
+        return columns;
     }
 
     /**
-     * Gets the user's password.
-     * @return the password.
+     * Sets the column settings.
+     * @param columns the number of columns.
      */
-    public String getPassword() {
-        return password;
+    public void setColumns(int columns) {
+
+        this.columns = columns;
     }
 
     /**
-     * Sets the user's password.
-     * @param password the password.
+     * Gets the row settings.
+     * @return the number of rows.
      */
-    public void setPassword(String password) {
-        this.password = password;
+    public int getRows() {
+
+        return rows;
+    }
+
+    /**
+     * Sets the row settings.
+     * @param rows the number of rows.
+     */
+    public void setRows(int rows) {
+
+        this.rows = rows;
+    }
+
+    /**
+     * Gets the row settings.
+     * @return the number of rows.
+     */
+    public int getCurrentPuzzleId() {
+
+        return currentPuzzleId;
+    }
+
+    /**
+     * Sets the row settings.
+     * @param currentPuzzleId the number of rows.
+     */
+    public void setCurrentPuzzleId(int currentPuzzleId) {
+
+        this.currentPuzzleId = currentPuzzleId;
     }
 }

@@ -51,17 +51,17 @@ public class RegisterActivity extends AppCompatActivity {
         else{
 
             // User object
-            User u = new User();
+            User user = new User();
 
             // User Database functions object
-            UserFunctions userRepo = new UserFunctions();
+            UserFunctions userFunctions = new UserFunctions();
 
             // Configuring user
-            u.setUsername(usernameEditText.getText().toString());
-            u.setPassword(passwordEditText.getText().toString());
+            user.setUsername(usernameEditText.getText().toString());
+            user.setPassword(passwordEditText.getText().toString());
 
             // Inserting
-            userRepo.insert(u);
+            userFunctions.insertUser(user);
 
             // Finished registering, exit
             finish();
