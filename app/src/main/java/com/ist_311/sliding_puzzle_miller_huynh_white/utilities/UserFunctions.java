@@ -8,68 +8,95 @@ import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
 
 public class UserFunctions {
 
-    public UserFunctions() {
-        User user = new User();
-    }
+    // Table name
+    private final String TABLE = "users";
 
+    // Column names
+    private final String USER_ID = "user_id";
+    private final String USERNAME = "username";
+    private final String PASSWORD = "password";
 
+    /**
+     * Builds the user table create statement.
+     * @return the SQL statement.
+     */
     public static String createTable() {
-        return "CREATE TABLE " + User.TABLE + "("
-                + User.USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + User.USERNAME + " TEXT, "
-                + User.PASSWORD + " TEXT)";
+        return "CREATE TABLE " + TABLE + "("
+                + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + USERNAME + " TEXT, "
+                + PASSWORD + " TEXT)";
     }
 
-
-    public void insert(User user) {
+    /**
+     * Inserts a user into the database.
+     * @param user the user.
+     */
+    public void insertUser(User user) {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         ContentValues values = new ContentValues();
-        values.put(User.USERNAME, user.getUsername());
-        values.put(User.PASSWORD, user.getPassword());
+        values.put(USERNAME, user.getUsername());
+        values.put(PASSWORD, user.getPassword());
 
         // Inserting Row
-        db.insert(User.TABLE, null, values);
+        db.insert(TABLE, null, values);
         DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
-    public boolean userExists(User user) {
+    /**
+     * Deletes a user from the database.
+     */
+    public void deleteUser() {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + User.TABLE + " WHERE " + User.USERNAME + "=?", new String[]{user.getUsername()});
-        if (cursor != null && cursor.getCount() > 0) {
-            return true;
-        }
-        assert cursor != null;
-        cursor.close();
-        return false;
+        db.delete(TABLE, null, null);
+        DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
-    public boolean passwordCorrect(User user) {
-        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + User.TABLE + " WHERE " + User.USERNAME + "=? AND " + User.PASSWORD + "=?", new String[]{user.getUsername(), user.getPassword()});
-        if (cursor != null && cursor.getCount() > 0) {
-            return true;
-        }
-        assert cursor != null;
-        cursor.close();
-        return false;
-    }
-
+    /**
+     * Gets the user's id from the database.
+     * @param user the user.
+     * @return the id.
+     */
     public int getUserId(User user) {
 
         int userId = -1;
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        Cursor cursor = db.rawQuery("SELECT " + User.USER_ID + " FROM " + User.TABLE + " WHERE " + User.USERNAME + "=?", new String[]{user.getUsername()});
+        Cursor cursor = db.rawQuery("SELECT " + USER_ID + " FROM " + TABLE + " WHERE " + USERNAME + "=?", new String[]{user.getUsername()});
         if (cursor.moveToFirst()) {
-            userId = cursor.getInt(cursor.getColumnIndex(User.USER_ID));
+            userId = cursor.getInt(cursor.getColumnIndex(USER_ID));
         }
         cursor.close();
         return userId;
     }
 
-
-    public void delete() {
+    /**
+     * Checks if the user exists in the database.
+     * @param user the user.
+     * @return true or false/
+     */
+    public boolean userExists(User user) {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        db.delete(User.TABLE, null, null);
-        DatabaseManager.getDatabaseManager().closeDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE " + USERNAME + "=?", new String[]{user.getUsername()});
+        if (cursor != null && cursor.getCount() > 0) {
+            return true;
+        }
+        assert cursor != null;
+        cursor.close();
+        return false;
+    }
+
+    /**
+     * Checks the password against the database for correctness.
+     * @param user the user.
+     * @return true or false.
+     */
+    public boolean passwordCorrect(User user) {
+        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE + " WHERE " + USERNAME + "=? AND " + PASSWORD + "=?", new String[]{user.getUsername(), user.getPassword()});
+        if (cursor != null && cursor.getCount() > 0) {
+            return true;
+        }
+        assert cursor != null;
+        cursor.close();
+        return false;
     }
 }

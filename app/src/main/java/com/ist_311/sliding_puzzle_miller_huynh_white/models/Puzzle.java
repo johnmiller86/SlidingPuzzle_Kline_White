@@ -4,13 +4,6 @@ import android.graphics.Bitmap;
 
 public class Puzzle{
 
-    // Constants
-    public static final String TAG = Puzzle.class.getSimpleName();
-    public static final String TABLE = "puzzles";
-    public static final String PUZZLE_ID = "puzzle_id";
-    public static final String USER_ID = "user_id";
-    public static final String PUZZLE = "puzzle";
-
     // Instance Vars
     private int puzzleId;
     private Bitmap puzzle;

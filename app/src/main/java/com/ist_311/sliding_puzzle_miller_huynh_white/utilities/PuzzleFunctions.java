@@ -20,10 +20,13 @@ import java.util.ArrayList;
  */
 class PuzzleFunctions {
 
-    // No-args constructor
-    public PuzzleFunctions(){
-        Puzzle puzzle = new Puzzle();
-    }
+    // Constants
+    public static final String TAG = Puzzle.class.getSimpleName();
+    public static final String TABLE = "puzzles";
+    public static final String PUZZLE_ID = "puzzle_id";
+    public static final String USER_ID = "user_id";
+    public static final String PUZZLE = "puzzle";
+
 
     // Method to create puzzle table
     public static String createTable(){
