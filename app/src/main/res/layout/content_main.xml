@@ -13,5 +13,6 @@
         android:src="@mipmap/ic_launcher"
         android:scaleType="center"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/launcher_logo"/>
 </RelativeLayout>

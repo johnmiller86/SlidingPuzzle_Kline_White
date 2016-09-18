@@ -43,13 +43,24 @@ public class PuzzleActivity extends AppCompatActivity {
     private int counter, movesCounter, rows, cols;
     private boolean isPause;
     private final int[] time = {1};
+    private Bitmap bitmap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         initializeReferences();
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
+
+        //puzzleBitmap = getfromsql;
+        bitmap = SettingsActivity.bitmap;
+        if (bitmap != null){
+            createPuzzle(bitmap);
+        }
+        else {
+            createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
+        }
+
+
         startTimer(0);
     }
 
@@ -75,6 +86,7 @@ public class PuzzleActivity extends AppCompatActivity {
         // TODO GET DIFFICULTY
         rows = sessionManager.getRows();
         cols = sessionManager.getCols();
+
 
         // Initializing ImageButtons and adding to list
         createBoard();
@@ -220,7 +232,12 @@ public class PuzzleActivity extends AppCompatActivity {
         timerTextView.setText(R.string.default_time);
 
         // Restarting
-        createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
+        if (bitmap != null){
+            createPuzzle(bitmap);
+        }
+        else {
+            createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
+        }
         enableButtons();
         pauseButton.setEnabled(true);
         isPause = false;

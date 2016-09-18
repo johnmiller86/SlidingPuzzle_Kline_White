@@ -2,6 +2,7 @@ package com.ist_311.sliding_puzzle_miller_huynh_white.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -13,6 +14,8 @@ import android.widget.NumberPicker;
 import com.ist_311.sliding_puzzle_miller_huynh_white.R;
 import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SessionManager;
 
+import java.io.IOException;
+
 public class SettingsActivity extends AppCompatActivity {
 
     // Session
@@ -21,6 +24,10 @@ public class SettingsActivity extends AppCompatActivity {
     // Constants
     private final int REQUEST_CAMERA = 0;
     private final int SELECT_IMAGE = 1;
+
+    private ImageView imageView;
+
+    public static Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +41,9 @@ public class SettingsActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         NumberPicker numberPickerRows = (NumberPicker) findViewById(R.id.numberPickerRows);
         NumberPicker numberPickerCols = (NumberPicker) findViewById(R.id.numberPickerCols);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+
+        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView.setImageBitmap(bitmap);
 
         numberPickerCols.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -84,5 +93,32 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         builder.show();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
+                bitmap = null;
+                if (data != null) {
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                imageView.setImageBitmap(bitmap);
+
+//                // Store in SQL
+//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+//                byte[] bytes = byteArrayOutputStream.toByteArray();
+//                String encodedBitmap = Base64.encodeToString(bytes, Base64.DEFAULT);
+//
+//                // Getting
+//                byte[] bytes1 = Base64.decode(encodedBitmap, Base64.DEFAULT);
+//                bitmap = BitmapFactory.decodeByteArray(bytes1, 0, bytes1.length);
+//                imageView.setImageBitmap(bitmap);
+            }
+        }
     }
 }

@@ -15,22 +15,21 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
     // Session
     private SessionManager sessionManager;
 
-    // Navigation drawer
-    private Toolbar toolbar;
-    private FragmentDrawer fragmentDrawer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        // Instantiating Session
         sessionManager = new SessionManager(getApplicationContext());
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Getting Toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        fragmentDrawer = (FragmentDrawer)
+        // FragmentDrawer
+        FragmentDrawer fragmentDrawer = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         fragmentDrawer.setDrawerListener(this);
@@ -87,7 +86,6 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
     @Override
     public void onDrawerItemSelected(View view, int position) {
         Intent intent;
-        String title = getString(R.string.app_name);
         switch (position) {
             case 0:
                 break;

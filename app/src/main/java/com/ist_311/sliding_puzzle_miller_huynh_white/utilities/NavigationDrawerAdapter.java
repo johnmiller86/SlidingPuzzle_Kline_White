@@ -15,25 +15,17 @@ import java.util.List;
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {
     List<NavDrawerItem> data = Collections.emptyList();
-    private LayoutInflater inflater;
-    private Context context;
+    private LayoutInflater layoutInflater;
 
     public NavigationDrawerAdapter(Context context, List<NavDrawerItem> data) {
-        this.context = context;
-        inflater = LayoutInflater.from(context);
+        layoutInflater = LayoutInflater.from(context);
         this.data = data;
-    }
-
-    public void delete(int position) {
-        data.remove(position);
-        notifyItemRemoved(position);
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.nav_drawer_row, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        View view = layoutInflater.inflate(R.layout.nav_drawer_row, parent, false);
+        return new MyViewHolder(view);
     }
 
     @Override

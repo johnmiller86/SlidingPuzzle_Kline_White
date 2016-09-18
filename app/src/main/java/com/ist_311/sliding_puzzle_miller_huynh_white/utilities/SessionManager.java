@@ -57,7 +57,7 @@ public class SessionManager {
      * @return the rows.
      */
     public int getRows(){
-        return pref.getInt(ROWS, 3);
+        return pref.getInt(ROWS, 4);
     }
 
     public void setLoggedIn(boolean isLoggedIn) {
