@@ -1,5 +1,6 @@
 package com.ist_311.sliding_puzzle_miller_huynh_white.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -16,22 +17,30 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 
 import com.ist_311.sliding_puzzle_miller_huynh_white.R;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.Puzzle;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.Settings;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.PuzzleFunctions;
 import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SessionManager;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SettingFunctions;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.UserFunctions;
 
-import java.io.IOException;
+import java.io.File;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    // Session
-    private SessionManager sessionManager;
+    private User user;
+    private UserFunctions userFunctions;
+    private Settings settings;
+    private SettingFunctions settingFunctions;
+    private Puzzle puzzle;
+    private PuzzleFunctions puzzleFunctions;
 
     // Constants
     private final int REQUEST_CAMERA = 0;
     private final int SELECT_IMAGE = 1;
 
     private ImageView imageView;
-
-    public static Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,40 +51,66 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initialize() {
-        sessionManager = new SessionManager(getApplicationContext());
+
+        // Configuring session
+        SessionManager sessionManager = new SessionManager(getApplicationContext());
+        userFunctions = new UserFunctions();
+        user = userFunctions.getUser(sessionManager.getUsername());
+        settingFunctions = new SettingFunctions();
+        settings = settingFunctions.getSettings(user);
+        puzzleFunctions = new PuzzleFunctions();
+        puzzle = puzzleFunctions.getPuzzle(user);
+
+        // UI components
         NumberPicker numberPickerRows = (NumberPicker) findViewById(R.id.numberPickerRows);
         NumberPicker numberPickerCols = (NumberPicker) findViewById(R.id.numberPickerCols);
-
         imageView = (ImageView) findViewById(R.id.imageView);
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageBitmap(puzzle.getPuzzle());
 
         numberPickerCols.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i2) {
-                sessionManager.setCols(i2);
+                settings.setColumns(i2);
+                if (settings.getSettingId() != 0) {
+                    settingFunctions.update(user, settings);
+                }
+                else {
+                    // First time insert and reassign settings to get settings id
+                    settingFunctions.insert(user, settings);
+                    settings = settingFunctions.getSettings(user);
+                }
             }
         });
 
         numberPickerRows.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i2) {
-                sessionManager.setRows(i2);
+                settings.setRows(i2);
+                if (settings.getSettingId() != 0) {
+                    settingFunctions.update(user, settings);
+                }
+                else{
+                    // Fist time insert and reassign settings to get settings id
+                    settingFunctions.insert(user, settings);
+                    settings = settingFunctions.getSettings(user);
+                }
             }
         });
 
-        numberPickerRows.setMaxValue(8);
-        numberPickerRows.setMinValue(2);
-        numberPickerRows.setValue(sessionManager.getRows());
         numberPickerCols.setMaxValue(8);
+        numberPickerRows.setMaxValue(8);
         numberPickerCols.setMinValue(2);
-        numberPickerCols.setValue(sessionManager.getCols());
+        numberPickerRows.setMinValue(2);
+        if (settings.getSettingId() != 0) {
+            numberPickerCols.setValue(settings.getColumns());
+            numberPickerRows.setValue(settings.getRows());
+        }
 
     }
 
     @SuppressWarnings("unused")
     public void chooseImage(@SuppressWarnings("UnusedParameters") View view) {
-        final CharSequence[] charSequences = { "Take Photo", "Choose from Library",
-                "Cancel" };
+        final CharSequence[] charSequences = { "Take Photo", "Choose from Library", "Cancel" };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select a Photo");
         builder.setItems(charSequences, new DialogInterface.OnClickListener() {
@@ -99,58 +134,69 @@ public class SettingsActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Handles the image response.
+     * @param requestCode the requesting intent.
+     * @param resultCode the status of the result.
+     * @param data the image data.
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA){
-                //bitmap = (Bitmap) data.getExtras().get("data");
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
-                    Uri imageUri = data.getData();
-                    bitmap = fixOrientation(bitmap, imageUri);
-                    imageView.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Uri imageUri = data.getData();
+                puzzle.setPuzzlePath(getRealPathFromURI(this, imageUri));
+                Bitmap bitmap = fixOrientation(puzzle.getPuzzle(), puzzle.getPuzzlePath());
+                imageView.setImageBitmap(bitmap);
+
+                if (puzzle.getPuzzleId() != 0) {
+                    // Update
+                    puzzleFunctions.update(user, puzzle);
+                }else{
+                    // First time, insert
+                    puzzleFunctions.insert(user, puzzle);
+
+                    // Get the new autoincrement puzzleId
+                    puzzle = puzzleFunctions.getPuzzle(user);
                 }
             }
             else if (requestCode == SELECT_IMAGE) {
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), data.getData());
-                    Uri imageUri = data.getData();
-                    bitmap = fixOrientation(bitmap, imageUri);
-                    imageView.setImageBitmap(bitmap);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                Uri imageUri = data.getData();
+                puzzle.setPuzzlePath(getRealPathFromURI(this, imageUri));
+                Bitmap bitmap = fixOrientation(puzzle.getPuzzle(), puzzle.getPuzzlePath());
+                imageView.setImageBitmap(bitmap);
+
+                if (puzzle.getPuzzleId() != 0) {
+                    // Update
+                    puzzleFunctions.update(user, puzzle);
+                }else{
+                    // First time insert
+                    puzzleFunctions.insert(user, puzzle);
+
+                    // Get the new puzzleId
+                    puzzle = puzzleFunctions.getPuzzle(user);
                 }
-//                // Store in SQL
-//                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//                bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-//                byte[] bytes = byteArrayOutputStream.toByteArray();
-//                String encodedBitmap = Base64.encodeToString(bytes, Base64.DEFAULT);
-//
-//                // Getting
-//                byte[] bytes1 = Base64.decode(encodedBitmap, Base64.DEFAULT);
-//                bitmap = BitmapFactory.decodeByteArray(bytes1, 0, bytes1.length);
-//                imageView.setImageBitmap(bitmap);
             }
         }
     }
 
+    // TODO get orientation right
     /**
      * Rotates bitmap to correct orientation.
      * @param bitmap the image bitmap.
-     * @param imageUri the image uri.
+     * @param path the image path.
      * @return the properly oriented bitmap.
      */
-    private Bitmap fixOrientation(Bitmap bitmap, Uri imageUri){
+    private Bitmap fixOrientation(Bitmap bitmap, String path){
 
         try {
             String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+            Uri imageUri = Uri.fromFile(new File(path));
             Cursor cursor = getContentResolver().query(imageUri, orientationColumn, null, null, null);
             int orientation = -1;
             if (cursor != null && cursor.moveToFirst()) {
                 orientation = cursor.getInt(cursor.getColumnIndex(orientationColumn[0]));
+                cursor.close();
             }
-            cursor.close();
             Matrix matrix = new Matrix();
             matrix.postRotate(orientation);
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
@@ -159,5 +205,26 @@ public class SettingsActivity extends AppCompatActivity {
             Log.d(SettingsActivity.class.getSimpleName(), e.getMessage());
         }
         return bitmap;
+    }
+
+    /**
+     * Gets the full filepath of the uri.
+     * @param context the context.
+     * @param contentUri the uri.
+     * @return the path.
+     */
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        Cursor cursor = null;
+        try {
+            String[] proj = { MediaStore.Images.Media.DATA };
+            cursor = context.getContentResolver().query(contentUri,  proj, null, null, null);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
     }
 }
