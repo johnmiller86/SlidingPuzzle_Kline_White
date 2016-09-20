@@ -1,12 +1,13 @@
 package com.ist_311.sliding_puzzle_miller_huynh_white.models;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 public class Puzzle{
 
     // Instance Vars
     private int puzzleId;
-    private Bitmap puzzle;
+    private String puzzlePath;
 
     /**
      * Gets the puzzle's id.
@@ -25,19 +26,26 @@ public class Puzzle{
     }
 
     /**
-     * The puzzle bitmap.
-     * @return the bitmap.
+     * Gets the puzzle's path.
+     * @return the path.
      */
-    public Bitmap getPuzzle() {
-        return puzzle;
+    public String getPuzzlePath() {
+        return puzzlePath;
     }
 
     /**
-     * Sets the puzzle bitmap.
-     * @param puzzle the puzzle bitmap.
+     * Sets the puzzle's path.
+     * @param puzzlePath the puzzle path.
      */
-    public void setPuzzle(Bitmap puzzle) {
-        this.puzzle = puzzle;
+    public void setPuzzlePath(String puzzlePath) {
+        this.puzzlePath = puzzlePath;
     }
 
+    /**
+     * Decodes and returns a bitmap from filepath.
+     * @return the decoded bitmap.
+     */
+    public Bitmap getPuzzle(){
+        return BitmapFactory.decodeFile(puzzlePath);
+    }
 }

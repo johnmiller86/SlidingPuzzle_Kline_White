@@ -60,11 +60,17 @@ public class RegisterActivity extends AppCompatActivity {
             user.setUsername(usernameEditText.getText().toString());
             user.setPassword(passwordEditText.getText().toString());
 
-            // Inserting
-            userFunctions.insertUser(user);
+            // Checking uniqueness of username.
+            if (userFunctions.userExists(user)){
+                Toast.makeText(this, "Username already taken!!", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                // Inserting
+                userFunctions.insertUser(user);
 
-            // Finished registering, exit
-            finish();
+                // Finished registering, exit
+                finish();
+            }
         }
     }
 }

@@ -90,10 +90,10 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
             case 0:
                 break;
             case 1:
-                intent = new Intent(this, PuzzleActivity.class);
-                startActivity(intent);
                 break;
             case 2:
+                intent = new Intent(this, PuzzleActivity.class);
+                startActivity(intent);
                 break;
             case 3:
                 break;

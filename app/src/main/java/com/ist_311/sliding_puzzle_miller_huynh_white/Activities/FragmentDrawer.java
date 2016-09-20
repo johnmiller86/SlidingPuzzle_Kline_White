@@ -43,7 +43,7 @@ public class FragmentDrawer extends Fragment {
         titles = t;
         getData();
     }
-    public static List<NavDrawerItem> getData() {
+    private static List<NavDrawerItem> getData() {
         List<NavDrawerItem> data = new ArrayList<>();
 
 
@@ -145,13 +145,13 @@ public class FragmentDrawer extends Fragment {
     interface ClickListener {
         void onClick(View view, int position);
 
-        void onLongClick(View view, int position);
+        void onLongClick(@SuppressWarnings("UnusedParameters") View view, @SuppressWarnings("UnusedParameters") int position);
     }
 
     static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
-        private GestureDetector gestureDetector;
-        private ClickListener clickListener;
+        private final GestureDetector gestureDetector;
+        private final ClickListener clickListener;
 
         public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
             this.clickListener = clickListener;
@@ -198,6 +198,6 @@ public class FragmentDrawer extends Fragment {
      * Interface for drawer listener.
      */
     public interface FragmentDrawerListener {
-        void onDrawerItemSelected(View view, int position);
+        void onDrawerItemSelected(@SuppressWarnings("UnusedParameters") View view, int position);
     }
 }

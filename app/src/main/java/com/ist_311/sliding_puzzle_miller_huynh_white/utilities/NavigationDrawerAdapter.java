@@ -14,8 +14,8 @@ import java.util.Collections;
 import java.util.List;
 
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.MyViewHolder> {
-    List<NavDrawerItem> data = Collections.emptyList();
-    private LayoutInflater layoutInflater;
+    private List<NavDrawerItem> data = Collections.emptyList();
+    private final LayoutInflater layoutInflater;
 
     public NavigationDrawerAdapter(Context context, List<NavDrawerItem> data) {
         layoutInflater = LayoutInflater.from(context);
@@ -40,7 +40,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+        final TextView title;
 
         public MyViewHolder(View itemView) {
             super(itemView);

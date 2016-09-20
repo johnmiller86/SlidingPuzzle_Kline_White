@@ -3,13 +3,10 @@ package com.ist_311.sliding_puzzle_miller_huynh_white.utilities;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.ist_311.sliding_puzzle_miller_huynh_white.models.Puzzle;
 import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -18,15 +15,15 @@ import java.util.ArrayList;
  * @version 1.0.1
  * @since 09/10/2016
  */
-class PuzzleFunctions {
+public class PuzzleFunctions {
 
     // Table name
     public static final String PUZZLES_TABLE = "puzzles";
 
     // Column names
-    public static final String PUZZLE_ID = "puzzle_id";
+    private static final String PUZZLE_ID = "puzzle_id";
     private static final String USER_ID = "user_id";
-    private static final String PUZZLE = "puzzle";
+    private static final String PUZZLE_PATH = "puzzle";
 
 
     /**
@@ -37,7 +34,7 @@ class PuzzleFunctions {
         return "CREATE TABLE " + PUZZLES_TABLE  + "("
                 + PUZZLE_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + USER_ID + " INTEGER,"
-                + PUZZLE + " BLOB, "
+                + PUZZLE_PATH + " TEXT, "
                 + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + UserFunctions.USERS_TABLE + "(" + USER_ID + "))";
     }
 
@@ -50,10 +47,34 @@ class PuzzleFunctions {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         ContentValues values = new ContentValues();
         values.put(USER_ID, user.getUserId());
-        values.put(PUZZLE, getBlob(puzzle.getPuzzle()));
+        values.put(PUZZLE_PATH, puzzle.getPuzzlePath());
 
         // Inserting Row
         db.insert(PUZZLES_TABLE, null, values);
+        DatabaseManager.getDatabaseManager().closeDatabase();
+    }
+
+    /**
+     * Updates the puzzle in the database.
+     * @param user the user.
+     * @param puzzle the new puzzle.
+     */
+    public void update(User user, Puzzle puzzle){
+
+        // Database
+        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+
+        // Values
+        ContentValues values = new ContentValues();
+        values.put(USER_ID, user.getUserId());
+        values.put(PUZZLE_PATH, puzzle.getPuzzlePath());
+
+        // Where
+        String where = PUZZLE_ID + " = ?";
+        String[] id = {String.valueOf(puzzle.getPuzzleId())};
+
+        // Inserting Row
+        db.update(PUZZLES_TABLE, values, where, id);
         DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
@@ -68,33 +89,35 @@ class PuzzleFunctions {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + PUZZLES_TABLE + " WHERE " + USER_ID + "=?", new String[]{String.valueOf(userId)});
 
+        // Populating ArrayList
         while (cursor.moveToNext()){
             Puzzle puzzle = new Puzzle();
-
-            // Setting ID
             puzzle.setPuzzleId(cursor.getInt(cursor.getColumnIndex(PUZZLE_ID)));
-
-            // Getting Blob
-            byte[] bytes = cursor.getBlob(cursor.getColumnIndex(PUZZLE));
-
-            // Adding Bitmap
-            puzzle.setPuzzle(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-
-            // Adding to list
+            puzzle.setPuzzlePath(cursor.getString(cursor.getColumnIndex(PUZZLE_PATH)));
             puzzleList.add(puzzle);
         }
         cursor.close();
+        DatabaseManager.getDatabaseManager().closeDatabase();
         return puzzleList;
     }
 
     /**
-     * Converts a Bitmap to a Binary Large Object.
-     * @param bitmap the Bitmap to convert.
-     * @return a byte array representation of the Bitmap.
+     * Gets the puzzles that have been added to the DB.
+     * @return the puzzle list.
      */
-    private static byte[] getBlob(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
-        return outputStream.toByteArray();
+    public Puzzle getPuzzle(User user){
+
+        Puzzle puzzle = new Puzzle();
+        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + PUZZLES_TABLE + " WHERE " + USER_ID + " = ?", new String[]{String.valueOf(user.getUserId())});
+
+        while (cursor.moveToNext()){
+
+            puzzle.setPuzzleId(cursor.getInt(cursor.getColumnIndex(PUZZLE_ID)));
+            puzzle.setPuzzlePath(cursor.getString(cursor.getColumnIndex(PUZZLE_PATH)));
+        }
+        cursor.close();
+        DatabaseManager.getDatabaseManager().closeDatabase();
+        return puzzle;
     }
 }

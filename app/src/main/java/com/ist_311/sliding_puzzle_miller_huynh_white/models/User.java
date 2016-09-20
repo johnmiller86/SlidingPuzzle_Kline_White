@@ -17,7 +17,7 @@ public class User {
 
     /**
      * Sets the user's id.
-     * @param userId
+     * @param userId the id.
      */
     public void setUserId(int userId){
         this.userId = userId;

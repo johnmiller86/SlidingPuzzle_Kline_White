@@ -56,22 +56,22 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editTextRegisterPassword"
-        android:layout_centerVertical="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignStart="@+id/editTextRegisterUsername" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:inputType="text"
         android:id="@+id/editTextRegisterUsername"
         android:layout_above="@+id/editTextRegisterPassword"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="68dp"
         android:layout_toEndOf="@+id/textViewUsername" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editTextRegisterPassword"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@+id/editTextRegisterUsername" />
 
     <EditText
         android:layout_width="wrap_content"

@@ -23,7 +23,6 @@ public class SettingFunctions {
     private static final String USER_ID = "user_id";
     private static final String ROWS = "rows";
     private static final String COLUMNS = "columns";
-    private static final String CURRENT_PUZZLE_ID = "current_puzzle_id";
 
 
     /**
@@ -36,9 +35,7 @@ public class SettingFunctions {
                 + USER_ID + " INTEGER,"
                 + ROWS + " INTEGER, "
                 + COLUMNS + " INTEGER, "
-                + CURRENT_PUZZLE_ID + " INTEGER, "
-                + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + UserFunctions.USERS_TABLE + "(" + USER_ID + ") "
-                + "FOREIGN KEY(" + CURRENT_PUZZLE_ID + ") REFERENCES " + PuzzleFunctions.PUZZLES_TABLE + "(" + PuzzleFunctions.PUZZLE_ID + "))";
+                + "FOREIGN KEY(" + USER_ID + ") REFERENCES " + UserFunctions.USERS_TABLE + "(" + USER_ID + "))";
     }
 
     /**
@@ -52,13 +49,17 @@ public class SettingFunctions {
         values.put(USER_ID, user.getUserId());
         values.put(ROWS, settings.getRows());
         values.put(COLUMNS, settings.getColumns());
-        values.put(CURRENT_PUZZLE_ID, settings.getCurrentPuzzleId());
 
         // Inserting Row
         db.insert(SETTINGS_TABLE, null, values);
         DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
+    /**
+     * Updates the settings in the database.
+     * @param user the user.
+     * @param settings the new settings.
+     */
     public void update(User user, Settings settings){
 
         // Database
@@ -69,7 +70,6 @@ public class SettingFunctions {
         values.put(USER_ID, user.getUserId());
         values.put(ROWS, settings.getRows());
         values.put(COLUMNS, settings.getColumns());
-        values.put(CURRENT_PUZZLE_ID, settings.getCurrentPuzzleId());
 
         // Where
         String where = SETTING_ID + " = ?";
@@ -88,16 +88,16 @@ public class SettingFunctions {
 
         Settings settings = new Settings();
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + SETTINGS_TABLE + " WHERE " + USER_ID + "=?", new String[]{String.valueOf(user.getUserId())});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + SETTINGS_TABLE + " WHERE " + USER_ID + " = ?", new String[]{String.valueOf(user.getUserId())});
 
         while (cursor.moveToNext()){
 
             settings.setSettingId(cursor.getInt(cursor.getColumnIndex(SETTING_ID)));
-            settings.setColumns(cursor.getColumnIndex(COLUMNS));
-            settings.setRows(cursor.getColumnIndex(ROWS));
-            settings.setCurrentPuzzleId(cursor.getColumnIndex(CURRENT_PUZZLE_ID));
+            settings.setColumns(cursor.getInt(cursor.getColumnIndex(COLUMNS)));
+            settings.setRows(cursor.getInt(cursor.getColumnIndex(ROWS)));
         }
         cursor.close();
+        DatabaseManager.getDatabaseManager().closeDatabase();
         return settings;
     }
 }

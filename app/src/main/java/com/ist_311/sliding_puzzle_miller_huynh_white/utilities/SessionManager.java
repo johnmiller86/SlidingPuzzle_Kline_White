@@ -13,8 +13,6 @@ public class SessionManager {
 
     // Shared preferences file name
     private static final String PREFS = "prefs";
-    private static final String ROWS = "rows";
-    private static final String COLS = "cols";
     private static final String USERNAME = "username";
     private static final String IS_LOGGED_IN = "isLoggedIn";
 
@@ -24,40 +22,6 @@ public class SessionManager {
         pref = context.getSharedPreferences(PREFS, PRIVATE_MODE);
         editor = pref.edit();
         editor.apply();
-    }
-
-    /**
-     * Sets the columns preference.
-     * @param cols the columns.
-     */
-    public void setCols (int cols){
-        editor.putInt(COLS, cols);
-        editor.commit();
-    }
-
-    /**
-     * Sets the rows preference.
-     * @param rows the rows.
-     */
-    public void  setRows(int rows){
-        editor.putInt(ROWS, rows);
-        editor.commit();
-    }
-
-    /**
-     * Gets the columns preference.
-     * @return the columns.
-     */
-    public int getCols(){
-        return pref.getInt(COLS, 3);
-    }
-
-    /**
-     * Gets the rows preference.
-     * @return the rows.
-     */
-    public int getRows(){
-        return pref.getInt(ROWS, 4);
     }
 
     public void setLoggedIn(boolean isLoggedIn) {

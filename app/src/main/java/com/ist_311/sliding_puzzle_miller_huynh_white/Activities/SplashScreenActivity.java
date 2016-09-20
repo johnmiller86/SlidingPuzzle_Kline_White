@@ -11,8 +11,6 @@ import com.ist_311.sliding_puzzle_miller_huynh_white.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    private final int SPLASH_SCREEN_DISPLAY_LENGTH = 1500;
-
     @Override
     protected void onCreate(Bundle bundle) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -21,6 +19,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(bundle);
         setContentView(R.layout.activity_splash_screen);
 
+        int displayLength = 1500;
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -29,7 +28,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 finish();
             }
-        }, SPLASH_SCREEN_DISPLAY_LENGTH);
+        }, displayLength);
     }
 
     @Override

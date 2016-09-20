@@ -17,7 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ist_311.sliding_puzzle_miller_huynh_white.R;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.Puzzle;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.Settings;
+import com.ist_311.sliding_puzzle_miller_huynh_white.models.User;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.PuzzleFunctions;
 import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SessionManager;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.SettingFunctions;
+import com.ist_311.sliding_puzzle_miller_huynh_white.utilities.UserFunctions;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,17 +56,6 @@ public class PuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         initializeReferences();
-
-        //puzzleBitmap = getfromsql;
-        bitmap = SettingsActivity.bitmap;
-        if (bitmap != null){
-            createPuzzle(bitmap);
-        }
-        else {
-            createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
-        }
-
-
         startTimer(0);
     }
 
@@ -71,6 +66,12 @@ public class PuzzleActivity extends AppCompatActivity {
 
         // Initializing Session
         SessionManager sessionManager = new SessionManager(getApplicationContext());
+        UserFunctions userFunctions = new UserFunctions();
+        User user = userFunctions.getUser(sessionManager.getUsername());
+        SettingFunctions settingFunctions = new SettingFunctions();
+        Settings settings = settingFunctions.getSettings(user);
+        PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
+        Puzzle puzzle = puzzleFunctions.getPuzzle(user);
 
         // Initializing Layout
         tableLayout = (TableLayout) findViewById(R.id.table_layout);
@@ -83,10 +84,17 @@ public class PuzzleActivity extends AppCompatActivity {
         imageButtons = new ArrayList<>();
         answerKey = new ArrayList<>();
 
-        // TODO GET DIFFICULTY
-        rows = sessionManager.getRows();
-        cols = sessionManager.getCols();
-
+        // Getting difficulty
+        if (settings.getRows() != 0){
+            rows = settings.getRows();
+        }else{
+            rows = 4;
+        }
+        if (settings.getColumns() != 0){
+            cols = settings.getColumns();
+        }else{
+            cols = 3;
+        }
 
         // Initializing ImageButtons and adding to list
         createBoard();
@@ -101,6 +109,14 @@ public class PuzzleActivity extends AppCompatActivity {
         counter = 0;
         movesCounter = 0;
         isPause = false;
+
+        // Create puzzle
+        if (puzzle.getPuzzleId() != 0){
+            createPuzzle(puzzle.getPuzzle());
+        }
+        else {
+            createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
+        }
     }
 
     /**
