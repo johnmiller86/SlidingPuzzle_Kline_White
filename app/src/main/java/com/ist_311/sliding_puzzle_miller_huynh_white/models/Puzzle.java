@@ -10,8 +10,6 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 
-import com.ist_311.sliding_puzzle_miller_huynh_white.activities.SettingsActivity;
-
 import java.io.File;
 
 public class Puzzle{
@@ -57,7 +55,10 @@ public class Puzzle{
      * @return the decoded bitmap.
      */
     public Bitmap getPuzzle(Context context){
-        return fixOrientation(context, BitmapFactory.decodeFile(puzzlePath));
+        if (puzzlePath != null) {
+            return fixOrientation(context, BitmapFactory.decodeFile(puzzlePath));
+        }
+        return null;
     }
 
     /**
@@ -70,7 +71,7 @@ public class Puzzle{
         try {
             String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
             Uri imageUri = getImageContentUri(context, new File(puzzlePath));
-            Cursor cursor = context.getContentResolver().query(imageUri != null ? imageUri : null != null ? imageUri != null ? imageUri : null : null, orientationColumn, null, null, null);
+            Cursor cursor = context.getContentResolver().query(imageUri, orientationColumn, null, null, null);
             int orientation = -1;
             if (cursor != null && cursor.moveToFirst()) {
                 orientation = cursor.getInt(cursor.getColumnIndex(orientationColumn[0]));
@@ -81,7 +82,7 @@ public class Puzzle{
             bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         }
         catch (Exception e) {
-            Log.d(SettingsActivity.class.getSimpleName(), e.getMessage());
+            Log.d(Puzzle.class.getSimpleName(), e.getMessage());
         }
         return bitmap;
     }

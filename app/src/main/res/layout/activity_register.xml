@@ -17,7 +17,9 @@
         android:text="@string/register_an_account"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:background="@drawable/gradient"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -29,7 +31,8 @@
         android:layout_alignBaseline="@+id/editTextRegisterUsername"
         android:layout_alignBottom="@+id/editTextRegisterUsername"
         android:layout_alignParentStart="true"
-        android:labelFor="@+id/editTextRegisterUsername"/>
+        android:labelFor="@+id/editTextRegisterUsername"
+        android:background="@drawable/gradient"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -39,7 +42,8 @@
         android:textSize="18sp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:labelFor="@+id/editTextRegisterPassword"/>
+        android:labelFor="@+id/editTextRegisterPassword"
+        android:background="@drawable/gradient"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,7 +54,8 @@
         android:layout_alignBaseline="@+id/editTextConfirmRegisterPassword"
         android:textSize="18sp"
         android:layout_alignTop="@+id/editTextConfirmRegisterPassword"
-        android:labelFor="@+id/editTextConfirmRegisterPassword"/>
+        android:labelFor="@+id/editTextConfirmRegisterPassword"
+        android:background="@drawable/gradient"/>
 
     <EditText
         android:layout_width="wrap_content"

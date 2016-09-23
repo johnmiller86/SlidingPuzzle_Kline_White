@@ -27,10 +27,6 @@
     <string name="default_image">default_image</string>
     <string name="rows">Rows</string>
     <string name="columns">Columns</string>
-    <string name="current_puzzle">Current Puzzle</string>
-    <string name="pick_puzzle">Pick Puzzle</string>
-    <string name="drawer_open">Open</string>
-    <string name="drawer_close">Close</string>
     <string name="nav_item_main_menu">Main Menu</string>
     <string name="nav_item_campaign">Campaign</string>
     <string name="nav_item_free_play">Free Play</string>
@@ -52,5 +48,4 @@
     <string name="allow">Allow</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -22,7 +22,6 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/rows"
-                    android:id="@+id/textViewRows"
                     android:layout_weight="2"
                     android:textAlignment="center"/>
 
@@ -45,7 +44,7 @@
                     android:id="@+id/numberPickerRows"
                     android:background="@drawable/gradient"
                     android:descendantFocusability="beforeDescendants"
-                    android:layout_marginRight="50dp"
+                    android:layout_marginEnd="50dp"
                     android:layout_weight="1"/>
 
                 <NumberPicker
@@ -54,7 +53,7 @@
                     android:id="@+id/numberPickerCols"
                     android:background="@drawable/gradient"
                     android:descendantFocusability="beforeDescendants"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginStart="50dp"
                     android:layout_weight="1"/>
             </TableRow>
         </TableLayout>
@@ -65,7 +64,6 @@
         android:text="@string/change_free_play_puzzle"
         android:id="@+id/button_pick_puzzle"
         android:background="@drawable/button"
-        android:onClick="chooseImage"
         android:layout_below="@+id/tableLayout"
         android:layout_alignParentStart="true"
         android:layout_margin="20dp"

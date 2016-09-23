@@ -41,17 +41,14 @@ public class SettingsFragment extends Fragment {
     private Puzzle puzzle;
     private PuzzleFunctions puzzleFunctions;
 
-    // Constants
-    private final int REQUEST_PERMISSION = 0;
     private final int REQUEST_EXTERNAL_STORAGE_CAMERA = 1;
     private final int REQUEST_EXTERNAL_STORAGE_GALLERY = 2;
     private final int REQUEST_CAMERA = 3;
     private final int SELECT_IMAGE = 4;
 
     // UI components
-    View view;
+    private View view;
     private ImageView imageView;
-    private Button imagePicker;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -97,8 +94,7 @@ public class SettingsFragment extends Fragment {
         NumberPicker numberPickerCols = (NumberPicker) view.findViewById(R.id.numberPickerCols);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageBitmap(puzzle.getPuzzle(view.getContext()));
-
-        imagePicker = (Button) view.findViewById(R.id.button_pick_puzzle);
+        Button imagePicker = (Button) view.findViewById(R.id.button_pick_puzzle);
         imagePicker.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -361,6 +357,7 @@ public class SettingsFragment extends Fragment {
         Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
         intent.setData(uri);
+        int REQUEST_PERMISSION = 0;
         startActivityForResult(intent, REQUEST_PERMISSION);
     }
 }

@@ -45,10 +45,9 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
         // Loading main menu fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //TODO Add animations
-//            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_container, new MainMenuFragment());
-        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
     }
@@ -104,9 +103,9 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             //TODO Add animations
-//            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.addToBackStack(null);
+            addToBackStack(fragmentTransaction);
             fragmentTransaction.commit();
             fragmentManager.executePendingTransactions();
         }
@@ -150,6 +149,16 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
             for (Fragment fragment : fragments) {
                 fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
             }
+        }
+    }
+
+    /**
+     * Adds a fragment transaction to the back stack.
+     * @param fragmentTransaction the fragment transaction.
+     */
+    private void addToBackStack(FragmentTransaction fragmentTransaction){
+        if (getSupportFragmentManager().getBackStackEntryCount() == 0){
+            fragmentTransaction.addToBackStack(null);
         }
     }
 }

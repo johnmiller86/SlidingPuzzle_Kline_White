@@ -17,7 +17,9 @@ public class MainMenuFragment extends Fragment {
 
     // UI components
     private View view;
-    Button play, settings, leaderboards;
+    private Button play;
+    private Button settings;
+    private Button leaderboards;
 
     public MainMenuFragment() {
         // Required empty public constructor
@@ -46,8 +48,8 @@ public class MainMenuFragment extends Fragment {
         super.onDetach();
     }
 
-    public void initialize(){
-        play = (Button) view.findViewById(R.id.button_play);
+    private void initialize(){
+        play = (Button) view.findViewById(R.id.button_freeplay);
         settings = (Button) view.findViewById(R.id.button_settings);
         leaderboards = (Button) view.findViewById(R.id.button_leaderboards);
         play.setOnClickListener(new View.OnClickListener(){
@@ -75,12 +77,15 @@ public class MainMenuFragment extends Fragment {
     /**
      * Login button listener.
      */
-    public void play() {
+    private void play() {
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_container, new PuzzleFragment());
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+//        fragmentManager.executePendingTransactions();
     }
 
     /**
@@ -90,12 +95,11 @@ public class MainMenuFragment extends Fragment {
 
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        //TODO Add animations
-//            fragmentTransaction.setCustomAnimations(R.anim.slide_up, R.anim.slide_down);
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_container, new SettingsFragment());
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-        fragmentManager.executePendingTransactions();
+//        fragmentManager.executePendingTransactions();
     }
 
 //    /**

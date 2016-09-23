@@ -13,8 +13,9 @@
         android:paddingRight="30dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textSize="15sp"
+        android:textSize="18sp"
         android:textStyle="bold"
+        android:textAlignment="center"
         android:background="@drawable/textview_selector" />
 
 </RelativeLayout>
