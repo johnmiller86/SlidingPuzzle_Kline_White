@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.ist_311.sliding_puzzle_miller_huynh_white.activities.SettingsFragment"
-    android:background="@drawable/puzzle_pieces">
+    android:background="@drawable/puzzle_pieces"
+    android:id="@+id/fragment_settings">
 
     <RelativeLayout
         android:layout_width="match_parent"

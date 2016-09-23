@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ist_311.sliding_puzzle_miller_huynh_white.activities.MainMenuFragment">
+    tools:context="com.ist_311.sliding_puzzle_miller_huynh_white.activities.MainMenuFragment"
+    android:id="@+id/fragment_main_menu">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,11 +42,10 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:text="logoTextView"
+            android:text="@string/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            tools:text="Sliding Puzzle"
+            android:id="@+id/logoTextView"
             android:textAlignment="center"
             android:textSize="36sp"
             android:background="@drawable/gradient"

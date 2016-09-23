@@ -23,6 +23,7 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
 
     // Session
     private SessionManager sessionManager;
+    String currentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +46,16 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
         // Loading main menu fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_container, new MainMenuFragment());
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        if (savedInstanceState != null){
+            fragmentTransaction.replace(R.id.fragment_container, getSupportFragmentManager().getFragment(savedInstanceState, "savedFragment"));
+        }
+        currentTag = "Main Menu";
+        fragmentTransaction.replace(R.id.fragment_container, new MainMenuFragment(), currentTag);
 //        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         fragmentManager.executePendingTransactions();
     }
-
-//    @Override
-//    public void onResume(){
-//        super.onResume();
-//    }
 
     /**
      * Logs out the user.
@@ -77,20 +77,22 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
         switch (position) {
             case 0:
                 fragment = new MainMenuFragment();
+                currentTag = "Main Menu";
                 break;
             case 1:
-//                fragment = new FreePlayFragment();
+//                fragment = new CampaignFragment();
+                //currentTag = "Campaign";
                 break;
             case 2:
                 fragment = new PuzzleFragment();
+                currentTag = "Free Play";
                 break;
             case 3:
                 //fragment = new SettingsFragment();
                 break;
             case 4:
-//                Intent intent = new Intent(this, SettingsActivity.class);
-//                startActivity(intent);
                 fragment = new SettingsFragment();
+                currentTag = "Settings";
                 break;
             case 5:
                 logoutUser();
@@ -102,10 +104,16 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
         if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            //TODO Add animations
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            addToBackStack(fragmentTransaction);
+            fragmentTransaction.replace(R.id.fragment_container, fragment, currentTag);
+            //addToBackStack(fragmentTransaction);
+            if (fragment instanceof MainMenuFragment){
+
+            }
+            else {
+                fragmentTransaction.addToBackStack(null);
+            }
+            fragment.setRetainInstance(true);
             fragmentTransaction.commit();
             fragmentManager.executePendingTransactions();
         }
@@ -152,13 +160,21 @@ public class MainMenuActivity extends AppCompatActivity implements FragmentDrawe
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle savedFragment) {
+        super.onSaveInstanceState(savedFragment);
+
+        //Save the fragment's instance
+        getSupportFragmentManager().putFragment(savedFragment, "savedFragment", getSupportFragmentManager().findFragmentByTag(currentTag));
+    }
+
     /**
      * Adds a fragment transaction to the back stack.
      * @param fragmentTransaction the fragment transaction.
      */
-    private void addToBackStack(FragmentTransaction fragmentTransaction){
-        if (getSupportFragmentManager().getBackStackEntryCount() == 0){
-            fragmentTransaction.addToBackStack(null);
-        }
-    }
+//    private void addToBackStack(FragmentTransaction fragmentTransaction){
+//        if (getSupportFragmentManager().getBackStackEntryCount() == 0){
+//            fragmentTransaction.addToBackStack(null);
+//        }
+//    }
 }
