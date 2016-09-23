@@ -1,12 +1,15 @@
 package com.ist_311.sliding_puzzle_miller_huynh_white.activities;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -31,9 +34,13 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PuzzleActivity extends AppCompatActivity {
+public class PuzzleFragment extends Fragment {
+
+    // Session
+    private Puzzle puzzle;
 
     // UI components
+    private View view;
     private TableLayout tableLayout;
     private TextView movesTextView, timerTextView;
     private ImageButton previousButton;
@@ -51,12 +58,41 @@ public class PuzzleActivity extends AppCompatActivity {
     private final int[] time = {1};
     private Bitmap bitmap;
 
+    public PuzzleFragment() {
+        // Required empty public constructor
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_puzzle);
+//        initializeReferences();
+//        startTimer(0);
+    }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        timer.cancel();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_puzzle, container, false);
         initializeReferences();
         startTimer(0);
+        return view;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     /**
@@ -65,20 +101,20 @@ public class PuzzleActivity extends AppCompatActivity {
     private void initializeReferences() {
 
         // Initializing Session
-        SessionManager sessionManager = new SessionManager(getApplicationContext());
+        SessionManager sessionManager = new SessionManager(view.getContext());
         UserFunctions userFunctions = new UserFunctions();
         User user = userFunctions.getUser(sessionManager.getUsername());
         SettingFunctions settingFunctions = new SettingFunctions();
         Settings settings = settingFunctions.getSettings(user);
         PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
-        Puzzle puzzle = puzzleFunctions.getPuzzle(user);
+        puzzle = puzzleFunctions.getPuzzle(user);
 
         // Initializing Layout
-        tableLayout = (TableLayout) findViewById(R.id.table_layout);
+        tableLayout = (TableLayout) view.findViewById(R.id.table_layout);
 
         // Initializing TextViews
-        movesTextView = (TextView) findViewById(R.id.currentMoves);
-        timerTextView = (TextView) findViewById(R.id.editTextTimer);
+        movesTextView = (TextView) view.findViewById(R.id.currentMoves);
+        timerTextView = (TextView) view.findViewById(R.id.editTextTimer);
 
         // Initializing Lists
         imageButtons = new ArrayList<>();
@@ -102,8 +138,25 @@ public class PuzzleActivity extends AppCompatActivity {
         configureButtons();
 
         // Initializing pause and reset buttons
-        pauseButton = (Button) findViewById(R.id.button_pause);
-        resetButton = (Button) findViewById(R.id.button_reset);
+        pauseButton = (Button) view.findViewById(R.id.button_pause);
+        resetButton = (Button) view.findViewById(R.id.button_reset);
+
+        // Add listeners
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                pause();
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view){
+                restart();
+            }
+        });
 
         // Initializing Counters
         counter = 0;
@@ -112,7 +165,7 @@ public class PuzzleActivity extends AppCompatActivity {
 
         // Create puzzle
         if (puzzle.getPuzzleId() != 0){
-            createPuzzle(puzzle.getPuzzle());
+            createPuzzle(puzzle.getPuzzle(view.getContext()));
         }
         else {
             createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
@@ -126,12 +179,12 @@ public class PuzzleActivity extends AppCompatActivity {
         for (int row = 0; row < rows; row++){
 
             // Creating TableRow
-            TableRow tableRow = new TableRow(this);
+            TableRow tableRow = new TableRow(view.getContext());
 
             for (int col = 0; col < cols; col++){
 
                 // Creating ImageButton
-                ImageButton imageButton = new ImageButton(this);
+                ImageButton imageButton = new ImageButton(view.getContext());
                 imageButtons.add(imageButton);
                 tableRow.addView(imageButton);
             }
@@ -144,7 +197,7 @@ public class PuzzleActivity extends AppCompatActivity {
      */
     private void configureButtons() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         for (ImageButton imageButton : imageButtons) {
 
@@ -183,7 +236,7 @@ public class PuzzleActivity extends AppCompatActivity {
     private void drawPuzzle(ArrayList<Bitmap> bitmaps) {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
@@ -234,10 +287,8 @@ public class PuzzleActivity extends AppCompatActivity {
 
     /**
      * Restarts the puzzle.
-     * @param view the restart button.
      */
-    @SuppressWarnings("unused")
-    public void restart(@SuppressWarnings("UnusedParameters") View view){
+    private void restart(){
 
         // Clearing
         timer.cancel();
@@ -248,8 +299,9 @@ public class PuzzleActivity extends AppCompatActivity {
         timerTextView.setText(R.string.default_time);
 
         // Restarting
-        if (bitmap != null){
-            createPuzzle(bitmap);
+        // Create puzzle
+        if (puzzle.getPuzzleId() != 0){
+            createPuzzle(puzzle.getPuzzle(view.getContext()));
         }
         else {
             createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.puzzle_pieces));
@@ -262,10 +314,8 @@ public class PuzzleActivity extends AppCompatActivity {
 
     /**
      * Pauses the game.
-     * @param view the pause button.
      */
-    @SuppressWarnings("unused")
-    public void pause(@SuppressWarnings("UnusedParameters") View view){
+    private void pause(){
         isPause = !isPause;
         if (isPause) {
             disableButtons();
@@ -322,7 +372,7 @@ public class PuzzleActivity extends AppCompatActivity {
             timer.cancel();
             disableButtons();
             pauseButton.setEnabled(false);
-            Toast.makeText(this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(view.getContext(), "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -361,29 +411,29 @@ public class PuzzleActivity extends AppCompatActivity {
 
         // Left
         if(currentIndex - 1 == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
-            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_left);
+            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_right);
             return true;
         }
         // Right
         else if (currentIndex + 1 == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
-            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_right);
+            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_left);
             return true;
         }
         // Up
         else if (currentIndex - cols == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_up);
+            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_down);
             return true;
         }
         // Down
         else if (currentIndex + cols == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_down);
+            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_up);
             return true;
         }
-        Toast.makeText(this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(view.getContext(), "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
         counter--;
         movesTextView.setText(getResources().getQuantityString(R.plurals.moves, movesCounter, movesCounter));
         return false;
@@ -401,7 +451,7 @@ public class PuzzleActivity extends AppCompatActivity {
             public void run() {
 
                 time[0]++;
-                runOnUiThread(new Runnable()
+                getActivity().runOnUiThread(new Runnable()
                 {
                     public void run() {
 
@@ -429,5 +479,4 @@ public class PuzzleActivity extends AppCompatActivity {
         }
         return true;
     }
-
 }

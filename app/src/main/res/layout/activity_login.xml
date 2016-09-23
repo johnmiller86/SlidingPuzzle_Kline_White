@@ -18,7 +18,6 @@
         android:id="@+id/textView_login"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:singleLine="false"
         android:textSize="40sp" />
 
     <TextView

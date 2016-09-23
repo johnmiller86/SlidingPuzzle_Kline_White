@@ -1,7 +1,18 @@
 package com.ist_311.sliding_puzzle_miller_huynh_white.models;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.util.Log;
+
+import com.ist_311.sliding_puzzle_miller_huynh_white.activities.SettingsActivity;
+
+import java.io.File;
 
 public class Puzzle{
 
@@ -45,7 +56,64 @@ public class Puzzle{
      * Decodes and returns a bitmap from filepath.
      * @return the decoded bitmap.
      */
-    public Bitmap getPuzzle(){
-        return BitmapFactory.decodeFile(puzzlePath);
+    public Bitmap getPuzzle(Context context){
+        return fixOrientation(context, BitmapFactory.decodeFile(puzzlePath));
+    }
+
+    /**
+     * Rotates bitmap to correct orientation.
+     * @param bitmap the image bitmap.
+     * @return the properly oriented bitmap.
+     */
+    private Bitmap fixOrientation(Context context, Bitmap bitmap){
+
+        try {
+            String[] orientationColumn = {MediaStore.Images.Media.ORIENTATION};
+            Uri imageUri = getImageContentUri(context, new File(puzzlePath));
+            Cursor cursor = context.getContentResolver().query(imageUri != null ? imageUri : null != null ? imageUri != null ? imageUri : null : null, orientationColumn, null, null, null);
+            int orientation = -1;
+            if (cursor != null && cursor.moveToFirst()) {
+                orientation = cursor.getInt(cursor.getColumnIndex(orientationColumn[0]));
+                cursor.close();
+            }
+            Matrix matrix = new Matrix();
+            matrix.postRotate(orientation);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
+        catch (Exception e) {
+            Log.d(SettingsActivity.class.getSimpleName(), e.getMessage());
+        }
+        return bitmap;
+    }
+
+    /**
+     * Gets the uri associated with the image.
+     * @param context the context.
+     * @param imageFile the image file.
+     * @return the uri.
+     */
+    private Uri getImageContentUri(Context context, File imageFile) {
+        String filePath = imageFile.getAbsolutePath();
+        Cursor cursor = context.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[] { MediaStore.Images.Media._ID },
+                MediaStore.Images.Media.DATA + "=? ",
+                new String[] { filePath }, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor
+                    .getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            cursor.close();
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            if (imageFile.exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, filePath);
+                return context.getContentResolver().insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
     }
 }
