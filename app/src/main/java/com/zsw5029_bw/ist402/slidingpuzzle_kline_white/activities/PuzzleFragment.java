@@ -186,11 +186,13 @@ public class PuzzleFragment extends Fragment {
         if (bundle != null && bundle.getString(MainActivity.PUZZLE_MODE_TAG, "").equals("campaign")){
 
             // Avoid out of memory by scaling down
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 4;
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inSampleSize = 4;
 
             // Create bitmap
-            bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()), options);
+            //bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()), options);
+            bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()));
+
             createPuzzle(bitmap);
         }else{
             if (puzzle.getPuzzleId() != 0){
@@ -198,9 +200,10 @@ public class PuzzleFragment extends Fragment {
             }
             else {
                 // Avoid out of memory by scaling down
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1, options));
+//                BitmapFactory.Options options = new BitmapFactory.Options();
+//                options.inSampleSize = 4;
+                //createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1, options));
+                createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1));
             }
         }
     }
