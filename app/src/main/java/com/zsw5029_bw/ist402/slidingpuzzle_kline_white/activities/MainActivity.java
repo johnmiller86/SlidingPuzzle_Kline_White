@@ -1,5 +1,6 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
     private final String FRAGMENT_TAG = "fragment_tag";
     public static final String PUZZLE_MODE_TAG = "puzzle_mode_tag";
 
+    @SuppressLint("CommitTransaction")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
