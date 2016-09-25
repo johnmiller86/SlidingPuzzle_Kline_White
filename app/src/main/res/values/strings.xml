@@ -12,7 +12,6 @@
     <string name="default_moves">0 moves</string>
     <string name="default_time">0 seconds</string>
     <string name="create_an_account">Create an Account</string>
-    <string name="play">Play</string>
     <string name="settings">Settings</string>
     <string name="leaderboards">Leaderboards</string>
     <plurals name="seconds">
@@ -46,7 +45,6 @@
     </string-array>
     <string name="cancel">Cancel</string>
     <string name="allow">Allow</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="free_play">Free Play</string>
     <string name="campaign">Campaign</string>
 </resources>

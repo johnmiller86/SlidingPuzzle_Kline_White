@@ -36,9 +36,6 @@ import java.util.TimerTask;
 
 public class PuzzleFragment extends Fragment {
 
-    // Session
-    private Puzzle puzzle;
-
     // UI components
     private View view;
     private TableLayout tableLayout;
@@ -56,7 +53,6 @@ public class PuzzleFragment extends Fragment {
     private int counter, movesCounter, rows, cols;
     private boolean isPause;
     private final int[] time = {1};
-    private Bitmap bitmap;
     private String mode;
 
     // Bundle
@@ -118,7 +114,7 @@ public class PuzzleFragment extends Fragment {
         SettingFunctions settingFunctions = new SettingFunctions();
         Settings settings = settingFunctions.getSettings(user);
         PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
-        puzzle = puzzleFunctions.getPuzzle(user);
+        Puzzle puzzle = puzzleFunctions.getPuzzle(user);
 
         // Initializing Layout
         tableLayout = (TableLayout) view.findViewById(R.id.table_layout);
@@ -191,7 +187,7 @@ public class PuzzleFragment extends Fragment {
 
             // Create bitmap
             //bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()), options);
-            bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()));
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()));
 
             createPuzzle(bitmap);
         }else{
@@ -528,7 +524,6 @@ public class PuzzleFragment extends Fragment {
      */
     private String randomLevel(){
         int level = (int) (Math.random() * 20) + 1;
-        String res = "level_" + level;
-        return res;
+        return "level_" + level;
     }
 }

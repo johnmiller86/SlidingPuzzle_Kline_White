@@ -16,7 +16,6 @@ public class MainMenuFragment extends Fragment {
 
     // UI components
     private View view;
-    private Button campaignPlayButton, freePlayButton, settingsButton, leaderboardsButton;
     private FragmentTransaction fragmentTransaction;
 
     public MainMenuFragment() {
@@ -48,10 +47,10 @@ public class MainMenuFragment extends Fragment {
     }
 
     private void initialize(){
-        campaignPlayButton = (Button) view.findViewById(R.id.button_campaign);
-        freePlayButton = (Button) view.findViewById(R.id.button_freeplay);
-        settingsButton = (Button) view.findViewById(R.id.button_settings);
-        leaderboardsButton = (Button) view.findViewById(R.id.button_leaderboards);
+        Button campaignPlayButton = (Button) view.findViewById(R.id.button_campaign);
+        Button freePlayButton = (Button) view.findViewById(R.id.button_freeplay);
+        Button settingsButton = (Button) view.findViewById(R.id.button_settings);
+        Button leaderboardsButton = (Button) view.findViewById(R.id.button_leaderboards);
         campaignPlayButton.setOnClickListener(new View.OnClickListener(){
 
             @Override
