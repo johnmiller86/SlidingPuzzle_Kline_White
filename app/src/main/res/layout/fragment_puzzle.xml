@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ist_311.sliding_puzzle_miller_huynh_white.activities.PuzzleFragment"
+    tools:context=".activities.PuzzleFragment"
     android:background="@drawable/gradient"
     android:id="@+id/fragment_puzzle">
 

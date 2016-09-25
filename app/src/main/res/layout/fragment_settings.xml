@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ist_311.sliding_puzzle_miller_huynh_white.activities.SettingsFragment"
-    android:background="@drawable/puzzle_pieces"
+    tools:context=".activities.SettingsFragment"
+    android:background="@drawable/level_1"
     android:id="@+id/fragment_settings">
 
     <RelativeLayout
@@ -77,7 +77,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/button_pick_puzzle"
-        android:src="@drawable/puzzle_pieces"
+        android:src="@drawable/level_1"
         android:contentDescription="@string/default_image"
         android:layout_alignParentEnd="true"
         android:layout_marginBottom="20dp"/>

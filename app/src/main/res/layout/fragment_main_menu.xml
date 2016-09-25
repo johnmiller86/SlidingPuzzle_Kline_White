@@ -1,13 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ist_311.sliding_puzzle_miller_huynh_white.activities.MainMenuFragment"
+    tools:context=".activities.MainMenuFragment"
     android:id="@+id/fragment_main_menu">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/button_leaderboards"
@@ -23,7 +19,7 @@
             android:id="@+id/button_freeplay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Free Play"
+            android:text="@string/free_play"
             android:background="@drawable/button"
             android:layout_above="@+id/button_settings"
             android:layout_alignParentStart="true"
@@ -41,28 +37,26 @@
             android:layout_marginBottom="54dp"
             android:layout_alignParentEnd="true" />
 
-        <TextView
-            android:text="@string/app_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/logoTextView"
-            android:textAlignment="center"
-            android:textSize="36sp"
-            android:background="@drawable/gradient"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="61dp"
-            android:layout_alignParentEnd="true" />
-
-        <Button
+    <Button
             android:id="@+id/button_campaign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Campaign"
+            android:text="@string/campaign"
             android:background="@drawable/button"
             android:layout_marginBottom="71dp"
             android:layout_above="@+id/button_freeplay"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
-    </RelativeLayout>
-</FrameLayout>
+
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/logoTextView"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        android:background="@drawable/gradient"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+</RelativeLayout>
