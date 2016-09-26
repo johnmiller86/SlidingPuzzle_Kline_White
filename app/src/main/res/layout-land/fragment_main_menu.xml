@@ -1,13 +1,9 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.MainMenuFragment"
     android:id="@+id/fragment_main_menu">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/button_leaderboards"
@@ -60,5 +56,5 @@
             android:layout_above="@+id/button_settings"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true" />
-    </RelativeLayout>
-</FrameLayout>
+
+</RelativeLayout>

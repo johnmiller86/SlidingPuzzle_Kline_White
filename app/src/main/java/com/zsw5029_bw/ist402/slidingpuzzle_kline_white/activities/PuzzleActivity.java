@@ -1,15 +1,15 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities;
 
-import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class PuzzleFragment extends Fragment {
+public class PuzzleActivity extends AppCompatActivity {
 
     // UI components
     private View view;
@@ -53,20 +53,22 @@ public class PuzzleFragment extends Fragment {
     private int counter, movesCounter, rows, cols;
     private boolean isPause;
     private final int[] time = {1};
+    private String mode;
 
     // Bundle
     private final String TIMER_TAG = "timer_tag";
 
-    public PuzzleFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setRetainInstance(true);
-//        initializeReferences();
-//        startTimer(0);
+        setContentView(R.layout.activity_puzzle);
+
+        initializeReferences();
+        if (savedInstanceState != null){
+            startTimer(savedInstanceState.getInt(TIMER_TAG));
+        }else {
+            startTimer(0);
+        }
     }
 
     @Override
@@ -78,27 +80,27 @@ public class PuzzleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_puzzle, container, false);
-        initializeReferences();
-        if (savedInstanceState != null){
-            startTimer(savedInstanceState.getInt(TIMER_TAG));
-        }else {
-            startTimer(0);
-        }
-        return view;
-    }
+    public void onBackPressed() {
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-    }
+        new AlertDialog.Builder(this)
+                .setTitle("Progress will be lost...")
+                .setMessage("Are you sure you want to quit?")
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+                // Open Settings button
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+
+                // Denied, close app
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(R.mipmap.ic_launcher)
+                .show();
     }
 
     /**
@@ -107,7 +109,7 @@ public class PuzzleFragment extends Fragment {
     private void initializeReferences() {
 
         // Initializing Session
-        SessionManager sessionManager = new SessionManager(view.getContext());
+        SessionManager sessionManager = new SessionManager(this);
         UserFunctions userFunctions = new UserFunctions();
         User user = userFunctions.getUser(sessionManager.getUsername());
         SettingFunctions settingFunctions = new SettingFunctions();
@@ -116,11 +118,11 @@ public class PuzzleFragment extends Fragment {
         Puzzle puzzle = puzzleFunctions.getPuzzle(user);
 
         // Initializing Layout
-        tableLayout = (TableLayout) view.findViewById(R.id.table_layout);
+        tableLayout = (TableLayout) findViewById(R.id.table_layout);
 
         // Initializing TextViews
-        movesTextView = (TextView) view.findViewById(R.id.currentMoves);
-        timerTextView = (TextView) view.findViewById(R.id.editTextTimer);
+        movesTextView = (TextView) findViewById(R.id.currentMoves);
+        timerTextView = (TextView) findViewById(R.id.editTextTimer);
 
         // Initializing Lists
         imageButtons = new ArrayList<>();
@@ -144,8 +146,8 @@ public class PuzzleFragment extends Fragment {
         configureButtons();
 
         // Initializing pause and reset buttons
-        pauseButton = (Button) view.findViewById(R.id.button_pause);
-        resetButton = (Button) view.findViewById(R.id.button_reset);
+        pauseButton = (Button) findViewById(R.id.button_pause);
+        resetButton = (Button) findViewById(R.id.button_reset);
 
         // Add listeners
         pauseButton.setOnClickListener(new View.OnClickListener() {
@@ -171,14 +173,17 @@ public class PuzzleFragment extends Fragment {
 
 //        // Create puzzle
 //        if (puzzle.getPuzzleId() != 0){
-//            createPuzzle(puzzle.getPuzzle(view.getContext()));
+//            createPuzzle(puzzle.getPuzzle(this));
 //        }
 //        else {
 //            createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1));
 //        }
         // TODO change for level selection
-        Bundle bundle = this.getArguments();
-        if (bundle != null && bundle.getString(MainActivity.PUZZLE_MODE_TAG, "").equals("campaign")){
+//        Bundle bundle = this.getArguments();
+        Intent intent = getIntent();
+//        if (bundle != null && bundle.getString(MainActivity.PUZZLE_MODE_TAG, "").equals("campaign")){
+        if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null && intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG).equals("campaign")){
+
 
             // Avoid out of memory by scaling down
 //            BitmapFactory.Options options = new BitmapFactory.Options();
@@ -186,12 +191,12 @@ public class PuzzleFragment extends Fragment {
 
             // Create bitmap
             //bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()), options);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()));
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getPackageName()));
 
             createPuzzle(bitmap);
         }else{
             if (puzzle.getPuzzleId() != 0){
-                createPuzzle(puzzle.getPuzzle(view.getContext()));
+                createPuzzle(puzzle.getPuzzle(this));
             }
             else {
                 // Avoid out of memory by scaling down
@@ -210,12 +215,12 @@ public class PuzzleFragment extends Fragment {
         for (int row = 0; row < rows; row++){
 
             // Creating TableRow
-            TableRow tableRow = new TableRow(view.getContext());
+            TableRow tableRow = new TableRow(this);
 
             for (int col = 0; col < cols; col++){
 
                 // Creating ImageButton
-                ImageButton imageButton = new ImageButton(view.getContext());
+                ImageButton imageButton = new ImageButton(this);
                 imageButtons.add(imageButton);
                 tableRow.addView(imageButton);
             }
@@ -228,7 +233,7 @@ public class PuzzleFragment extends Fragment {
      */
     private void configureButtons() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         for (ImageButton imageButton : imageButtons) {
 
@@ -267,7 +272,7 @@ public class PuzzleFragment extends Fragment {
     private void drawPuzzle(ArrayList<Bitmap> bitmaps) {
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
@@ -396,7 +401,7 @@ public class PuzzleFragment extends Fragment {
             timer.cancel();
             disableButtons();
             pauseButton.setEnabled(false);
-            Toast.makeText(view.getContext(), "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -435,26 +440,26 @@ public class PuzzleFragment extends Fragment {
 
         // Left
         if(currentIndex - 1 == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_left);
-            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_right);
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
             return true;
         }
         // Right
         else if (currentIndex + 1 == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_right);
-            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_left);
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_right);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_left);
             return true;
         }
         // Up
         else if (currentIndex - cols == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_up);
-            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_down);
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
             return true;
         }
         // Down
         else if (currentIndex + cols == previousIndex){
-            currentAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_down);
-            previousAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.slide_up);
+            currentAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+            previousAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
             return true;
         }
         // Tiles not adjacent
@@ -462,7 +467,7 @@ public class PuzzleFragment extends Fragment {
         movesTextView.setText(getResources().getQuantityString(R.plurals.moves, movesCounter, movesCounter));
         // Don't annoy user if they cancelled a selection
         if (currentIndex != previousIndex) {
-            Toast.makeText(view.getContext(), "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "You must select two adjacent tiles!", Toast.LENGTH_SHORT).show();
         }
         return false;
     }
@@ -479,7 +484,7 @@ public class PuzzleFragment extends Fragment {
             public void run() {
 
                 time[0]++;
-                getActivity().runOnUiThread(new Runnable()
+                runOnUiThread(new Runnable()
                 {
                     public void run() {
 
@@ -514,7 +519,7 @@ public class PuzzleFragment extends Fragment {
         //bundle.putStringArrayList("IM", imageButtons.toString());
         timer.cancel();
         bundle.putInt(TIMER_TAG, time[0]);
-        
+
     }
 
     /**

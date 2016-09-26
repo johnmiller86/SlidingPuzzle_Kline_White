@@ -1,6 +1,8 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.R;
+
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_MODE_TAG;
 
 
 public class MainMenuFragment extends Fragment {
@@ -84,33 +88,43 @@ public class MainMenuFragment extends Fragment {
     /**
      * Free Play button listener.
      */
+    @SuppressLint("CommitTransaction")
     private void campaignPlay() {
-        MainActivity.fragment = new PuzzleFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(MainActivity.PUZZLE_MODE_TAG, "campaign");
-        MainActivity.fragment.setArguments(bundle);
-        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+//        MainActivity.fragment = new PuzzleFragment();
+//        Bundle bundle = new Bundle();
+//        bundle.putString(MainActivity.PUZZLE_MODE_TAG, "campaign");
+//        MainActivity.fragment.setArguments(bundle);
+//        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+//        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
+        Intent campaign = new Intent(getActivity(), PuzzleActivity.class);
+        campaign.putExtra(PUZZLE_MODE_TAG, "campaign");
+        startActivity(campaign);
+        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**
      * Free Play button listener.
      */
+    @SuppressLint("CommitTransaction")
     private void freePlay() {
-        MainActivity.fragment = new PuzzleFragment();
-        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+//        MainActivity.fragment = new PuzzleFragment();
+//        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+//        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
+        Intent intent = new Intent(getActivity(), PuzzleActivity.class);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**
      * Settings button listener.
      */
+    @SuppressLint("CommitTransaction")
     private void settings() {
         MainActivity.fragment = new SettingsFragment();
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();

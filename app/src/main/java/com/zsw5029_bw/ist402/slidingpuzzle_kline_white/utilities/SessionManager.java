@@ -1,5 +1,6 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,6 +18,7 @@ public class SessionManager {
     private static final String IS_LOGGED_IN = "isLoggedIn";
 
     // Constructor
+    @SuppressLint("CommitPrefEdits")
     public SessionManager(Context context) {
         int PRIVATE_MODE = 0;
         pref = context.getSharedPreferences(PREFS, PRIVATE_MODE);

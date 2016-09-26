@@ -76,29 +76,42 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
         finish();
     }
 
+    @SuppressLint("CommitTransaction")
     @Override
     public void onDrawerItemSelected(View view, int position) {
 //        Fragment fragment = null;
         switch (position) {
+            // Main menu
             case 0:
                 fragment = new MainMenuFragment();
                 break;
+            // Campaign
             case 1:
-                //fragment = new CampaignFragment();
-                fragment = new PuzzleFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString(PUZZLE_MODE_TAG, "campaign");
-                fragment.setArguments(bundle);
+//                fragment = new PuzzleFragment();
+//                Bundle bundle = new Bundle();
+//                bundle.putString(PUZZLE_MODE_TAG, "campaign");
+//                fragment.setArguments(bundle);
+                Intent campaign = new Intent(this, PuzzleActivity.class);
+                campaign.putExtra(PUZZLE_MODE_TAG, "campaign");
+                startActivity(campaign);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
+            // Free play
             case 2:
-                fragment = new PuzzleFragment();
+                //fragment = new PuzzleFragment();
+                Intent freePlay = new Intent(this, PuzzleActivity.class);
+                startActivity(freePlay);
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
+            // Leaderboards
             case 3:
-                //fragment = new SettingsFragment();
+                //fragment = new LeaderboardsFragment();
                 break;
+            // Settings
             case 4:
                 fragment = new SettingsFragment();
                 break;
+            // Sign out
             case 5:
                 logoutUser();
                 break;
