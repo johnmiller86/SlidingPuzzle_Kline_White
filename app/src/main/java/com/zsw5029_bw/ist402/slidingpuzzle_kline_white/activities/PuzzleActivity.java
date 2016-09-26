@@ -82,25 +82,30 @@ public class PuzzleActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        new AlertDialog.Builder(this)
-                .setTitle("Progress will be lost...")
-                .setMessage("Are you sure you want to quit?")
+        if (!isSolved()) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Progress will be lost...")
+                    .setMessage("Are you sure you want to quit?")
 
-                // Open Settings button
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
+                    // Open Settings button
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
 
-                // Denied, close app
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setIcon(R.mipmap.ic_launcher)
-                .show();
+                    // Denied, close app
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(R.mipmap.ic_launcher)
+                    .show();
+        }
+        else {
+            finish();
+        }
     }
 
     /**
