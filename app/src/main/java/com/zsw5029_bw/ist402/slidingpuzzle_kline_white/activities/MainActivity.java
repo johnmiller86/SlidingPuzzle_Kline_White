@@ -148,7 +148,7 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
                         dialog.dismiss();
                     }
                 })
-                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setIcon(R.mipmap.ic_launcher)
                 .show();
         }
     }
