@@ -296,10 +296,11 @@ public class SettingsFragment extends Fragment {
                 // Granted
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
 
-                    Intent intent = new Intent();
-                    intent.setType("image/*");
-                    intent.setAction(Intent.ACTION_GET_CONTENT);
-                    startActivityForResult(Intent.createChooser(intent, "Select a Photo"),SELECT_IMAGE);
+                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(intent, SELECT_IMAGE);
+//                    intent.setType("image/*");
+//                    intent.setAction(Intent.ACTION_GET_CONTENT);
+//                    startActivityForResult(Intent.createChooser(intent, "Select a Photo"),SELECT_IMAGE);
                 }
                 // Blocked
                 else if(!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)){
