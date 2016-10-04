@@ -2,6 +2,7 @@ package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -14,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -37,7 +39,6 @@ import java.util.TimerTask;
 public class PuzzleActivity extends AppCompatActivity {
 
     // UI components
-    private View view;
     private TableLayout tableLayout;
     private TextView movesTextView, timerTextView;
     private ImageButton previousButton;
@@ -55,20 +56,12 @@ public class PuzzleActivity extends AppCompatActivity {
     private final int[] time = {1};
     private String mode;
 
-    // Bundle
-    private final String TIMER_TAG = "timer_tag";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
-
         initializeReferences();
-        if (savedInstanceState != null){
-            startTimer(savedInstanceState.getInt(TIMER_TAG));
-        }else {
-            startTimer(0);
-        }
+        startTimer(0);
     }
 
     @Override
@@ -102,10 +95,15 @@ public class PuzzleActivity extends AppCompatActivity {
                     })
                     .setIcon(R.mipmap.ic_launcher)
                     .show();
-        }
-        else {
+        }else{
             finish();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        configureButtons();
     }
 
     /**
@@ -176,26 +174,11 @@ public class PuzzleActivity extends AppCompatActivity {
         movesCounter = 0;
         isPause = false;
 
-//        // Create puzzle
-//        if (puzzle.getPuzzleId() != 0){
-//            createPuzzle(puzzle.getPuzzle(this));
-//        }
-//        else {
-//            createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1));
-//        }
-        // TODO change for level selection
-//        Bundle bundle = this.getArguments();
+        // Create puzzle
         Intent intent = getIntent();
-//        if (bundle != null && bundle.getString(MainActivity.PUZZLE_MODE_TAG, "").equals("campaign")){
         if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null && intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG).equals("campaign")){
 
-
-            // Avoid out of memory by scaling down
-//            BitmapFactory.Options options = new BitmapFactory.Options();
-//            options.inSampleSize = 4;
-
             // Create bitmap
-            //bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getActivity().getPackageName()), options);
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getPackageName()));
 
             createPuzzle(bitmap);
@@ -204,10 +187,6 @@ public class PuzzleActivity extends AppCompatActivity {
                 createPuzzle(puzzle.getPuzzle(this));
             }
             else {
-                // Avoid out of memory by scaling down
-//                BitmapFactory.Options options = new BitmapFactory.Options();
-//                options.inSampleSize = 4;
-                //createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1, options));
                 createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1));
             }
         }
@@ -242,9 +221,11 @@ public class PuzzleActivity extends AppCompatActivity {
 
         for (ImageButton imageButton : imageButtons) {
 
-            // Sizing Button
+            // Setting Attributes
             imageButton.getLayoutParams().width = displayMetrics.widthPixels / cols;
             imageButton.getLayoutParams().height = displayMetrics.heightPixels / rows;
+            imageButton.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageButton.setPadding(0,0,0,0);
             imageButton.requestLayout();
 
             // Adding Listener
@@ -518,14 +499,6 @@ public class PuzzleActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle bundle){
-        super.onSaveInstanceState(bundle);
-        //bundle.putStringArrayList("IM", imageButtons.toString());
-        timer.cancel();
-        bundle.putInt(TIMER_TAG, time[0]);
-
-    }
 
     /**
      * Getting random level via resource id string *TESTING*

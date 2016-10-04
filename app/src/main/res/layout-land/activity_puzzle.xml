@@ -49,17 +49,14 @@
             android:layout_width="40sp"
             android:layout_height="40sp"
             android:layout_alignParentStart="true"
-            android:background="@drawable/pause_button"
-            android:onClick="pause"/>
+            android:background="@drawable/pause_button"/>
 
         <Button
             android:id="@+id/button_reset"
             android:layout_width="40sp"
             android:layout_height="40sp"
             android:layout_alignParentEnd="true"
-            android:background="@drawable/reset_button"
-            android:onClick="restart"/>
-
+            android:background="@drawable/reset_button"/>
 
     </RelativeLayout>
 </FrameLayout>
