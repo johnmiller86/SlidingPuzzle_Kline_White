@@ -93,7 +93,7 @@ public class MainMenuFragment extends Fragment {
 //        Bundle bundle = new Bundle();
 //        bundle.putString(MainActivity.PUZZLE_MODE_TAG, "campaign");
 //        MainActivity.fragment.setArguments(bundle);
-
+//
         MainActivity.fragment = new CampaignFragment();
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
