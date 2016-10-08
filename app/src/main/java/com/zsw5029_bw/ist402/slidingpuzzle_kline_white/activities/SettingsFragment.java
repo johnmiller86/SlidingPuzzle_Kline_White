@@ -140,6 +140,9 @@ public class SettingsFragment extends Fragment {
         if (settings.getSettingId() != 0) {
             numberPickerCols.setValue(settings.getColumns());
             numberPickerRows.setValue(settings.getRows());
+        }else{
+            numberPickerCols.setValue(3);
+            numberPickerRows.setValue(4);
         }
     }
 

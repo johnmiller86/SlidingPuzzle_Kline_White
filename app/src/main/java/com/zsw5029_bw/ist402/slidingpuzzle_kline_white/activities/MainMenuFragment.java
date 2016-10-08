@@ -13,8 +13,6 @@ import android.widget.Button;
 
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.R;
 
-import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_MODE_TAG;
-
 
 public class MainMenuFragment extends Fragment {
 
@@ -40,6 +38,7 @@ public class MainMenuFragment extends Fragment {
         initialize();
         return view;
     }
+    @SuppressWarnings("EmptyMethod")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

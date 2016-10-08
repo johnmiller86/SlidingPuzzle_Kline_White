@@ -21,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(UserFunctions.createTable());
         db.execSQL(PuzzleFunctions.createTable());
         db.execSQL(SettingFunctions.createTable());
+        db.execSQL(LeaderboardFunctions.createTable());
     }
 
     // Upgrade database
@@ -29,6 +30,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + UserFunctions.USERS_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + PuzzleFunctions.PUZZLES_TABLE);
         db.execSQL("DROP TABLE IF EXISTS " + SettingFunctions.SETTINGS_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + LeaderboardFunctions.LEADERBOARDS_TABLE);
         onCreate(db);
     }
 }

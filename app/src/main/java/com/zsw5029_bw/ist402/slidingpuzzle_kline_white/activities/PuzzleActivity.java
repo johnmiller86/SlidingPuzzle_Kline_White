@@ -176,10 +176,12 @@ public class PuzzleActivity extends AppCompatActivity {
 
         // Create puzzle
         Intent intent = getIntent();
-        if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null && intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG).equals("campaign")){
+
+        if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null){
+//        if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null && intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG).equals("campaign")){
 
             // Create bitmap
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(randomLevel(), "drawable", getPackageName()));
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG), "drawable", getPackageName()));
 
             createPuzzle(bitmap);
         }else{
@@ -504,8 +506,8 @@ public class PuzzleActivity extends AppCompatActivity {
      * Getting random level via resource id string *TESTING*
      * @return a random resource string.
      */
-    private String randomLevel(){
-        int level = (int) (Math.random() * 20) + 1;
-        return "level_" + level;
-    }
+//    private String randomLevel(){
+//        int level = (int) (Math.random() * 20) + 1;
+//        return "level_" + level;
+//    }
 }
