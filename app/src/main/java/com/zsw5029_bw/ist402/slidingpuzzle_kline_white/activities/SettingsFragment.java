@@ -32,6 +32,7 @@ import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.UserFunctions;
 
 import static android.app.Activity.RESULT_OK;
 
+@SuppressWarnings("EmptyMethod")
 public class SettingsFragment extends Fragment {
 
     // Session

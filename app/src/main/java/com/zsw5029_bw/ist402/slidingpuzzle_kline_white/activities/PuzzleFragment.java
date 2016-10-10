@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@SuppressWarnings("EmptyMethod")
 public class PuzzleFragment extends Fragment {
 
     // UI components

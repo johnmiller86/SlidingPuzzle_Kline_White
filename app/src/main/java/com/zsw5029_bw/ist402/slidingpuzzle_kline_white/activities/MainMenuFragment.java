@@ -14,6 +14,8 @@ import android.widget.Button;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.R;
 
 
+@SuppressWarnings("EmptyMethod")
+@SuppressLint("CommitTransaction")
 public class MainMenuFragment extends Fragment {
 
     // UI components
@@ -38,7 +40,6 @@ public class MainMenuFragment extends Fragment {
         initialize();
         return view;
     }
-    @SuppressWarnings("EmptyMethod")
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -87,7 +88,6 @@ public class MainMenuFragment extends Fragment {
     /**
      * Free Play button listener.
      */
-    @SuppressLint("CommitTransaction")
     private void campaignPlay() {
         MainActivity.fragment = new CampaignFragment();
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -99,7 +99,6 @@ public class MainMenuFragment extends Fragment {
     /**
      * Free Play button listener.
      */
-    @SuppressLint("CommitTransaction")
     private void freePlay() {
         Intent intent = new Intent(getActivity(), PuzzleActivity.class);
         startActivity(intent);
@@ -109,7 +108,6 @@ public class MainMenuFragment extends Fragment {
     /**
      * Settings button listener.
      */
-    @SuppressLint("CommitTransaction")
     private void settings() {
         MainActivity.fragment = new SettingsFragment();
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();

@@ -19,6 +19,7 @@ import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.SessionManager;
 
 import java.util.List;
 
+@SuppressLint("CommitTransaction")
 public class MainActivity extends FragmentActivity implements FragmentDrawer.FragmentDrawerListener {
 
     // Session
@@ -30,7 +31,6 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
     public static final String PUZZLE_TIMER_TAG = "puzzle_timer_tag";
     public static final String PUZZLE_LEVEL_TAG = "puzzle_level_tag";
 
-    @SuppressLint("CommitTransaction")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,21 +74,20 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
         finish();
     }
 
-    @SuppressLint("CommitTransaction")
     @Override
     public void onDrawerItemSelected(View view, int position) {
         boolean current = true;
         switch (position) {
             // Main menu
             case 0:
-                if (fragment instanceof  MainMenuFragment == false){
+                if (!(fragment instanceof MainMenuFragment)){
                     fragment = new MainMenuFragment();
                     current = false;
                 }
                 break;
             // Campaign
             case 1:
-                if (fragment instanceof CampaignFragment == false){
+                if (!(fragment instanceof CampaignFragment)){
                     fragment = new CampaignFragment();
                     current = false;
                 }
@@ -108,7 +107,7 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
                 break;
             // Settings
             case 4:
-                if (fragment instanceof  SettingsFragment == false){
+                if (!(fragment instanceof SettingsFragment)){
                     fragment = new SettingsFragment();
                     current = false;
                 }

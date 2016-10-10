@@ -23,6 +23,7 @@
         <item quantity="other">%1$d moves</item>
     </plurals>
     <string name="minutes_seconds">%1$dm %2$ds</string>
+    <string name="level_num">Level %1$d</string>
     <string name="default_image">default_image</string>
     <string name="rows">Rows</string>
     <string name="columns">Columns</string>

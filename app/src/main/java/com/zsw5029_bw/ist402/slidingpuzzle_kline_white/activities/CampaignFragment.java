@@ -40,19 +40,8 @@ import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainAct
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_MODE_TAG;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_TIMER_TAG;
 
+@SuppressWarnings("EmptyMethod")
 public class CampaignFragment extends Fragment {
-
-    // Session
-    private User user;
-    private Settings settings;
-    private SettingFunctions settingFunctions;
-    private Puzzle puzzle;
-    private PuzzleFunctions puzzleFunctions;
-
-    // Constants
-    private final int ROWS = 7;
-    private final int COLS = 3;
-    private final String REFRESH_TAG = "0";
 
     // UI Components
     private View view;
@@ -76,11 +65,11 @@ public class CampaignFragment extends Fragment {
         SessionManager sessionManager = new SessionManager(view.getContext());
         UserFunctions userFunctions = new UserFunctions();
         LeaderboardFunctions leaderboardFunctions = new LeaderboardFunctions();
-        user = userFunctions.getUser(sessionManager.getUsername());
-        settingFunctions = new SettingFunctions();
-        settings = settingFunctions.getSettings(user);
-        puzzleFunctions = new PuzzleFunctions();
-        puzzle = puzzleFunctions.getPuzzle(user);
+        User user = userFunctions.getUser(sessionManager.getUsername());
+        SettingFunctions settingFunctions = new SettingFunctions();
+        Settings settings = settingFunctions.getSettings(user);
+        PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
+        Puzzle puzzle = puzzleFunctions.getPuzzle(user);
         relativeLayouts = new ArrayList<>();
         imageButtons = new ArrayList<>();
         unlocked = leaderboardFunctions.getOpenLevels(user);
@@ -148,7 +137,7 @@ public class CampaignFragment extends Fragment {
             textViewParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             textView.setLayoutParams(textViewParams);
             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            textView.setText("Level " + (i + 1));
+            textView.setText(getString(R.string.level_num, i + 1));
             textView.setTextSize(18);
             textView.setBackgroundResource(R.drawable.gradient);
             textView.setTypeface(Typeface.create("serif", Typeface.BOLD));
@@ -192,6 +181,8 @@ public class CampaignFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         for (RelativeLayout relativeLayout : relativeLayouts) {
+            int ROWS = 7;
+            int COLS = 3;
             if (displayMetrics.widthPixels > displayMetrics.heightPixels){
                 relativeLayout.getLayoutParams().width = displayMetrics.widthPixels / COLS;
                 relativeLayout.getLayoutParams().height = displayMetrics.heightPixels / ROWS * 2;
@@ -242,7 +233,7 @@ public class CampaignFragment extends Fragment {
      * @param imageView the receiving ImageView.
      * @param drawable the applying Drawable.
      */
-    public void loadAsync(int resId, ImageView imageView, Drawable drawable) {
+    private void loadAsync(int resId, ImageView imageView, Drawable drawable) {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView, drawable);
         task.execute(resId);
     }
@@ -257,12 +248,11 @@ public class CampaignFragment extends Fragment {
     public class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         private final WeakReference<ImageView> imageViewReference;
         private int data = 0;
-        private Drawable drawable;
-        private boolean current;
+        private final Drawable drawable;
 
-        public BitmapWorkerTask(ImageView imageView, Drawable drawable) {
+        BitmapWorkerTask(ImageView imageView, Drawable drawable) {
             // Use a WeakReference to ensure the ImageView can be garbage collected
-            imageViewReference = new WeakReference<ImageView>(imageView);
+            imageViewReference = new WeakReference<>(imageView);
             this.drawable = drawable;
         }
 
@@ -276,7 +266,7 @@ public class CampaignFragment extends Fragment {
         // Once complete, see if ImageView is still around and set bitmap.
         @Override
         protected void onPostExecute(Bitmap bitmap) {
-            if (imageViewReference != null && bitmap != null) {
+            if (bitmap != null) {
                 final ImageView imageView = imageViewReference.get();
                 if (imageView != null) {
                     imageView.setImageBitmap(bitmap);
@@ -285,7 +275,7 @@ public class CampaignFragment extends Fragment {
             }
         }
 
-        public int calculateInSampleSize(
+        int calculateInSampleSize(
                 BitmapFactory.Options options, int reqWidth, int reqHeight) {
             // Raw height and width of image
             final int height = options.outHeight;
@@ -308,8 +298,7 @@ public class CampaignFragment extends Fragment {
             return inSampleSize;
         }
 
-        public Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
-                                                             int reqWidth, int reqHeight) {
+        Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {
 
             // First decode with inJustDecodeBounds=true to check dimensions
             final BitmapFactory.Options options = new BitmapFactory.Options();

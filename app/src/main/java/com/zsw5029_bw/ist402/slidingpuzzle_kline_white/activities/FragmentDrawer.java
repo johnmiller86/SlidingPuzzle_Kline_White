@@ -36,10 +36,6 @@ public class FragmentDrawer extends Fragment {
         this.drawerListener = listener;
     }
 
-    public void setTitles(String[] t){
-        titles = t;
-        getData();
-    }
     private static List<NavDrawerItem> getData() {
         List<NavDrawerItem> data = new ArrayList<>();
 

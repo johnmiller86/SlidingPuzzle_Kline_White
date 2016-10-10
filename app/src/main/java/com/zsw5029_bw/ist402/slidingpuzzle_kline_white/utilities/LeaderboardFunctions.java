@@ -74,7 +74,7 @@ public class LeaderboardFunctions {
      * @param user the user.
      * @param entry the new high score.
      */
-    public void update(User user, Leaderboard entry){
+    private void update(User user, Leaderboard entry){
 
         // Database
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
@@ -87,7 +87,7 @@ public class LeaderboardFunctions {
 
         // Where
         String where = USER_ID + " = ? AND " + LEVEL_NUM + " = ?";
-        String[] id = {String.valueOf(entry.getLeaderboard_id()), String.valueOf(entry.getLevel_num())};
+        String[] id = {String.valueOf(user.getUserId()), String.valueOf(entry.getLevel_num())};
 
         // Inserting Row
         db.update(LEADERBOARDS_TABLE, values, where, id);
@@ -124,17 +124,18 @@ public class LeaderboardFunctions {
      * @return the list of levels.
      */
     public ArrayList<Integer> getOpenLevels(User user) {
-        ArrayList<Integer> arrayList = new ArrayList();
+        ArrayList<Integer> arrayList = new ArrayList<>();
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + "=?", new String[]{String.valueOf(user.getUserId())});
         while (cursor.moveToNext()) {
             arrayList.add(cursor.getColumnIndex(LEVEL_NUM));
         }
         DatabaseManager.getDatabaseManager().closeDatabase();
+        cursor.close();
         return arrayList;
     }
 
-    public boolean highScore(User user, Leaderboard leaderboard) {
+    private boolean highScore(User user, Leaderboard leaderboard) {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + "=? AND " + LEVEL_NUM + " =?", new String[]{String.valueOf(user.getUserId()), String.valueOf(leaderboard.getScore())});
         while (cursor.moveToNext()) {
@@ -143,6 +144,7 @@ public class LeaderboardFunctions {
             }
         }
         DatabaseManager.getDatabaseManager().closeDatabase();
+        cursor.close();
         return false;
     }
 }

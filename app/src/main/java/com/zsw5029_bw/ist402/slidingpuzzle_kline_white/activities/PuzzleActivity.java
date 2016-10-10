@@ -48,14 +48,14 @@ public class PuzzleActivity extends AppCompatActivity {
 
     // Session
 //    SessionManager sessionManager = new SessionManager(getBaseContext());
-    UserFunctions userFunctions = new UserFunctions();
-    User user = userFunctions.getUser(sessionManager.getUsername());
-    SettingFunctions settingFunctions = new SettingFunctions();
+    private final UserFunctions userFunctions = new UserFunctions();
+    private final User user = userFunctions.getUser(sessionManager.getUsername());
+    private final SettingFunctions settingFunctions = new SettingFunctions();
     Settings settings = settingFunctions.getSettings(user);
-    PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
+    private final PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
     Puzzle puzzle = puzzleFunctions.getPuzzle(user);
-    LeaderboardFunctions leaderboardFunctions = new LeaderboardFunctions();
-    Leaderboard leaderboard = leaderboardFunctions.getLeaderboards(user);
+    private final LeaderboardFunctions leaderboardFunctions = new LeaderboardFunctions();
+    private final Leaderboard leaderboard = leaderboardFunctions.getLeaderboards(user);
 
     // UI components
     private TableLayout tableLayout;
@@ -73,8 +73,6 @@ public class PuzzleActivity extends AppCompatActivity {
     private Animation currentAnimation, previousAnimation;
     private int counter, movesCounter, rows, cols, startTime, currentTime, score, levelNum;
     private boolean isPause, isCampaign;
-    //private final int[] time = {1};
-    private String mode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -95,12 +93,13 @@ public class PuzzleActivity extends AppCompatActivity {
 
         if (!isSolved()) {
             new AlertDialog.Builder(this)
-                    .setTitle("Progress will be lost...")
+                    .setTitle("Exit")
                     .setMessage("Are you sure you want to quit?")
 
                     // Open Settings button
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            setResult(Activity.RESULT_OK);
                             finish();
                         }
                     })

@@ -7,10 +7,6 @@ public class Leaderboard {
     private int level_num, moves, score;
     private String time;
 
-    public int getLeaderboard_id() {
-        return leaderboard_id;
-    }
-
     public void setLeaderboard_id(int leaderboard_id) {
         this.leaderboard_id = leaderboard_id;
     }
