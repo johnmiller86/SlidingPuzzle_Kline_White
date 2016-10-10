@@ -22,11 +22,13 @@ import java.util.List;
 public class MainActivity extends FragmentActivity implements FragmentDrawer.FragmentDrawerListener {
 
     // Session
-    private SessionManager sessionManager;
+    public static SessionManager sessionManager;
     private FragmentTransaction fragmentTransaction;
     public static Fragment fragment;
     private final String FRAGMENT_TAG = "fragment_tag";
     public static final String PUZZLE_MODE_TAG = "puzzle_mode_tag";
+    public static final String PUZZLE_TIMER_TAG = "puzzle_timer_tag";
+    public static final String PUZZLE_LEVEL_TAG = "puzzle_level_tag";
 
     @SuppressLint("CommitTransaction")
     @Override
@@ -38,8 +40,7 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
         sessionManager = new SessionManager(getApplicationContext());
 
         // FragmentDrawer
-        FragmentDrawer fragmentDrawer = (FragmentDrawer)
-                getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        FragmentDrawer fragmentDrawer = (FragmentDrawer) getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         fragmentDrawer.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
         fragmentDrawer.setDrawerListener(this);
 
@@ -47,18 +48,15 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
         DBHelper dbHelper = new DBHelper(this.getApplicationContext());
         DatabaseManager.initializeInstance(dbHelper);
 
-        // Loading Fragment
+        // Load/recover fragment
         if (savedInstanceState != null && getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_TAG) != null){
-            // Recovering Fragment
             fragment = getSupportFragmentManager().getFragment(savedInstanceState, FRAGMENT_TAG);
         }else {
-            // Creating new Fragment
             fragment = new MainMenuFragment();
         }
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_container, fragment);
-//        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -79,37 +77,41 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
     @SuppressLint("CommitTransaction")
     @Override
     public void onDrawerItemSelected(View view, int position) {
-//        Fragment fragment = null;
+        boolean current = true;
         switch (position) {
             // Main menu
             case 0:
-                fragment = new MainMenuFragment();
+                if (fragment instanceof  MainMenuFragment == false){
+                    fragment = new MainMenuFragment();
+                    current = false;
+                }
                 break;
             // Campaign
             case 1:
-//                fragment = new PuzzleFragment();
-//                Bundle bundle = new Bundle();
-//                bundle.putString(PUZZLE_MODE_TAG, "campaign");
-//                fragment.setArguments(bundle);
-                Intent campaign = new Intent(this, PuzzleActivity.class);
-                campaign.putExtra(PUZZLE_MODE_TAG, "campaign");
-                startActivity(campaign);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                if (fragment instanceof CampaignFragment == false){
+                    fragment = new CampaignFragment();
+                    current = false;
+                }
                 break;
             // Free play
             case 2:
-                //fragment = new PuzzleFragment();
                 Intent freePlay = new Intent(this, PuzzleActivity.class);
                 startActivity(freePlay);
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                 break;
             // Leaderboards
             case 3:
-                //fragment = new LeaderboardsFragment();
+//                if (fragment instanceof  LeaderboardsFragment == false) {
+//                    fragment = new LeaderboardsFragment();
+//                    current = false;
+//                }
                 break;
             // Settings
             case 4:
-                fragment = new SettingsFragment();
+                if (fragment instanceof  SettingsFragment == false){
+                    fragment = new SettingsFragment();
+                    current = false;
+                }
                 break;
             // Sign out
             case 5:
@@ -119,18 +121,11 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
                 break;
         }
 
-        if (fragment != null) {
+        // Load only if not current to save memory
+        if (!current) {
             fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
             fragmentTransaction.replace(R.id.fragment_container, fragment);
-//            if (fragment instanceof MainMenuFragment){
-//
-//            }
-//            else {
-//                fragmentTransaction.addToBackStack(null);
-//            }
-            fragmentTransaction.addToBackStack(null);
-//            fragment.setRetainInstance(true);
             fragmentTransaction.commit();
         }
     }
@@ -138,31 +133,32 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
     @Override
     public void onBackPressed() {
 
-        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-
-            getSupportFragmentManager().popBackStack();
-//            setCurrentFragment();
-        } else {
-
+        if (fragment instanceof MainMenuFragment) {
             new AlertDialog.Builder(this)
-                .setTitle("Exit")
-                .setMessage("Are you sure you want to quit?")
+                    .setTitle("Exit")
+                    .setMessage("Are you sure you want to quit?")
 
-                // Open Settings button
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                       finish();
-                    }
-                })
+                    // Open Settings button
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
 
-                // Denied, close app
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                })
-                .setIcon(R.mipmap.ic_launcher)
-                .show();
+                    // Denied, close app
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setIcon(R.mipmap.ic_launcher)
+                    .show();
+        }else{
+            MainActivity.fragment = new MainMenuFragment();
+            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+            fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
+            fragmentTransaction.commit();
         }
     }
 
@@ -184,13 +180,6 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
         super.onSaveInstanceState(savedFragment);
 
         //Save the Fragment's instance
-        if (getSupportFragmentManager().getBackStackEntryCount() != 0) {
-            getSupportFragmentManager().putFragment(savedFragment, FRAGMENT_TAG, fragment);
-        }
+        getSupportFragmentManager().putFragment(savedFragment, FRAGMENT_TAG, fragment);
     }
-
-//    private void setCurrentFragment(){
-//        String fragmentTag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
-//        fragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
-//    }
 }

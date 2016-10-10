@@ -4,6 +4,8 @@ public class Leaderboard {
 
     // Instance Vars
     private int leaderboard_id;
+    private int level_num, moves, score;
+    private String time;
 
     public int getLeaderboard_id() {
         return leaderboard_id;
@@ -37,8 +39,6 @@ public class Leaderboard {
         this.time = time;
     }
 
-    private int level_num, moves, score;
-    private String time;
 
     public int getLevel_num() {
         return level_num;

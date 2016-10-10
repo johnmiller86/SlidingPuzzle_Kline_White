@@ -47,7 +47,4 @@
     <string name="allow">Allow</string>
     <string name="free_play">Free Play</string>
     <string name="campaign">Campaign</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

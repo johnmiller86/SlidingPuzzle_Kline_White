@@ -52,17 +52,21 @@ public class LeaderboardFunctions {
      * @param entry the entry.
      */
     public void insert(User user, Leaderboard entry) {
-        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        ContentValues values = new ContentValues();
-        values.put(USER_ID, user.getUserId());
-        values.put(LEVEL_NUM, entry.getLevel_num());
-        values.put(SCORE, entry.getScore());
-        values.put(MOVES, entry.getMoves());
-        values.put(TIME, entry.getTime());
+        if (highScore(user, entry)){
+            update(user, entry);
+        }else {
+            SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+            ContentValues values = new ContentValues();
+            values.put(USER_ID, user.getUserId());
+            values.put(LEVEL_NUM, entry.getLevel_num());
+            values.put(SCORE, entry.getScore());
+            values.put(MOVES, entry.getMoves());
+            values.put(TIME, entry.getTime());
 
-        // Inserting Row
-        db.insert(LEADERBOARDS_TABLE, null, values);
-        DatabaseManager.getDatabaseManager().closeDatabase();
+            // Inserting Row
+            db.insert(LEADERBOARDS_TABLE, null, values);
+            DatabaseManager.getDatabaseManager().closeDatabase();
+        }
     }
 
     /**
@@ -128,5 +132,17 @@ public class LeaderboardFunctions {
         }
         DatabaseManager.getDatabaseManager().closeDatabase();
         return arrayList;
+    }
+
+    public boolean highScore(User user, Leaderboard leaderboard) {
+        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + "=? AND " + LEVEL_NUM + " =?", new String[]{String.valueOf(user.getUserId()), String.valueOf(leaderboard.getScore())});
+        while (cursor.moveToNext()) {
+            if (cursor.getColumnIndex(SCORE) < leaderboard.getScore()){
+                return true;
+            }
+        }
+        DatabaseManager.getDatabaseManager().closeDatabase();
+        return false;
     }
 }

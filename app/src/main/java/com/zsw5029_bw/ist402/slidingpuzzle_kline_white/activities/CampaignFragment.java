@@ -1,5 +1,6 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -35,7 +36,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_LEVEL_TAG;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_MODE_TAG;
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_TIMER_TAG;
 
 public class CampaignFragment extends Fragment {
 
@@ -49,6 +52,7 @@ public class CampaignFragment extends Fragment {
     // Constants
     private final int ROWS = 7;
     private final int COLS = 3;
+    private final String REFRESH_TAG = "0";
 
     // UI Components
     private View view;
@@ -99,9 +103,7 @@ public class CampaignFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
+    public void onDetach() { super.onDetach(); }
 
     private void createLayout(){
 
@@ -127,13 +129,11 @@ public class CampaignFragment extends Fragment {
             imageButtonParams = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT);
             imageButton.setLayoutParams(imageButtonParams);
             imageButton.setScaleType(ImageView.ScaleType.FIT_XY);
-//            imageButton.setBackgroundColor(Color.GRAY);
             imageButton.setOnClickListener(imagesListener);
             String levelNum = "level_" + (i + 1);
             imageButton.setTag(levelNum);
+            imageButton.setId(i + 1);
             loadImages(imageButton, i, levelNum);
-//            imageButton.setForeground;
-//            imageButton.setEnabled(false);
             imageButtons.add(imageButton);
 
             // Inner Layout
@@ -161,6 +161,7 @@ public class CampaignFragment extends Fragment {
             tableRow.addView(outerLayout);
             relativeLayouts.add(outerLayout);
 
+            // Close table row
             if (i > 0 && (i + 1) % 3 == 0){
                 tableLayout.addView(tableRow);
                 tableRow = new TableRow(getContext());
@@ -191,8 +192,13 @@ public class CampaignFragment extends Fragment {
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
         for (RelativeLayout relativeLayout : relativeLayouts) {
-            relativeLayout.getLayoutParams().width = displayMetrics.widthPixels / COLS;
-            relativeLayout.getLayoutParams().height = displayMetrics.heightPixels / ROWS;
+            if (displayMetrics.widthPixels > displayMetrics.heightPixels){
+                relativeLayout.getLayoutParams().width = displayMetrics.widthPixels / COLS;
+                relativeLayout.getLayoutParams().height = displayMetrics.heightPixels / ROWS * 2;
+            }else {
+                relativeLayout.getLayoutParams().width = displayMetrics.widthPixels / COLS;
+                relativeLayout.getLayoutParams().height = displayMetrics.heightPixels / ROWS;
+            }
             relativeLayout.requestLayout();
         }
     }
@@ -207,10 +213,28 @@ public class CampaignFragment extends Fragment {
 
             Intent campaign = new Intent(getActivity(), PuzzleActivity.class);
             campaign.putExtra(PUZZLE_MODE_TAG, (String)view.getTag());
-            startActivity(campaign);
+            // TODO different level times
+            campaign.putExtra(PUZZLE_TIMER_TAG, 10 * view.getId());
+            campaign.putExtra(PUZZLE_LEVEL_TAG, view.getId());
+            startActivityForResult(campaign, 0);
             getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 0) && (resultCode == Activity.RESULT_OK)) {
+
+            // Refresh fragment after level beaten
+           getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .detach(MainActivity.fragment)
+                    .attach(MainActivity.fragment)
+                    .commitAllowingStateLoss();
+        }
+    }
 
     /**
      * Loads an image asynchronously.

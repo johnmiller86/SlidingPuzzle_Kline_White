@@ -1,5 +1,7 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -7,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Vibrator;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -22,21 +26,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.R;
+import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Leaderboard;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Puzzle;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Settings;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.User;
+import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.LeaderboardFunctions;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.PuzzleFunctions;
-import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.SessionManager;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.SettingFunctions;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.UserFunctions;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.sessionManager;
+
 public class PuzzleActivity extends AppCompatActivity {
+
+    // Session
+//    SessionManager sessionManager = new SessionManager(getBaseContext());
+    UserFunctions userFunctions = new UserFunctions();
+    User user = userFunctions.getUser(sessionManager.getUsername());
+    SettingFunctions settingFunctions = new SettingFunctions();
+    Settings settings = settingFunctions.getSettings(user);
+    PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
+    Puzzle puzzle = puzzleFunctions.getPuzzle(user);
+    LeaderboardFunctions leaderboardFunctions = new LeaderboardFunctions();
+    Leaderboard leaderboard = leaderboardFunctions.getLeaderboards(user);
 
     // UI components
     private TableLayout tableLayout;
@@ -50,10 +69,11 @@ public class PuzzleActivity extends AppCompatActivity {
 
     // Vars
     private Timer timer;
+    private CountDownTimer countDownTimer;
     private Animation currentAnimation, previousAnimation;
-    private int counter, movesCounter, rows, cols;
-    private boolean isPause;
-    private final int[] time = {1};
+    private int counter, movesCounter, rows, cols, startTime, currentTime, score, levelNum;
+    private boolean isPause, isCampaign;
+    //private final int[] time = {1};
     private String mode;
 
     @Override
@@ -61,16 +81,14 @@ public class PuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_puzzle);
         initializeReferences();
-        startTimer(0);
     }
 
     @Override
     public void onDestroy(){
         super.onDestroy();
-        if (timer != null) {
-            timer.cancel();
-        }
+        cancelTimers();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -96,6 +114,7 @@ public class PuzzleActivity extends AppCompatActivity {
                     .setIcon(R.mipmap.ic_launcher)
                     .show();
         }else{
+            setResult(Activity.RESULT_OK);
             finish();
         }
     }
@@ -112,7 +131,6 @@ public class PuzzleActivity extends AppCompatActivity {
     private void initializeReferences() {
 
         // Initializing Session
-        SessionManager sessionManager = new SessionManager(this);
         UserFunctions userFunctions = new UserFunctions();
         User user = userFunctions.getUser(sessionManager.getUsername());
         SettingFunctions settingFunctions = new SettingFunctions();
@@ -177,17 +195,26 @@ public class PuzzleActivity extends AppCompatActivity {
         // Create puzzle
         Intent intent = getIntent();
 
+        // Campaign
         if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null){
-//        if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null && intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG).equals("campaign")){
+            isCampaign = true;
+            startTime = intent.getIntExtra(MainActivity.PUZZLE_TIMER_TAG, 0);
+            levelNum = intent.getIntExtra(MainActivity.PUZZLE_LEVEL_TAG, 1);
 
             // Create bitmap
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG), "drawable", getPackageName()));
-
             createPuzzle(bitmap);
-        }else{
+        }
+        // Free play
+        else{
+            isCampaign = false;
+            startTime = 0;
+
             if (puzzle.getPuzzleId() != 0){
                 createPuzzle(puzzle.getPuzzle(this));
             }
+
+            // Free play puzzle not chosen
             else {
                 createPuzzle(BitmapFactory.decodeResource(getResources(), R.drawable.level_1));
             }
@@ -284,6 +311,7 @@ public class PuzzleActivity extends AppCompatActivity {
         for (int i = 0; i < rows * cols; i++){
             imageButtons.get(i).setImageDrawable(list.get(i));
         }
+        startTimer(startTime);
     }
 
     /**
@@ -315,7 +343,7 @@ public class PuzzleActivity extends AppCompatActivity {
     private void restart(){
 
         // Clearing
-        timer.cancel();
+        cancelTimers();
         counter = 0;
         movesCounter = 0;
         movesTextView.setText(R.string.default_moves);
@@ -326,7 +354,6 @@ public class PuzzleActivity extends AppCompatActivity {
         enableButtons();
         pauseButton.setEnabled(true);
         isPause = false;
-        startTimer(0);
     }
 
     /**
@@ -337,11 +364,11 @@ public class PuzzleActivity extends AppCompatActivity {
         if (isPause) {
             disableButtons();
             resetButton.setEnabled(false);
-            timer.cancel();
+            cancelTimers();
         } else {
             enableButtons();
             resetButton.setEnabled(true);
-            startTimer(time[0]);
+            startTimer(currentTime);
         }
     }
 
@@ -386,10 +413,15 @@ public class PuzzleActivity extends AppCompatActivity {
             }
         }
         if(isSolved()){
-            timer.cancel();
+            cancelTimers();
             disableButtons();
             pauseButton.setEnabled(false);
             Toast.makeText(this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
+
+            if (isCampaign){
+                recordHighScores();
+                score = (currentTime * 100) * (1000 % movesCounter);
+            }
         }
     }
 
@@ -464,28 +496,63 @@ public class PuzzleActivity extends AppCompatActivity {
      * Starts a new timer.
      */
     private void startTimer(final int seconds) {
-        timer = new Timer();
-        time[0] = seconds;
 
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-
-                time[0]++;
-                runOnUiThread(new Runnable()
-                {
-                    public void run() {
-
-                        if (time[0] > 60){
-                            timerTextView.setText(getString(R.string.minutes_seconds,time[0] / 60,time[0] % 60));
-                        }
-                        else{
-                            timerTextView.setText(getResources().getQuantityString(R.plurals.seconds, time[0], time[0]));
-                        }
+        if (isCampaign){
+            countDownTimer = new CountDownTimer(seconds * 1000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    currentTime = new BigDecimal(millisUntilFinished / 1000).intValueExact();
+                    if (millisUntilFinished / 1000 > 60) {
+                        timerTextView.setText(getString(R.string.minutes_seconds, millisUntilFinished / 60000, millisUntilFinished / 1000 % 60));
+                    } else {
+                        timerTextView.setText(getResources().getQuantityString(R.plurals.seconds, new BigDecimal(millisUntilFinished / 1000).intValueExact(), millisUntilFinished / 1000));
                     }
-                });
-            }
-        }, 1000, 1000);
+                }
+
+                @Override
+                public void onFinish() {
+                    Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                    vibrator.vibrate(500);
+                    Toast.makeText(PuzzleActivity.this, "Time's up!", Toast.LENGTH_LONG).show();
+                    disableButtons();
+                    timerTextView.setText(R.string.default_time);
+                }
+            };
+            countDownTimer.start();
+        }else {
+            timer = new Timer();
+            currentTime = seconds;
+
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+
+                    currentTime++;
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+
+                            if (currentTime > 60) {
+                                timerTextView.setText(getString(R.string.minutes_seconds, currentTime / 60, currentTime % 60));
+                            } else {
+                                timerTextView.setText(getResources().getQuantityString(R.plurals.seconds, currentTime, currentTime));
+                            }
+                        }
+                    });
+                }
+            }, 1000, 1000);
+        }
+    }
+
+    /**
+     * Cancels the appropriate game timer.
+     */
+    private void cancelTimers() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        else if (countDownTimer != null){
+            countDownTimer.cancel();
+        }
     }
 
     /**
@@ -501,13 +568,12 @@ public class PuzzleActivity extends AppCompatActivity {
         return true;
     }
 
-
-    /**
-     * Getting random level via resource id string *TESTING*
-     * @return a random resource string.
-     */
-//    private String randomLevel(){
-//        int level = (int) (Math.random() * 20) + 1;
-//        return "level_" + level;
-//    }
+    private void recordHighScores(){
+            // TODO need to do level num and probably levels table
+            leaderboard.setLevel_num(levelNum);
+            leaderboard.setScore(score);
+            leaderboard.setTime(timerTextView.getText().toString());
+            leaderboard.setMoves(movesCounter);
+            leaderboardFunctions.insert(user, leaderboard);
+    }
 }

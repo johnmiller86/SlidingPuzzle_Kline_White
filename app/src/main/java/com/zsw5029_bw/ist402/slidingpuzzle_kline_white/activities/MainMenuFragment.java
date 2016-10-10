@@ -89,21 +89,11 @@ public class MainMenuFragment extends Fragment {
      */
     @SuppressLint("CommitTransaction")
     private void campaignPlay() {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(MainActivity.PUZZLE_MODE_TAG, "campaign");
-//        MainActivity.fragment.setArguments(bundle);
-//
         MainActivity.fragment = new CampaignFragment();
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-
-//        Intent campaign = new Intent(getActivity(), PuzzleActivity.class);
-//        campaign.putExtra(PUZZLE_MODE_TAG, "campaign");
-//        startActivity(campaign);
-//        getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /**
@@ -111,12 +101,6 @@ public class MainMenuFragment extends Fragment {
      */
     @SuppressLint("CommitTransaction")
     private void freePlay() {
-//        MainActivity.fragment = new PuzzleFragment();
-//        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-//        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
         Intent intent = new Intent(getActivity(), PuzzleActivity.class);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
@@ -131,7 +115,6 @@ public class MainMenuFragment extends Fragment {
         fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -143,7 +126,6 @@ public class MainMenuFragment extends Fragment {
 //        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 //        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
 //        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-//        fragmentTransaction.addToBackStack(null);
 //        fragmentTransaction.commit();
     }
 }
