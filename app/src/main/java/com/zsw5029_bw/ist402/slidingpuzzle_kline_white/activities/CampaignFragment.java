@@ -36,8 +36,10 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_COL_TAG;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_LEVEL_TAG;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_MODE_TAG;
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_ROW_TAG;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_TIMER_TAG;
 
 @SuppressWarnings("EmptyMethod")
@@ -47,7 +49,9 @@ public class CampaignFragment extends Fragment {
     private View view;
     private List<RelativeLayout> relativeLayouts;
     private List<ImageButton> imageButtons;
+
     private List<Integer> unlocked;
+    private ArrayList<int[]> rowCols;
 
     public CampaignFragment() {
         // Required empty public constructor
@@ -207,6 +211,9 @@ public class CampaignFragment extends Fragment {
             // TODO different level times
             campaign.putExtra(PUZZLE_TIMER_TAG, 10 * view.getId());
             campaign.putExtra(PUZZLE_LEVEL_TAG, view.getId());
+            fillRowCols();
+            campaign.putExtra(PUZZLE_COL_TAG, rowCols.get(view.getId() - 1)[0]);
+            campaign.putExtra(PUZZLE_ROW_TAG, rowCols.get(view.getId() - 1)[1]);
             startActivityForResult(campaign, 0);
             getActivity().overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         }
@@ -227,6 +234,15 @@ public class CampaignFragment extends Fragment {
         }
     }
 
+    // Temp level configure
+    private void  fillRowCols(){
+        rowCols = new ArrayList<>();
+        for (int i = 2; i <= 8; i++){
+            rowCols.add(new int[]{i, i});
+            rowCols.add(new int[]{i + 1, i});
+            rowCols.add(new int[]{i, i + 1});
+        }
+    }
     /**
      * Loads an image asynchronously.
      * @param resId the resource id.
@@ -237,8 +253,6 @@ public class CampaignFragment extends Fragment {
         BitmapWorkerTask task = new BitmapWorkerTask(imageView, drawable);
         task.execute(resId);
     }
-
-
 
     // TODO Clean up this async task
 

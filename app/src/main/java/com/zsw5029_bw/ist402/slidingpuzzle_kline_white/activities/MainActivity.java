@@ -30,6 +30,8 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
     public static final String PUZZLE_MODE_TAG = "puzzle_mode_tag";
     public static final String PUZZLE_TIMER_TAG = "puzzle_timer_tag";
     public static final String PUZZLE_LEVEL_TAG = "puzzle_level_tag";
+    public static final String PUZZLE_ROW_TAG = "puzzle_row_tag";
+    public static final String PUZZLE_COL_TAG = "puzzle_col_tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

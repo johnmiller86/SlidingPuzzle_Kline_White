@@ -2,13 +2,11 @@ package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models;
 
 public class Leaderboard {
 
-    // Instance Vars
-    private int leaderboard_id;
     private int level_num, moves, score;
     private String time;
 
     public void setLeaderboard_id(int leaderboard_id) {
-        this.leaderboard_id = leaderboard_id;
+        int leaderboard_id1 = leaderboard_id;
     }
 
     public int getMoves() {

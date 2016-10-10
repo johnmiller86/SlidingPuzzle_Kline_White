@@ -42,6 +42,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_COL_TAG;
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_LEVEL_TAG;
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_MODE_TAG;
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_ROW_TAG;
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.PUZZLE_TIMER_TAG;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.activities.MainActivity.sessionManager;
 
 public class PuzzleActivity extends AppCompatActivity {
@@ -148,16 +153,23 @@ public class PuzzleActivity extends AppCompatActivity {
         imageButtons = new ArrayList<>();
         answerKey = new ArrayList<>();
 
-        // Getting difficulty
-        if (settings.getRows() != 0){
-            rows = settings.getRows();
-        }else{
-            rows = 4;
+        // Campaign, set size
+        if (getIntent().getStringExtra(PUZZLE_MODE_TAG) != null){
+            rows = getIntent().getIntExtra(PUZZLE_ROW_TAG, 4);
+            cols = getIntent().getIntExtra(PUZZLE_COL_TAG, 3);
         }
-        if (settings.getColumns() != 0){
-            cols = settings.getColumns();
-        }else{
-            cols = 3;
+        // Free play use user settings if available
+        else{
+            if (settings.getRows() != 0) {
+                rows = settings.getRows();
+            } else {
+                rows = 4;
+            }
+            if (settings.getColumns() != 0) {
+                cols = settings.getColumns();
+            } else {
+                cols = 3;
+            }
         }
 
         // Initializing ImageButtons and adding to list
@@ -195,13 +207,15 @@ public class PuzzleActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         // Campaign
-        if (intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG) != null){
+        if (intent.getStringExtra(PUZZLE_MODE_TAG) != null){
             isCampaign = true;
-            startTime = intent.getIntExtra(MainActivity.PUZZLE_TIMER_TAG, 0);
-            levelNum = intent.getIntExtra(MainActivity.PUZZLE_LEVEL_TAG, 1);
+            startTime = intent.getIntExtra(PUZZLE_TIMER_TAG, 0);
+            levelNum = intent.getIntExtra(PUZZLE_LEVEL_TAG, 1);
+//            rows = intent.getIntExtra(PUZZLE_ROW_TAG, 4);
+//            cols = intent.getIntExtra(PUZZLE_COL_TAG, 3);
 
             // Create bitmap
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(intent.getStringExtra(MainActivity.PUZZLE_MODE_TAG), "drawable", getPackageName()));
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), getResources().getIdentifier(intent.getStringExtra(PUZZLE_MODE_TAG), "drawable", getPackageName()));
             createPuzzle(bitmap);
         }
         // Free play
