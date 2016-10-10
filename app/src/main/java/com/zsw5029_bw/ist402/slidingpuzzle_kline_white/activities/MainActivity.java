@@ -17,8 +17,6 @@ import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.DBHelper;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.DatabaseManager;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.SessionManager;
 
-import java.util.List;
-
 @SuppressLint("CommitTransaction")
 public class MainActivity extends FragmentActivity implements FragmentDrawer.FragmentDrawerListener {
 
@@ -166,14 +164,9 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        if (fragments != null) {
-            for (Fragment fragment : fragments) {
 
-                // Process the Fragment's permission request
-                fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
+        // Process the Fragment's permission request
+        fragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
