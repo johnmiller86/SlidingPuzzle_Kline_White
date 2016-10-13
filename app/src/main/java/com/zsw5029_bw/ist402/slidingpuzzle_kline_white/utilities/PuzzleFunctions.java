@@ -76,31 +76,6 @@ public class PuzzleFunctions {
         DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
-
-// --Commented out by Inspection START (9/20/2016 8:12 PM):
-//    /**
-//     * Gets the puzzles that have been added to the DB.
-//     * @return the puzzle list.
-//     */
-//    public ArrayList<Puzzle> getPuzzleList(int userId){
-//
-//        ArrayList<Puzzle> puzzleList = new ArrayList<>();
-//        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-//        Cursor cursor = db.rawQuery("SELECT * FROM " + PUZZLES_TABLE + " WHERE " + USER_ID + "=?", new String[]{String.valueOf(userId)});
-//
-//        // Populating ArrayList
-//        while (cursor.moveToNext()){
-//            Puzzle puzzle = new Puzzle();
-//            puzzle.setPuzzleId(cursor.getInt(cursor.getColumnIndex(PUZZLE_ID)));
-//            puzzle.setPuzzlePath(cursor.getString(cursor.getColumnIndex(PUZZLE_PATH)));
-//            puzzleList.add(puzzle);
-//        }
-//        cursor.close();
-//        DatabaseManager.getDatabaseManager().closeDatabase();
-//        return puzzleList;
-//    }
-// --Commented out by Inspection STOP (9/20/2016 8:12 PM)
-
     /**
      * Gets the puzzles that have been added to the DB.
      * @return the puzzle list.

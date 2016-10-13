@@ -120,10 +120,10 @@ public class MainMenuFragment extends Fragment {
      * Leaderboards button listener.
      */
     private void leaderboards() {
-//        MainActivity.fragment = new LeaderboardsFragment();
-//        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-//        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
-//        fragmentTransaction.commit();
+        MainActivity.fragment = new LeaderboardFragment();
+        fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        fragmentTransaction.replace(R.id.fragment_container, MainActivity.fragment);
+        fragmentTransaction.commit();
     }
 }

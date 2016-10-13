@@ -1,9 +1,19 @@
 package com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models;
 
-public class Leaderboard {
+public class LeaderboardEntry {
 
     private int level_num, moves, score;
     private String time;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    private String username;
 
     public void setLeaderboard_id(int leaderboard_id) {
         int leaderboard_id1 = leaderboard_id;

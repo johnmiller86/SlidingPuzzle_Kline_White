@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Leaderboard;
+import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.LeaderboardEntry;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.User;
 
 import java.util.ArrayList;
 
+import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.UserFunctions.USERNAME;
 import static com.zsw5029_bw.ist402.slidingpuzzle_kline_white.utilities.UserFunctions.USERS_TABLE;
 
 /**
@@ -51,10 +52,10 @@ public class LeaderboardFunctions {
      * @param user the user.
      * @param entry the entry.
      */
-    public void insert(User user, Leaderboard entry) {
+    public void insert(User user, LeaderboardEntry entry) {
         if (highScore(user, entry)){
             update(user, entry);
-        }else {
+        }else if (isEmpty(user, entry)){
             SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
             ContentValues values = new ContentValues();
             values.put(USER_ID, user.getUserId());
@@ -74,7 +75,7 @@ public class LeaderboardFunctions {
      * @param user the user.
      * @param entry the new high score.
      */
-    private void update(User user, Leaderboard entry){
+    private void update(User user, LeaderboardEntry entry){
 
         // Database
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
@@ -87,35 +88,34 @@ public class LeaderboardFunctions {
 
         // Where
         String where = USER_ID + " = ? AND " + LEVEL_NUM + " = ?";
-        String[] id = {String.valueOf(user.getUserId()), String.valueOf(entry.getLevel_num())};
+        String[] cols = {String.valueOf(user.getUserId()), String.valueOf(entry.getLevel_num())};
 
         // Inserting Row
-        db.update(LEADERBOARDS_TABLE, values, where, id);
+        db.update(LEADERBOARDS_TABLE, values, where, cols);
         DatabaseManager.getDatabaseManager().closeDatabase();
     }
 
-    // TODO Modify this to retun a specific leaderboard entry
     /**
      * Gets the puzzles that have been added to the DB.
      * @return the puzzle list.
      */
-    public Leaderboard getLeaderboards(User user){
+    public LeaderboardEntry getLeaderboards(User user){
 
-        Leaderboard leaderboard = new Leaderboard();
+        LeaderboardEntry leaderboardEntry = new LeaderboardEntry();
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + " = ?", new String[]{String.valueOf(user.getUserId())});
 
         while (cursor.moveToNext()){
 
-            leaderboard.setLeaderboard_id(cursor.getInt(cursor.getColumnIndex(LEADERBOARD_ID)));
-            leaderboard.setLevel_num(cursor.getInt(cursor.getColumnIndex(LEVEL_NUM)));
-            leaderboard.setScore(cursor.getInt(cursor.getColumnIndex(SCORE)));
-            leaderboard.setMoves(cursor.getInt(cursor.getColumnIndex(MOVES)));
-            leaderboard.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
+            leaderboardEntry.setLeaderboard_id(cursor.getInt(cursor.getColumnIndex(LEADERBOARD_ID)));
+            leaderboardEntry.setLevel_num(cursor.getInt(cursor.getColumnIndex(LEVEL_NUM)));
+            leaderboardEntry.setScore(cursor.getInt(cursor.getColumnIndex(SCORE)));
+            leaderboardEntry.setMoves(cursor.getInt(cursor.getColumnIndex(MOVES)));
+            leaderboardEntry.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
         }
         cursor.close();
         DatabaseManager.getDatabaseManager().closeDatabase();
-        return leaderboard;
+        return leaderboardEntry;
     }
 
     /**
@@ -135,13 +135,53 @@ public class LeaderboardFunctions {
         return arrayList;
     }
 
-    private boolean highScore(User user, Leaderboard leaderboard) {
+    /**
+     * Checks if the
+     * @param user
+     * @param leaderboardEntry
+     * @return
+     */
+    private boolean highScore(User user, LeaderboardEntry leaderboardEntry) {
         SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + "=? AND " + LEVEL_NUM + " =?", new String[]{String.valueOf(user.getUserId()), String.valueOf(leaderboard.getScore())});
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + " = ? AND " + LEVEL_NUM + " = ?", new String[]{String.valueOf(user.getUserId()), String.valueOf(leaderboardEntry.getLevel_num())});
         while (cursor.moveToNext()) {
-            if (cursor.getColumnIndex(SCORE) < leaderboard.getScore()){
+            if (cursor.getInt(cursor.getColumnIndex(SCORE)) < leaderboardEntry.getScore()){
                 return true;
             }
+        }
+        DatabaseManager.getDatabaseManager().closeDatabase();
+        cursor.close();
+        return false;
+    }
+
+    public ArrayList<LeaderboardEntry> getLeaderboards(){
+        ArrayList<LeaderboardEntry> arrayList = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+//        Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " ORDER BY " + SCORE + " DESC, " + MOVES + " DESC, " + TIME + " DESC", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " INNER JOIN " + USERS_TABLE  + " ON "  + USERS_TABLE+ "." + USER_ID + " = " + LEADERBOARDS_TABLE + "." + USER_ID
+                + " ORDER BY " + LEADERBOARDS_TABLE + "." + LEVEL_NUM + " DESC, " +  LEADERBOARDS_TABLE + "." + SCORE + " DESC, " +  LEADERBOARDS_TABLE + "." + MOVES + " DESC, " +  LEADERBOARDS_TABLE + "." + TIME + " DESC", null);
+        while (cursor.moveToNext()) {
+            LeaderboardEntry leaderboardEntry = new LeaderboardEntry();
+            leaderboardEntry.setUsername(cursor.getString(cursor.getColumnIndex(USERNAME)));
+            leaderboardEntry.setLevel_num(cursor.getInt(cursor.getColumnIndex(LEVEL_NUM)));
+            leaderboardEntry.setScore(cursor.getInt(cursor.getColumnIndex(SCORE)));
+            leaderboardEntry.setMoves(cursor.getInt(cursor.getColumnIndex(MOVES)));
+            leaderboardEntry.setTime(cursor.getString(cursor.getColumnIndex(TIME)));
+            arrayList.add(leaderboardEntry);
+        }
+        DatabaseManager.getDatabaseManager().closeDatabase();
+        cursor.close();
+        return arrayList;
+    }
+
+    public boolean isEmpty(User user, LeaderboardEntry leaderboardEntry){
+        ArrayList<LeaderboardEntry> arrayList = new ArrayList<>();
+        SQLiteDatabase db = DatabaseManager.getDatabaseManager().openDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LEADERBOARDS_TABLE + " WHERE " + USER_ID + " = ? AND " + LEVEL_NUM + " = ?", new String[]{String.valueOf(user.getUserId()), String.valueOf(leaderboardEntry.getLevel_num())});
+        if (!cursor.moveToFirst()){
+            DatabaseManager.getDatabaseManager().closeDatabase();
+            cursor.close();
+            return true;
         }
         DatabaseManager.getDatabaseManager().closeDatabase();
         cursor.close();

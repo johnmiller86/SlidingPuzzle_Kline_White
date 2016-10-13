@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.R;
-import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Leaderboard;
+import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.LeaderboardEntry;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Puzzle;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.Settings;
 import com.zsw5029_bw.ist402.slidingpuzzle_kline_white.models.User;
@@ -60,7 +60,7 @@ public class PuzzleActivity extends AppCompatActivity {
     private final PuzzleFunctions puzzleFunctions = new PuzzleFunctions();
     Puzzle puzzle = puzzleFunctions.getPuzzle(user);
     private final LeaderboardFunctions leaderboardFunctions = new LeaderboardFunctions();
-    private final Leaderboard leaderboard = leaderboardFunctions.getLeaderboards(user);
+//    private final LeaderboardEntry leaderboardEntry = leaderboardFunctions.getLeaderboards(user);
 
     // UI components
     private TableLayout tableLayout;
@@ -432,8 +432,9 @@ public class PuzzleActivity extends AppCompatActivity {
             Toast.makeText(this, "Congratulations You Win!!!!!", Toast.LENGTH_LONG).show();
 
             if (isCampaign){
+//                score = (currentTime * 100) * (movesCounter / 100);
+                score = (startTime - currentTime)* 1000 - (movesCounter * -250);
                 recordHighScores();
-                score = (currentTime * 100) * (1000 % movesCounter);
             }
         }
     }
@@ -583,10 +584,11 @@ public class PuzzleActivity extends AppCompatActivity {
 
     private void recordHighScores(){
             // TODO need to do level num and probably levels table
-            leaderboard.setLevel_num(levelNum);
-            leaderboard.setScore(score);
-            leaderboard.setTime(timerTextView.getText().toString());
-            leaderboard.setMoves(movesCounter);
-            leaderboardFunctions.insert(user, leaderboard);
+        LeaderboardEntry leaderboardEntry = new LeaderboardEntry();
+        leaderboardEntry.setLevel_num(levelNum);
+        leaderboardEntry.setScore(score);
+        leaderboardEntry.setTime(timerTextView.getText().toString());
+        leaderboardEntry.setMoves(movesCounter);
+        leaderboardFunctions.insert(user, leaderboardEntry);
     }
 }

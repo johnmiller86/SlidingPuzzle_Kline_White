@@ -12,9 +12,9 @@ public class UserFunctions {
     public static final String USERS_TABLE = "users";
 
     // Column names
-    private static final String USER_ID = "user_id";
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
+    public static final String USER_ID = "user_id";
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
 
     /**
      * Builds the users table create statement.

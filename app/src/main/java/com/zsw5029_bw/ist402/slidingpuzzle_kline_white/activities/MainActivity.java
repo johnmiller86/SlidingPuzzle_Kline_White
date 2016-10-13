@@ -100,10 +100,10 @@ public class MainActivity extends FragmentActivity implements FragmentDrawer.Fra
                 break;
             // Leaderboards
             case 3:
-//                if (fragment instanceof  LeaderboardsFragment == false) {
-//                    fragment = new LeaderboardsFragment();
-//                    current = false;
-//                }
+                if (fragment instanceof  LeaderboardFragment == false) {
+                    fragment = new LeaderboardFragment();
+                    current = false;
+                }
                 break;
             // Settings
             case 4:
